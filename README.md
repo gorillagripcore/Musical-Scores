@@ -26,7 +26,7 @@ To ensure we don't break the code, at least one person should review (and approv
    
   ![image](https://github.com/user-attachments/assets/d578f132-decd-48fe-8f7b-98753e5797a3)
 
-3. In your pull request, Add a title, description if needed, and a reviewer.
+2. In your pull request, Add a title, description if needed, and a reviewer.
    
    ![image](https://github.com/user-attachments/assets/878bb612-39d7-4fa5-bba4-d6183a95d3a4)
 
