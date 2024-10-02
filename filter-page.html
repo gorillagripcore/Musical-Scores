@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Page</title>
+    <link rel="stylesheet" href="filter-page.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#">Archive</a>
+            <a href="#">About Ehrling</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h3>Filter</h3>
+            <label for="year">Year ↓</label>
+            <select id="year">
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+            </select>
+            <label for="month">Month ↓</label>
+            <select id="month">
+                <option value="January">January</option>
+                <option value="February">February</option>
+            </select>
+            <label for="type">Type ↓</label>
+            <select id="type">
+                <option value="Type 1">Type 1</option>
+                <option value="Type 2">Type 2</option>
+            </select>
+        </div>
+
+        <div class="main-content">
+            <div class="search-bar">
+                <input type="text" placeholder="Sök" />
+                <button><img src="search-icon.png" alt="Search"></button>
+            </div>
+
+            <div class="result">
+                <div class="item">
+                    <div class="thumbnail"></div>
+                    <div class="info">
+                        <p>Sample text for the first result.</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="thumbnail"></div>
+                    <div class="info">
+                        <p>Sample text for the second result.</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="thumbnail"></div>
+                    <div class="info">
+                        <p>Sample text for the third result.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; Lorem Ipsum</p>
+    </footer>
+
+</body>
+</html>
