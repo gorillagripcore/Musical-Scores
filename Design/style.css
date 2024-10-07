@@ -1,0 +1,68 @@
+body{
+    font-family: "stevie-sans", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+header {
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+}
+
+header img{
+    height: 50px;
+    float: left;
+}
+
+.column {
+    text-align: center;
+}
+
+#navigation{
+    display: flex;
+    flex-direction: row;
+    font-weight: 600;
+    font-size: 22px; 
+}
+
+a {
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+a:visited {
+    color: black;
+}
+
+a:hover, a:active {
+    color: black;
+    text-decoration: none;
+}
+
+#image_background img{
+    width: 100%;
+    margin-top: 0px;
+    
+}
+
+#button-container {
+    display: flex; 
+    justify-content: center; 
+}
+
+#center-button {
+    margin-top: -30px;
+    height: 35px; 
+    width: 200px;
+    font-size: 16px; 
+
+    font-family: "stevie-sans-", sans-serif;
+    font-size: 30px; 
+    font-weight: 700;
+    letter-spacing: -1px;
+
+    text-align: center;
+    border-style: none;
+    background-color: #FFC818;
+}
