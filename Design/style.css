@@ -66,3 +66,9 @@ a:hover, a:active {
     border-style: none;
     background-color: #FFC818;
 }
+
+/*Score page*/
+.score {
+    display: flex;
+    justify-content: center;
+}

@@ -4,21 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>score-page</title>
+    <link rel="stylesheet" href="design/style.css">
+    <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
 </head>
 <body>
-    <nav>
-        <img src="#" alt="logo">
-        <ul class="nav-links">
-            <li><a href="#">Archive</a></li>
-            <li><a href="#">About Ehrling</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </nav>
+    <header>
+        <div class="column">
+            <img src="design/img/logo.png">
+        </div>
+        <div class="column">  </div>
+        <div class="column" id="navigation">
+            <a href="index.html">Archive</a>
+            <a href="index.html">About Ehrling</a>
+            <a href="index.html">Contact</a></div></div>
+    </header>
     <main>
-        <embed src="test-score.pdf#toolbar=0" type="application/pdf" width="900px" height="1000px" >
+        <div class="score">
+            <button id="prev" onclick="prevPage()"> Prev </button>
+            <embed id="score-page" src="http://127.0.0.1:5500/test-score.pdf#toolbar=0&page=1" type="application/pdf" width="670px" height="920px" >
+            <button id="next" onclick="nextPage()"> Next </button>
+        </div>
     </main>
     <footer>
         <h3>© 2024 - Musical scores</h3>
     </footer>
+    <script>
+        
+        
+
+        function getCurrentPageNumber() {
+            let pdf = document.getElementById("score-page").src;
+            let currentPage = pdf.match(/page=(\d+)/)[1];
+            return parseInt(currentPage);
+        }
+
+        function prevPage() {
+            let currentPage = getCurrentPageNumber();
+            let newPageNumber = currentPage - 1;
+            if (currentPage > 1) {
+                updateSrc(newPageNumber);
+            }
+        }
+
+        function nextPage() {
+            let currentPage = getCurrentPageNumber();
+            let newPageNumber = currentPage + 1;
+            updateSrc(newPageNumber);
+        }
+
+        function updateSrc(newPage) {
+            let embedElement = document.getElementById("score-page");
+            let newSrc = embedElement.src.replace(/page=\d+/, 'page=' + newPage);
+            embedElement.src = newSrc;
+            console.log(embedElement.src)
+
+            hey = document.getElementById("score-page").src;
+            console.log(hey)
+        }
+    </script>
 </body>
 </html>
