@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Filter Page</title>
+    <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
     <link rel="stylesheet" href="filter-page.css">
 </head>
 <body>
@@ -33,7 +34,10 @@
             <select id="type">
                 <option value="Type 1">Type 1</option>
                 <option value="Type 2">Type 2</option>
-            </select>
+            </select>  
+
+            <button id="clear-filters" class="clear-filters-btn">Clear All Filters</button>
+
         </div>
 
         <div class="main-content">
@@ -41,6 +45,10 @@
                 <input type="text" placeholder="Sök" />
                 <button><img src="search-icon.jpeg" alt="Search"></button>
             </div>
+
+            
+            <div class="search-preview" id="search-preview"></div>
+
 
             <div class="result">
                 <div class="item">
@@ -70,6 +78,59 @@
     <footer>
         <p>&copy; Lorem Ipsum</p>
     </footer>
+
+
+    
+
+<script>
+// replace with real data fetching
+const mockResults = [
+    "Symphony No. 5 - Sixten Ehrling's Notes",
+    "Piano Concerto No. 21 - Program from 1965",
+    "Opera Rehearsal - Notes on 'The Magic Flute'",
+    "Festival Program - Sixten Ehrling, 1978",
+    "String Quartet Performance - 1980",
+];
+
+// search preview js 
+const searchInput = document.querySelector('.search-bar input');
+const searchPreview = document.getElementById('search-preview');
+
+searchInput.addEventListener('input', function() {
+    const query = searchInput.value.toLowerCase().trim();
+
+    
+    searchPreview.innerHTML = '';
+    
+    if (query.length > 0) {
+        
+        const filteredResults = mockResults.filter(item => item.toLowerCase().includes(query));
+
+        
+        if (filteredResults.length > 0) {
+            filteredResults.forEach(result => {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+                div.textContent = result;
+                searchPreview.appendChild(div);
+            });
+            searchPreview.style.display = 'block';
+        } else {
+            searchPreview.style.display = 'none';
+        }
+    } else {
+        searchPreview.style.display = 'none';
+    }
+});
+
+
+document.addEventListener('click', function(event) {
+    if (!searchInput.contains(event.target)) {
+        searchPreview.style.display = 'none';
+    }
+});
+</script>
+
 
 </body>
 </html>
