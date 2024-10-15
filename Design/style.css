@@ -5,17 +5,9 @@ body{
 }
 
 header {
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-}
-
-header img{
-    height: 50px;
-    float: left;
-}
-
-.column {
-    text-align: center;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
 }
 
 #navigation{
@@ -23,6 +15,7 @@ header img{
     flex-direction: row;
     font-weight: 600;
     font-size: 22px; 
+    justify-content: flex-end;
 }
 
 a {
@@ -38,6 +31,14 @@ a:visited {
 a:hover, a:active {
     color: black;
     text-decoration: none;
+}
+
+header img{
+    height: 50px;
+}
+
+.column {
+    text-align: center;
 }
 
 #image_background img{
@@ -65,4 +66,26 @@ a:hover, a:active {
     text-align: center;
     border-style: none;
     background-color: #FFC818;
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column; 
+        align-items: center; 
+    }
+
+    #navigation {
+        justify-content: center; 
+        flex-direction: column; 
+    }
+
+    #navigation a {
+        padding: 8px; 
+        font-size: 18px; 
+    }
+
+    header img {
+        height: 60px; 
+        margin-bottom: 10px; 
+    }
 }
