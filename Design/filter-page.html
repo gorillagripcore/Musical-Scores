@@ -3,34 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Filter Page</title>
+    <title>Sixten Ehrling Digital Archive</title>
     <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
     <link rel="stylesheet" href="filter-page.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
+    <!--Id like a little star logo or something here-->
 </head>
 <body>
 
     <header>
-        <nav>
-            <a href="#">Archive</a>
-            <a href="#">About Ehrling</a>
-            <a href="#">Contact</a>
-        </nav>
+        <div class="column">
+            <img src="img/logo.png">
+        </div>
+        <div class="column" id="navigation">
+            <a href="index.html">Archive</a>
+            <a href="index.html">About Ehrling</a>
+            <a href="index.html">Contact</a>
+        </div>
     </header>
 
     <div class="container">
         <div class="sidebar">
             <h3>Filter</h3>
-            <label for="year">Year ↓</label>
+            <label for="year">Year</label>
             <select id="year">
                 <option value="2024">2024</option>
                 <option value="2023">2023</option>
             </select>
-            <label for="month">Month ↓</label>
+            <label for="month">Month</label>
             <select id="month">
                 <option value="January">January</option>
                 <option value="February">February</option>
             </select>
-            <label for="type">Type ↓</label>
+            <label for="type">Type</label>
             <select id="type">
                 <option value="Type 1">Type 1</option>
                 <option value="Type 2">Type 2</option>
@@ -76,61 +82,9 @@
     </div>
 
     <footer>
-        <p>&copy; Lorem Ipsum</p>
+        <p>&copy; 2024 Sixten Ehrling Digital Archive</p>
     </footer>
 
-
-    
-
-<script>
-// replace with real data fetching
-const mockResults = [
-    "Symphony No. 5 - Sixten Ehrling's Notes",
-    "Piano Concerto No. 21 - Program from 1965",
-    "Opera Rehearsal - Notes on 'The Magic Flute'",
-    "Festival Program - Sixten Ehrling, 1978",
-    "String Quartet Performance - 1980",
-];
-
-// search preview js 
-const searchInput = document.querySelector('.search-bar input');
-const searchPreview = document.getElementById('search-preview');
-
-searchInput.addEventListener('input', function() {
-    const query = searchInput.value.toLowerCase().trim();
-
-    
-    searchPreview.innerHTML = '';
-    
-    if (query.length > 0) {
-        
-        const filteredResults = mockResults.filter(item => item.toLowerCase().includes(query));
-
-        
-        if (filteredResults.length > 0) {
-            filteredResults.forEach(result => {
-                const div = document.createElement('div');
-                div.className = 'preview-item';
-                div.textContent = result;
-                searchPreview.appendChild(div);
-            });
-            searchPreview.style.display = 'block';
-        } else {
-            searchPreview.style.display = 'none';
-        }
-    } else {
-        searchPreview.style.display = 'none';
-    }
-});
-
-
-document.addEventListener('click', function(event) {
-    if (!searchInput.contains(event.target)) {
-        searchPreview.style.display = 'none';
-    }
-});
-</script>
-
-
+    <script src="../Code/filter.js"></script>
 </body>
 </html>
