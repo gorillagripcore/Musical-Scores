@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>score-page</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="program-page-style.css">
+    <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
+    <script src="https://kit.fontawesome.com/cac3e4b00e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="column">
+            <img src="img/logo.png">
+        </div>
+        <div class="column">  </div>
+        <div class="column" id="navigation">
+            <a href="index.html">Archive</a>
+            <a href="index.html">About Ehrling</a>
+            <a href="index.html">Contact</a></div></div>
+    </header>
+    <main>
+        <div class="score-container">
+            <span class="btn" id="prev-page">
+                <i class="fa-solid fa-angle-left"></i>
+            </span>
+            
+            <canvas id="pdf-render"></canvas>
+            <span class="btn" id="next-page">
+                <i class="fa-solid fa-angle-right"></i>
+            </span>
+            <span class="page-info">
+                page <span id="page-num"></span> of <span id="page-count"></span>
+            </span>
+        </div>
+        <section>
+            <h1>Exempel program</h1>
+            <h3>Jane Doe - 1925</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </section>
+    </main>
+    <footer>
+        <h3>© 2024 - Musical scores</h3>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"> </script>
+    <script src="/Code/program-page-script.js"></script>
+</body>
+</html>
