@@ -36,10 +36,34 @@ main {
 
 section {
     width: 40%;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     border-radius: 5px;
     padding: 20px;
     font-weight: 400;
+    background-color: #f7f7f7;
+    color: #1a1a1a;
+}
+
+#date {
+    float: right;
+    padding: 20px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul li {
+    display: inline;
+}
+
+ul li a {
+    color: #8f8f8f;
+}
+
+ul li a:first-child {
+    padding-left: 0;
 }
 
 p {
@@ -54,7 +78,7 @@ footer {
     width: 100%;
     text-align: center;
     bottom: 0;
-    position: absolute;
+    position: fixed;
 }
 
 canvas {
