@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>score-page</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="score-page.css">
     <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
+    <script src="https://kit.fontawesome.com/cac3e4b00e.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -23,14 +25,14 @@
             page <span id="page-num"></span> of <span id="page-count"></span>
         </span>
         <div class="score-container">
-            <button class="btn" id="prev-page">
-                Previous page
-            </button>
+            <span class="btn" id="prev-page">
+                <i class="fa-solid fa-angle-left"></i>
+            </span>
             
             <canvas id="pdf-render"></canvas>
-            <button class="btn" id="next-page">
-                Next page
-            </button>
+            <span class="btn" id="next-page">
+                <i class="fa-solid fa-angle-right"></i>
+            </span>
         </div>
     </main>
     <footer>

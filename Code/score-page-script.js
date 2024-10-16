@@ -1,26 +1,29 @@
+//For performance & browser compatability
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+//This is the currently displayed pdf url
 const url =  '/test-score.pdf';
 
 let pdfDoc = null,
 pageNum = 1,
-pageIsRendering = false,
-pageNumIsPending = null;
+pageRendering = false,
+pageNumPending = null,
+//Change this value to change scale of pdf (if we want to zoom in the page or something)
+scale = 0.98;
 
-const scale = 1.5,
-canvas = document.querySelector("#pdf-render"),
+const canvas = document.querySelector("#pdf-render"),
 ctx = canvas.getContext('2d');
 
 //Render page
 const renderPage = num => {
-    pageIsRendering = true;
+    pageRendering = true;
 
     //Get page
     pdfDoc.getPage(num).then(page => {
         console.log(page)
         
         //Set scale
-        const viewport = page.getViewport({ scale })
+        const viewport = page.getViewport({ scale: scale, })
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
@@ -30,10 +33,10 @@ const renderPage = num => {
         }
 
         page.render(renderCtx).promise.then (() => {
-            pageIsRendering = false;
-            if(pageNumIsPending !== null) {
-                renderPage(pageNumIsPending);
-                pageNumIsPending = null;
+            pageRendering = false;
+            if(pageNumPending !== null) {
+                renderPage(pageNumPending);
+                pageNumPending = null;
             }
         });
 
@@ -41,9 +44,38 @@ const renderPage = num => {
         document.querySelector('#page-num').textContent = num;
         
     });
-    
 };
 
+//check for pages rendering
+const queueRenderPage = num => {
+    if(pageRendering) {
+        pageNumPending = num;
+    } else {
+        renderPage(num);
+    }
+}
+
+//Prev page
+const showPrevPage = () => {
+    if(pageNum <= 1) {
+        return;
+    }
+    pageNum--;
+    queueRenderPage(pageNum);
+}
+
+document.querySelector('#prev-page').addEventListener('click', showPrevPage);
+
+//Next page
+const showNextPage = () => {
+    if(pageNum >= pdfDoc.numPages) {
+        return;
+    }
+    pageNum++;
+    queueRenderPage(pageNum);
+}
+
+document.querySelector('#next-page').addEventListener('click', showNextPage);
 
 
 // Get document
@@ -55,41 +87,3 @@ pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
     renderPage(pageNum)
 })
 
-
-
-
-
-
-
-
-/*var data = sessionStorage.getItem('key');
-
-
-
-function getCurrentPageNumber() {
-    let pdf = document.getElementById("score-page").src;
-    let currentPage = pdf.match(/page=(\d+)/)[1];
-    return parseInt(currentPage);
-}
-
-function prevPage() {
-    let currentPage = getCurrentPageNumber();
-    let newPageNumber = currentPage - 1;
-    if (currentPage > 1) {
-        updateSrc(newPageNumber);
-    }
-}
-
-function nextPage() {
-    let currentPage = getCurrentPageNumber();
-    let newPageNumber = currentPage + 1;
-    updateSrc(newPageNumber);
-}
-
-function updateSrc(newPage) {
-    let embedElement = document.getElementById("score-page");
-    let newSrc = embedElement.src.replace(/page=\d+/, 'page=' + newPage);
-    embedElement.src = newSrc;
-    sessionStorage.setItem('page', newPage);
-    hey = document.getElementById("score-page").src;
-}*/

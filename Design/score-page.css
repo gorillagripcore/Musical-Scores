@@ -1,0 +1,28 @@
+/*Score page*/
+.score-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.score-container button {
+    height: 30px;
+    position: relative;
+    top: 500px;
+}
+
+.page-info {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#page-num, #page-count {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.btn {
+    font-size: 35px;
+    cursor: pointer;
+    vertical-align: center;
+}
