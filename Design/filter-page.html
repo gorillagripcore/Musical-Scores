@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sixten Ehrling Digital Archive</title>
+    <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
+    <link rel="stylesheet" href="filter-page.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
+    <!--Id like a little star logo or something here-->
+</head>
+<body>
+
+    <header>
+        <div class="column">
+            <img src="img/logo.png">
+        </div>
+        <div class="column" id="navigation">
+            <a href="index.html">Archive</a>
+            <a href="index.html">About Ehrling</a>
+            <a href="index.html">Contact</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h3>Filter</h3>
+            <label for="year">Year</label>
+            <select id="year">
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+            </select>
+            <label for="month">Month</label>
+            <select id="month">
+                <option value="January">January</option>
+                <option value="February">February</option>
+            </select>
+            <label for="type">Type</label>
+            <select id="type">
+                <option value="Type 1">Type 1</option>
+                <option value="Type 2">Type 2</option>
+            </select>  
+
+            <button id="clear-filters" class="clear-filters-btn">Clear All Filters</button>
+
+        </div>
+
+        <div class="main-content">
+            <div class="search-bar">
+                <input type="text" placeholder="Sök" />
+                <button><img src="/Users/haninbarkawe/Desktop/Musical-Scores/Design/img/search.png" alt="Search"></button>
+            </div>
+
+            
+            <div class="search-preview" id="search-preview"></div>
+
+
+            <div class="result">
+                <div class="item">
+                    <div class="thumbnail"></div>
+                    <div class="info">
+                        <p>Sample text for the first result.</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="thumbnail"></div>
+                    <div class="info">
+                        <p>Sample text for the second result.</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="thumbnail"></div>
+                    <div class="info">
+                        <p>Sample text for the third result.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Sixten Ehrling Digital Archive</p>
+    </footer>
+
+    <script src="../Code/filter.js"></script>
+</body>
+</html>
