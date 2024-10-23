@@ -33,3 +33,11 @@
     vertical-align: middle;
     margin-right: 10px;
 }
+
+@media (max-width: 768px) {
+   
+    #contact-info {
+        padding: 15px;
+        text-align: center;
+    }
+}
