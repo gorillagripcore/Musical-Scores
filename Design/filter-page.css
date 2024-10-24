@@ -123,6 +123,11 @@
   background-color: #0056b3;
 }
 
+.search-container { 
+  position: relative;
+  width: 100%;
+}
+
 .search-preview {
   position: absolute;
   background-color: white;
