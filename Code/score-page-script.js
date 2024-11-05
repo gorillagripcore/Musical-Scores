@@ -2,7 +2,7 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 //This is the currently displayed pdf url
-const url =  '/test-score.pdf';
+const url =  'https://gorillagripcore.github.io/Musical-Scores/test-score.pdf';
 
 let pdfDoc = null,
 pageNum = 1,
