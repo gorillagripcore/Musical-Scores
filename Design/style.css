@@ -50,41 +50,15 @@ header img {
   text-align: center;
 }
 
-#image_background img {
-  width: 100%;
-  margin-top: 0px;
-}
-
-#button-container {
-  display: flex;
-  justify-content: center;
-}
-
 #content {
   flex: 1;
-}
-
-#center-button {
-  margin-top: -30px;
-  height: 35px;
-  width: 200px;
-  font-size: 16px;
-
-  font-family: "stevie-sans-", sans-serif;
-  font-size: 30px;
-  font-weight: 700;
-  letter-spacing: -1px;
-
-  text-align: center;
-  border-style: none;
-  background-color: #ffc818;
 }
 
 footer {
   background-color: black;
   color: white;
   text-align: center;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
 }
