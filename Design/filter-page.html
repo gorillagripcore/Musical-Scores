@@ -17,8 +17,8 @@
         </div>
         <div class="column" id="navigation">
             <a href="index.html">Archive</a>
-            <a href="index.html">About Ehrling</a>
-            <a href="index.html">Contact</a>
+            <a href="about.html">About Ehrling</a>
+            <a href="contact.html">Contact</a>
         </div>
     </header>
 
@@ -48,7 +48,9 @@
         <div class="main-content">
             <div class="search-bar">
                 <input type="text" placeholder="Sök" />
-                <button><img src="img/search.png" alt="Search"></button>
+                <button id="search-button">
+                    <img src="img/search.png" alt="Search">
+                </button>
             </div>
 
             
@@ -85,5 +87,19 @@
     </footer>
 
     <script src="../Code/filter.js"></script>
-</body>
+    <script>
+        document.getElementById('search-button').addEventListener('click', async () => {
+            try {
+                // Gör en GET-förfrågan till din backend
+                const response = await fetch('http://localhost:5000/fetchData');
+                const data = await response.json();
+                console.log(data);  // Skriv ut datan i konsolen
+
+                // Här kan du lägga till kod för att visa resultatet på sidan om du vill.
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>    
 </html>
