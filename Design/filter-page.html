@@ -60,7 +60,7 @@
             <div class="result">
                 <div class="item">
                     <div class="thumbnail"></div>
-                    <div class="info">
+                    <div class="info" id="info_test">
                         <p>Sample text for the first result.</p>
                     </div>
                 </div>
@@ -85,21 +85,6 @@
     <footer>
         <p>&copy; 2024 Sixten Ehrling Digital Archive</p>
     </footer>
-
-    <script src="../Code/filter.js"></script>
-    <script>
-        document.getElementById('search-button').addEventListener('click', async () => {
-            try {
-                // Gör en GET-förfrågan till din backend
-                const response = await fetch('http://localhost:5000/fetchData');
-                const data = await response.json();
-                console.log(data);  // Skriv ut datan i konsolen
-
-                // Här kan du lägga till kod för att visa resultatet på sidan om du vill.
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-    </script>
+    <script src="filter.js"></script>  
 </body>    
 </html>

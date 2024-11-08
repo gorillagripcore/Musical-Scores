@@ -26,9 +26,9 @@ export async function testConnection() {
     }
 }
 
-export async function fetchData() {
+export async function fetchData(data) {
     try {
-        const [rows] = await pool.query("SELECT * FROM Conductor");
+        const [rows] = await pool.query("SELECT name FROM Conductor WHERE name LIKE '%" + data + "%'");
         if (rows.length > 0) {
             return rows;  // Om det finns rader, returnera dem
         } else {
