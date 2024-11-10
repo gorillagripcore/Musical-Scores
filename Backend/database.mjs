@@ -26,9 +26,17 @@ export async function testConnection() {
     }
 }
 
-export async function fetchData(data) {
+export async function fetchData(searchTerm) {
     try {
-        const [rows] = await pool.query("SELECT name FROM Conductor WHERE name LIKE '%" + data + "%'");
+        const searchTitlesConductor = "SELECT s.title AS score_title, s.composer, i.type, i.publicationYear, i.fileLink, c.name AS conductor_name " + 
+            " FROM Interpretation i" +
+            " JOIN Conductor c ON i.conductor = c.id" + 
+            " JOIN Score s ON i.score = s.id" + 
+            " WHERE c.name LIKE '%" + searchTerm + "%'";
+
+            const searchConductorByName = "SELECT * FROM Conductor WHERE name LIKE '%" + searchTerm + "%'";
+
+        const [rows] = await pool.query(searchTitlesConductor);
         if (rows.length > 0) {
             return rows;  // Om det finns rader, returnera dem
         } else {

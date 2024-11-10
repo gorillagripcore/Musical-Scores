@@ -34,3 +34,15 @@ app.get('/fetchData', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
+
+app.get('/startUpFetchData', async (req, res) => {
+
+    try{
+        const data = await startUpFetchData
+        console.log('Fetched data:', data);  // Skriv ut vad servern hämtar i konsollen 
+        res.json(data); // Returnera JSON data till klienten
+    } catch(error){
+        console.error('Error fetching data:', error);
+        res.status(500).json({error: error.message});
+    }
+});
