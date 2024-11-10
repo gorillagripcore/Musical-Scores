@@ -83,7 +83,7 @@ async function fetchData() {
             thumbnailDiv.classList.add('thumbnail');
             
             const thumbnailImg = document.createElement('img');
-            thumbnailImg.src = '/img/Conductors/Sixten_test.jpg';  
+            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; //When debugging, change to '/img/Conductors/Sixten_test.jpg' and move file to filter.js to design folder
             thumbnailDiv.appendChild(thumbnailImg);
             itemDiv.appendChild(thumbnailDiv);
             
