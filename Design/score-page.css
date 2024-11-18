@@ -128,5 +128,7 @@ footer {
 @media screen and (max-width: 696px) {
   section {
     width: 90%;
+    margin: 10px;
+    margin-bottom: 40px;
   }
 }
