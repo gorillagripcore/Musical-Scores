@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>program-page</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="program-page-style.css">
+    <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
+    <script src="https://kit.fontawesome.com/cac3e4b00e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="column">
+            <img src="img/logo.png">
+        </div>
+        <div class="column">  </div>
+        <div class="column" id="navigation">
+            <a href="index.html">Archive</a>
+            <a href="index.html">About Ehrling</a>
+            <a href="index.html">Contact</a></div></div>
+    </header>
+    <main>
+        <div class="score-container">
+            <span class="btn" id="prev-page">
+                <i class="fa-solid fa-angle-left"></i>
+            </span>
+            
+            <canvas id="pdf-render"></canvas>
+            <span class="btn" id="next-page">
+                <i class="fa-solid fa-angle-right"></i>
+            </span>
+            <span class="page-info">
+                page <span id="page-num"></span> of <span id="page-count"></span>
+            </span>
+        </div>
+        <section>
+            <div class="title-box">
+                <h1 id="score-title">Example Program</h1>
+                <h3 id="date">October 1925</h3>
+            </div>
+            <hr>
+            <h3 id="version-txt">Program Information</h3>
+            <p class="no-margin">Conductor: <a href="#" id="interpreter">Annie Okei</a></p>
+            <p class="no-margin">Instrumentation: <a href="#" id="instrumentation">Orchestra</a></p>
+            <hr>
+            <h3>Instrumentation</h3>
+            <ul class="instrumentation-list no-margin">
+                <p id="contributers-txt">Strings:</p>
+                <li>
+                    <p id="instrument">Violin (II),</p>
+                </li>
+                <li>
+                    <p id="instrument">Cello,</p>
+                </li>
+                <li>
+                    <p id="instrument">Harp</p>
+                </li>
+            </ul>  
+            <ul class="instrumentation-list no-margin">
+                <p id="contributers-txt">Percussion:</p>
+                <li>
+                    <p id="instrument">Tambourine,</p>
+                </li>
+                <li>
+                    <p id="instrument">Triangle(VII),</p>
+                </li>
+                <li>
+                    <p id="instrument">Glockenspiel</p>
+                </li>
+            </ul>
+            <ul class="instrumentation-list no-margin">
+                <p id="contributers-txt">Brass:</p>
+                <li>
+                    <p id="instrument">Tuba,</p>
+                </li>
+                <li>
+                    <p id="instrument">French Horn(III)</p>
+                </li>
+            </ul>
+               
+            <hr>
+            <h3>Additional Information</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Sixten Ehrling Digital Archive</p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"> </script>
+    <script src="https://gorillagripcore.github.io/Musical-Scores/Code/score-page-script.js"></script>
+</body>
+</html>

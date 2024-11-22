@@ -1,0 +1,143 @@
+.score-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.page-info {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 15px;
+}
+
+#page-num,
+#page-count {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.btn {
+  font-size: 35px;
+  cursor: pointer;
+}
+
+.page-info {
+  width: 100%;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding-bottom: 40px;
+}
+
+section {
+  width: 40%;
+  border-radius: 5px;
+  padding: 20px;
+  font-weight: 400;
+  background-color: #f7f7f7;
+  color: #1a1a1a;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.title-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#score-title {
+  margin: 0px;
+  display: inline;
+  font-size: 1.5em;
+}
+
+#date {
+  padding-right: 20px;
+  margin: 0px;
+  display: inline;
+}
+
+#instrument {
+  margin: 0;
+  display: inline;
+  color: #535353;
+  font-size: .9em;
+}
+
+#contributers-txt {
+  display: inline;
+}
+
+.instrumentation-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.instrumentation-list li {
+  display: inline;
+}
+
+.instrumentation-list li a {
+  color: #8f8f8f;
+}
+
+.instrumentation-list li a:first-child {
+  padding-left: 0;
+}
+
+.p {
+  font-size: 20px;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+footer {
+  width: 100%;
+  text-align: center;
+  bottom: 0;
+  position: fixed;
+}
+
+canvas {
+  width: 80%;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.342);
+}
+
+@media screen and (max-width: 1283px) {
+  section {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 1103px) {
+  section {
+    width: 20%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  section {
+    width: 45%;
+  }
+}
+
+@media screen and (max-width: 696px) {
+  section {
+    width: 90%;
+    margin: 10px;
+    margin-bottom: 40px;
+  }
+}
