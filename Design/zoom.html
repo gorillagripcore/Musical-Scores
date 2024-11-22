@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sixten Ehrling Digital Archive</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
+    <link rel="stylesheet" href="zoom.css">
+    <script src="https://kit.fontawesome.com/cac3e4b00e.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/png" href="img/icon.png">
+</head>
+<body>
+    <header>
+        <a href="index.html" id="logo-link">
+            <img src="img/logo.png" id="logo-image">
+        </a>
+        <div class="column" id="navigation">
+            <a href="filter-page.html">Archive</a>
+            <a href="about.html">About Ehrling</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </header>
+
+    <div id="pdf-viewer">
+        <div class="zoom-controls">
+            <button id="zoom-in">+</button>
+            <button id="zoom-out">-</button>
+        </div>
+        
+        <div class="pdf-container">
+            <div class="scrollable-pdf">
+                <canvas id="pdf-render"></canvas>
+            </div>
+        </div>
+
+        <div class="controls">
+            <span id="prev-page"><i class="fa-solid fa-angle-left"></i></span>
+            <span class="page-info">
+                Page <span id="page-num"></span> of <span id="page-count"></span>
+            </span>
+            <span id="next-page"><i class="fa-solid fa-angle-right"></i></span>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        const url = '../test-score.pdf';
+
+        let pdfDoc = null,
+            pageNum = 1,
+            pageRendering = false,
+            pageNumPending = null,
+            scale = 1;
+
+        const canvas = document.querySelector("#pdf-render"),
+              ctx = canvas.getContext("2d");
+
+        const renderPage = (num) => {
+            pageRendering = true;
+            pdfDoc.getPage(num).then((page) => {
+                const viewport = page.getViewport({ scale: scale });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                const renderCtx = {
+                    canvasContext: ctx,
+                    viewport: viewport,
+                };
+
+                page.render(renderCtx).promise.then(() => {
+                    pageRendering = false;
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+
+                document.querySelector("#page-num").textContent = num;
+            });
+        };
+
+        const queueRenderPage = (num) => {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        };
+
+        const showPrevPage = () => {
+            if (pageNum <= 1) {
+                return;
+            }
+            pageNum--;
+            queueRenderPage(pageNum);
+        };
+
+        const showNextPage = () => {
+            if (pageNum >= pdfDoc.numPages) {
+                return;
+            }
+            pageNum++;
+            queueRenderPage(pageNum);
+        };
+
+        const zoomIn = () => {
+            scale += 0.1; 
+            renderPage(pageNum);
+        };
+
+        const zoomOut = () => {
+            if (scale > 0.5) { 
+                scale -= 0.1;
+                renderPage(pageNum);
+            }
+        };
+
+        document.querySelector("#prev-page").addEventListener("click", showPrevPage);
+        document.querySelector("#next-page").addEventListener("click", showNextPage);
+        document.querySelector("#zoom-in").addEventListener("click", zoomIn);
+        document.querySelector("#zoom-out").addEventListener("click", zoomOut);
+
+        pdfjsLib.getDocument(url).promise.then((pdfDoc_) => {
+            pdfDoc = pdfDoc_;
+            document.querySelector("#page-count").textContent = pdfDoc.numPages;
+            renderPage(pageNum);
+        });
+    </script>
+</body>
+</html>
