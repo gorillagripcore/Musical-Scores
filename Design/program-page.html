@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>program-page</title>
+    <title>Sixten Ehrling Digital Archive</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="program-page-style.css">
     <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
     <script src="https://kit.fontawesome.com/cac3e4b00e.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/png" href="img/icon.png">
 </head>
 <body>
     <header>
-        <div class="column">
-            <img src="img/logo.png">
-        </div>
-        <div class="column">  </div>
+        <a href="index.html" id="logo-link">
+            <img src="img/logo.png" id="logo-image">
+        </a>
         <div class="column" id="navigation">
-            <a href="index.html">Archive</a>
-            <a href="index.html">About Ehrling</a>
-            <a href="index.html">Contact</a></div></div>
+            <a href="filter-page.html">Archive</a>
+            <a href="about.html">About Ehrling</a>
+            <a href="contact.html">Contact</a>
+        </div>
     </header>
     <main>
         <div class="score-container">
@@ -39,7 +40,6 @@
                 <h1 id="score-title">Example Program</h1>
                 <h3 id="date">October 1925</h3>
             </div>
-            <hr>
             <h3 id="version-txt">Program Information</h3>
             <p class="no-margin">Conductor: <a href="#" id="interpreter">Annie Okei</a></p>
             <p class="no-margin">Instrumentation: <a href="#" id="instrumentation">Orchestra</a></p>
@@ -89,9 +89,7 @@
             </p>
         </section>
     </main>
-    <footer>
-        <p>&copy; 2024 Sixten Ehrling Digital Archive</p>
-    </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"> </script>
     <script src="https://gorillagripcore.github.io/Musical-Scores/Code/score-page-script.js"></script>
 </body>

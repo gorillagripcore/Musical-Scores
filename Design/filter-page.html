@@ -7,18 +7,18 @@
     <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
     <link rel="stylesheet" href="filter-page.css">
     <link rel="stylesheet" href="style.css">
-    <!--Id like a little star logo or something here-->
+    <link rel="icon" type="image/png" href="img/icon.png">
 </head>
 <body>
 
     <header>
-        <div class="column">
-            <img src="img/logo.png">
-        </div>
+        <a href="index.html" id="logo-link">
+            <img src="img/logo.png" id="logo-image">
+        </a>
         <div class="column" id="navigation">
-            <a href="index.html">Archive</a>
-            <a href="index.html">About Ehrling</a>
-            <a href="index.html">Contact</a>
+            <a href="filter-page.html">Archive</a>
+            <a href="about.html">About Ehrling</a>
+            <a href="contact.html">Contact</a>
         </div>
     </header>
 
@@ -46,14 +46,14 @@
         </div>
 
         <div class="main-content">
-            <div class="search-bar">
-                <input type="text" placeholder="Sök" />
-                <button><img src="img/search.png" alt="Search"></button>
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" placeholder="Sök" />
+                     <button><img src="img/search.png" alt="Search"></button>
+                </div>
+                <div class="search-preview" id="search-preview">  
             </div>
-
-            
-            <div class="search-preview" id="search-preview"></div>
-
+        </div>
 
             <div class="result">
                 <div class="item">

@@ -3,76 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fullscreen PDF Viewer</title>
+    <title>Sixten Ehrling Digital Archive</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
+    <link rel="stylesheet" href="zoom.css">
     <script src="https://kit.fontawesome.com/cac3e4b00e.js" crossorigin="anonymous"></script>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            background-color: #000;
-        }
-        #pdf-viewer {
-            flex: 1;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        canvas {
-            display: block;
-            max-width: 100%;
-            max-height: 100%;
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-        .controls {
-            position: absolute;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 1;
-            padding: 0 30px;
-        }
-        .controls span {
-            font-size: 32px;
-            color: white;
-            cursor: pointer;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 50%;
-            margin: 0 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-        }
-        .controls span:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-        .page-info {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            text-align: center;
-            color: white;
-            font-size: 18px;
-            font-family: Arial, sans-serif;
-        }
-    </style>
+    <link rel="icon" type="image/png" href="img/icon.png">
 </head>
 <body>
+    <header>
+        <a href="index.html" id="logo-link">
+            <img src="img/logo.png" id="logo-image">
+        </a>
+        <div class="column" id="navigation">
+            <a href="filter-page.html">Archive</a>
+            <a href="about.html">About Ehrling</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </header>
+
     <div id="pdf-viewer">
-        <canvas id="pdf-render"></canvas>
+        <div class="zoom-controls">
+            <button id="zoom-in">+</button>
+            <button id="zoom-out">-</button>
+        </div>
+        
+        <div class="pdf-container">
+            <div class="scrollable-pdf">
+                <canvas id="pdf-render"></canvas>
+            </div>
+        </div>
+
         <div class="controls">
             <span id="prev-page"><i class="fa-solid fa-angle-left"></i></span>
+            <span class="page-info">
+                Page <span id="page-num"></span> of <span id="page-count"></span>
+            </span>
             <span id="next-page"><i class="fa-solid fa-angle-right"></i></span>
-        </div>
-        <div class="page-info">
-            Page <span id="page-num"></span> of <span id="page-count"></span>
         </div>
     </div>
 
@@ -80,12 +47,13 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        const url = '../test-score.pdf'; 
+        const url = '../test-score.pdf';
 
         let pdfDoc = null,
             pageNum = 1,
             pageRendering = false,
-            pageNumPending = null;
+            pageNumPending = null,
+            scale = 1;
 
         const canvas = document.querySelector("#pdf-render"),
               ctx = canvas.getContext("2d");
@@ -93,19 +61,13 @@
         const renderPage = (num) => {
             pageRendering = true;
             pdfDoc.getPage(num).then((page) => {
-                const viewport = page.getViewport({ scale: 1 });
-                const scale = Math.min(
-                    canvas.parentElement.clientWidth / viewport.width,
-                    canvas.parentElement.clientHeight / viewport.height
-                );
-                const scaledViewport = page.getViewport({ scale });
-
-                canvas.width = scaledViewport.width;
-                canvas.height = scaledViewport.height;
+                const viewport = page.getViewport({ scale: scale });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
 
                 const renderCtx = {
                     canvasContext: ctx,
-                    viewport: scaledViewport,
+                    viewport: viewport,
                 };
 
                 page.render(renderCtx).promise.then(() => {
@@ -144,8 +106,22 @@
             queueRenderPage(pageNum);
         };
 
+        const zoomIn = () => {
+            scale += 0.1; 
+            renderPage(pageNum);
+        };
+
+        const zoomOut = () => {
+            if (scale > 0.5) { 
+                scale -= 0.1;
+                renderPage(pageNum);
+            }
+        };
+
         document.querySelector("#prev-page").addEventListener("click", showPrevPage);
         document.querySelector("#next-page").addEventListener("click", showNextPage);
+        document.querySelector("#zoom-in").addEventListener("click", zoomIn);
+        document.querySelector("#zoom-out").addEventListener("click", zoomOut);
 
         pdfjsLib.getDocument(url).promise.then((pdfDoc_) => {
             pdfDoc = pdfDoc_;

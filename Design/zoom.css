@@ -1,0 +1,97 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+#pdf-viewer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.pdf-container {
+  position: relative;
+  overflow: hidden;
+  width: 80%;
+  height: 80%;
+  padding: 30px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.13);
+  border-radius: 20px;
+}
+.scrollable-pdf {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  position: relative;
+}
+#pdf-render {
+  display: block;
+  background: #fff;
+  margin: 0 auto;
+}
+.controls {
+  position: absolute;
+  z-index: 2;
+  bottom: 6px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+#prev-page,
+#next-page {
+  font-size: 30px;
+  color: #000000;
+  cursor: pointer;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background: #ffc818;
+  border-radius: 5px;
+}
+
+.zoom-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+}
+.zoom-controls button {
+  background: #ffc818;
+  color: #000000;
+  border: none;
+  font-size: 18px;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.page-info {
+  font-family: "stevie-sans", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+@media only screen and (max-width: 768px) {
+  .controls {
+    position: absolute;
+    z-index: 2;
+    bottom: 6px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background-color: #ffc818;
+  }
+}
