@@ -9,27 +9,28 @@
     <link rel="stylesheet" href="upload-matrix.css">
 
 </head>
-
 <body>
-<header>
-    <div class="column">
-        <img src="img/logo.png" alt="Logo">
-    </div>
-    <div class="column" id="navigation">
-        <a href="index.html">Archive</a>
-        <a href="about.html">About Ehrling</a>
-        <a href="contact.html">Contact</a>
-    </div>
-</header>
+
+    <header>
+        <a href="index.html" id="logo-link">
+            <img src="img/logo.png" alt="logo-image">
+        </a>
+        <div class="column" id="navigation">
+            <a href="filter-page.html">Archive</a>
+            <a href="about.html">About Ehrling</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </header>
+
 <div class="upload-options"></div>
     <label for="upload_type">Choose upload type:</label>
     <select id="upload_type" name="upload_type" onchange="showUploadFields()">
+        <option value="" disabled selected>Select an option</option>
         <option value="program">Upload Program</option>
         <option value="score">Upload Score</option>
     </select>
 </div>
 
-</script>
 <div id="upload_score_fields" style="display:none;">
     <label for="title">Title</label><br>
     <input type="text" id="title" name="title"><br>
@@ -44,27 +45,58 @@
         <option value="orchestra">Orchestra</option>
         <option value="symphony">Symphony</option>
     </select><br>
+        <!--detta ska vara date format-->
     <label for="year">Year</label><br>
     <input type="text" id="year" name="year"><br>
     <label for="filelink">Filelink</label><br>
     <input type="text" id="filelink" name="filelink"><br>
 </div>
 
-<div id="upload_button" style="display:none;">
-    <button type="button">Upload Score</button>
+<div id="upload_score_button" style="display:none;">
+    <button type="button" onclick="uploadScoreButton()">Upload Score</button>
+</div>
+
+<div id="upload_program_fields" style="display:none;">
+    <label for="title">Title</label><br>
+    <input type="text" id="title" name="title"><br>
+    <label for="location">Location</label><br>
+    <input type="text" id="location" name="location"><br>
+        <!--detta ska vara date format-->
+    <label for="date">Date</label><br>
+    <input type="text" id="date" name="date"><br>
+    <label for="notes">Notes</label><br>
+    <input type="text" id="notes" name="notes"><br>
+    <label for="title">Conductor</label><br>
+    <input type="text" id="conductor" name="conductor"><br>
+    <label for="title">Orchestra</label><br>
+    <input type="text" id="orchestra" name="orchestra"><br>
+    <label for="title">Soloist</label><br>
+    <input type="text" id="soloist" name="soloist"><br>
+    <label for="filelink">Filelink</label><br>
+    <input type="text" id="filelink" name="filelink"><br>
+</div>
+
+<div id="upload_program_button" style="display:none;">
+    <button type="button" onclick="uploadProgramButton()">Upload Program</button>
 </div>
 
 <script>
     function showUploadFields() {
         var uploadType = document.getElementById("upload_type").value;
         var scoreFields = document.getElementById("upload_score_fields");
-        var uploadButton = document.getElementById("upload_button");
+        var programFields = document.getElementById("upload_program_fields");
+        var uploadScoreButton = document.getElementById("upload_score_button");
+        var uploadProgramButton = document.getElementById("upload_program_button");
         if (uploadType === "score") {
             scoreFields.style.display = "block";
-            uploadButton.style.display = "block";
-        } else {
+            uploadScoreButton.style.display = "block";
+            programFields.style.display = "none";
+            uploadProgramButton.style.display = "none";
+        } else if(uploadType === "program") {
+            programFields.style.display = "block";
             scoreFields.style.display = "none";
-            uploadButton.style.display = "none";
+            uploadProgramButton.style.display = "block";
+            uploadScoreButton.style.display = "none";
         }
     }
 
