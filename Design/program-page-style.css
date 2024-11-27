@@ -82,17 +82,17 @@ a {
   display: inline;
 }
 
-#involved-list {
+.instrumentation-list {
   list-style: none;
   padding-left: 10px;
   display: inline;
 }
 
-#involved-list li {
+.instrumentation-list li {
   display: inline;
 }
 
-#involved-list li a:first-child {
+.instrumentation-list li p:first-child {
   padding-left: 0;
 }
 

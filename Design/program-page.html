@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sixten Ehrling Digital Archive</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="score-page.css">
+    <link rel="stylesheet" href="program-page-style.css">
     <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
     <script src="https://kit.fontawesome.com/cac3e4b00e.js" crossorigin="anonymous"></script>
     <link rel="icon" type="image/png" href="img/icon.png">
@@ -38,31 +38,48 @@
         
         <section>
             <div class="title-box">
-                <h1 id="score-title">Example Score</h1>
+                <h1 id="score-title">Example Program</h1>
                 <h3 id="date">October 1925</h3>
             </div>
-            <!--Inblandade personer & sånt, länkar till deras verk om det finns tillgängligt?-->
-            <h3>Opus: <i>4</i></h3>
-            <h3>Composer: <a href="#" id="original-composer">Bob Knob</a></h3>
-            <hr>
-            <h3 id="version-txt">Version Information</h3>
+            <h3 id="version-txt">Program Information</h3>
             <p class="no-margin">Conductor: <a href="#" id="interpreter">Annie Okei</a></p>
-            <p class="no-margin">Instrumentation: <a href="#" id="instrumentation">Solo - Piano</a></p>
-            <p class="no-margin" id="contributers-txt">Contributers:</p>
-            <ul id="involved-list">
+            <p class="no-margin">Instrumentation: <a href="#" id="instrumentation">Orchestra</a></p>
+            <hr>
+            <h3>Instrumentation</h3>
+            <ul class="instrumentation-list no-margin">
+                <p id="contributers-txt">Strings:</p>
                 <li>
-                    <a href="#">Jane Doe</a>
+                    <p id="instrument">Violin (II),</p>
                 </li>
                 <li>
-                    <a href="#">John Jovi</a>
+                    <p id="instrument">Cello,</p>
                 </li>
                 <li>
-                    <a href="#">Steve Odie</a>
+                    <p id="instrument">Harp</p>
+                </li>
+            </ul>  
+            <ul class="instrumentation-list no-margin">
+                <p id="contributers-txt">Percussion:</p>
+                <li>
+                    <p id="instrument">Tambourine,</p>
                 </li>
                 <li>
-                    <a href="#">Anne Doe</a>
+                    <p id="instrument">Triangle(VII),</p>
+                </li>
+                <li>
+                    <p id="instrument">Glockenspiel</p>
                 </li>
             </ul>
+            <ul class="instrumentation-list no-margin">
+                <p id="contributers-txt">Brass:</p>
+                <li>
+                    <p id="instrument">Tuba,</p>
+                </li>
+                <li>
+                    <p id="instrument">French Horn(III)</p>
+                </li>
+            </ul>
+               
             <hr>
             <h3>Additional Information</h3>
             <p>
@@ -73,8 +90,7 @@
             </p>
         </section>
     </main>
-    
-   
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"> </script>
     <script src="https://gorillagripcore.github.io/Musical-Scores/Code/score-page-script.js"></script>
     <script src="../Code/open-zoom.js"></script>
