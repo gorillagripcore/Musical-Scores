@@ -28,7 +28,7 @@ export async function testConnection() {
 
 export async function fetchData(searchTerm) {
     try {
-        const searchTitlesConductor = "SELECT s.title AS score_title, s.composer, i.type, i.publicationYear, i.fileLink, c.name AS conductor_name " + 
+        const searchTitlesFromConductor = "SELECT s.title AS score_title, s.composer, i.type, i.publicationYear, i.fileLink, c.name AS conductor_name " + 
             " FROM Interpretation i" +
             " JOIN Conductor c ON i.conductor = c.id" + 
             " JOIN Score s ON i.score = s.id" + 
@@ -36,7 +36,11 @@ export async function fetchData(searchTerm) {
 
             const searchConductorByName = "SELECT * FROM Conductor WHERE name LIKE '%" + searchTerm + "%'";
 
-        const [rows] = await pool.query(searchTitlesConductor);
+            const searchConductorByTitle = "SELECT Conductor.name FROM Conductor " + 
+            "JOIN Interpretation ON Conductor.id = Interpretation.conductor " +
+            "JOIN Score ON Interpretation.score = Score.id WHERE Score.title LIKE '%" + searchTerm + "%'";
+
+        const [rows] = await pool.query(searchTitlesFromConductor);
         if (rows.length > 0) {
             return rows;  // Om det finns rader, returnera dem
         } else {
@@ -48,6 +52,45 @@ export async function fetchData(searchTerm) {
         return [];
     }
 }
+
+export async function uploadToDataBase(data) {
+    
+    let parsedData = checkDataType(data);
+  
+    try {
+        if (parsedData.conductor != "") {
+            const insertConductorByName = "INSERT INTO Conductor(name) VALUE(?)";
+            await pool.query(insertConductorByName, [parsedData.conductor]);
+            console.log("Conductor: " + parsedData.conductor + " inserted to database");
+            fetchData(parsedData.conductor);
+        } else {
+            console.log('No conductor name provided');
+        }
+    } catch (error) {
+        console.error('Error when inserting data:', error);
+    }
+}
+
+function checkDataType(data) {
+
+    let parsedData;
+    if (data !== undefined && data !== null) {
+        try {
+            if (typeof data === 'string') {
+                parsedData = JSON.parse(data);
+            } else {
+                parsedData = data;
+            }
+
+            return parsedData;
+
+        } catch (error) {
+            console.error('Invalid JSON data received:', error);
+            return;
+        }
+    }
+}
+
 
 testConnection();
 fetchData();

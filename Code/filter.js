@@ -62,7 +62,7 @@ async function fetchData() {
         try {
             const searchQuery = document.querySelector('.search-bar input').value;
             // Get-request till servern med query-parametern
-            const response = await fetch(`http://localhost:5000/fetchData?myString=${encodeURIComponent(searchQuery)}`);
+            const response = await fetch(`http://localhost:5001/fetchData?myString=${encodeURIComponent(searchQuery)}`);
             const data = await response.json();
             console.log(data); // Skriv ut resultatet i konsolen
             populateResultContainer(data);

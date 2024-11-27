@@ -1,0 +1,62 @@
+.upload-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+}
+
+button {
+    margin-top: 40px; /* Move the button further down */
+    padding: 15px 30px; /* Make the button slightly bigger */
+    font-size: 16px; /* Increase the font size */
+}
+
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+main {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+}
+.upload_score_fields {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+}
+
+
+.text-content {
+    font-weight: 400;
+    font-size: 20px;
+    flex: 0 1 auto;
+    max-width: 600px;
+    padding: 20px;
+    text-align: center; 
+}
+
+
+

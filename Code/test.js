@@ -4,7 +4,7 @@ document.getElementById('search-button').addEventListener('click', async () => {
         console.log("Searched for " + searchQuery);
         
         // Get-request till servern med query-parametern
-        const response = await fetch(`http://localhost:5000/fetchData?myString=${encodeURIComponent(searchQuery)}`);
+        const response = await fetch(`http://localhost:500/fetchData?myString=${encodeURIComponent(searchQuery)}`);
         const data = await response.json();
         console.log(data); // Skriv ut datan i konsolen
 
