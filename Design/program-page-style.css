@@ -78,22 +78,33 @@ a {
   margin-bottom: 1rem;
 }
 
-#contributers-txt {
+#instrumentation-txt {
+  margin-bottom: 1rem;
+}
+
+.contributers-txt {
   display: inline;
+}
+
+.instrument {
+  color:#000000;
 }
 
 .instrumentation-list {
   list-style: none;
-  padding-left: 10px;
-  display: inline;
+  padding-left: 0px;
 }
 
 .instrumentation-list li {
-  display: inline;
+  display: inline-block;
+}
+
+.instrumentation-list li p {
+  margin: 0px;
 }
 
 .instrumentation-list li p:first-child {
-  padding-left: 0;
+  padding-left: 10px;
 }
 
 canvas {
