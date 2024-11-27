@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sixten Ehrling Digital Archive</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
+    <link rel="stylesheet" href="upload-matrix.css">
+
+</head>
+
+<body>
+<header>
+    <div class="column">
+        <img src="img/logo.png" alt="Logo">
+    </div>
+    <div class="column" id="navigation">
+        <a href="index.html">Archive</a>
+        <a href="about.html">About Ehrling</a>
+        <a href="contact.html">Contact</a>
+    </div>
+</header>
+<div class="upload-options"></div>
+    <label for="upload_type">Choose upload type:</label>
+    <select id="upload_type" name="upload_type" onchange="showUploadFields()">
+        <option value="program">Upload Program</option>
+        <option value="score">Upload Score</option>
+    </select>
+</div>
+
+</script>
+<div id="upload_score_fields" style="display:none;">
+    <label for="title">Title</label><br>
+    <input type="text" id="title" name="title"><br>
+    <label for="composer">Composer</label><br>
+    <input type="text" id="composer" name="composer"><br>
+    <label for="conductor">Conductor</label><br>
+    <input type="text" id="conductor" name="conductor"><br>
+    <label for="interpreter">Interpreter</label><br>
+    <input type="text" id="interpreter" name="interpreter"><br>
+    <label for="type">Type</label><br>
+    <select id="type" name="type">
+        <option value="orchestra">Orchestra</option>
+        <option value="symphony">Symphony</option>
+    </select><br>
+    <label for="year">Year</label><br>
+    <input type="text" id="year" name="year"><br>
+    <label for="filelink">Filelink</label><br>
+    <input type="text" id="filelink" name="filelink"><br>
+</div>
+
+<div id="upload_button" style="display:none;">
+    <button type="button">Upload Score</button>
+</div>
+
+<script>
+    function showUploadFields() {
+        var uploadType = document.getElementById("upload_type").value;
+        var scoreFields = document.getElementById("upload_score_fields");
+        var uploadButton = document.getElementById("upload_button");
+        if (uploadType === "score") {
+            scoreFields.style.display = "block";
+            uploadButton.style.display = "block";
+        } else {
+            scoreFields.style.display = "none";
+            uploadButton.style.display = "none";
+        }
+    }
+
+</script>
+ 
+<script src="../Backend/upload.js"></script>
+<footer>
+    <p>&copy; 2024 Sixten Ehrling Digital Archive. All rights reserved.</p>
+</footer>
+  
+</body>
+</html>
