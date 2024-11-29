@@ -5,7 +5,13 @@
     justify-content: center;
     margin: 20px;
 }
-body {
+
+.upload-body {
+
+    font-family: "stevie-sans", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,18 +21,17 @@ body {
 }
 
 button {
-    margin-top: 40px; /* Move the button further down */
-    padding: 15px 30px; /* Make the button slightly bigger */
-    font-size: 16px; /* Increase the font size */
-}
+    margin-top: 20px;
+    padding: 15px;
+    font-family: "stevie-sans-", sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+  
 
-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: #f8f8f8;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-style: none;
+    background-color: #ffc818;
+    border-radius: 10px;
 }
 
 main {
@@ -44,10 +49,9 @@ main {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 0;
+    gap: 10;
     width: 100%;
 }
-
 
 .text-content {
     font-weight: 400;
@@ -58,5 +62,33 @@ main {
     text-align: center; 
 }
 
+label{
+    font-size: 18px;
+}
 
+input{
+    padding: 10px;
+    width: 400px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border-color: #000;
+    border-style: solid;
+    font-family: "stevie-sans", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 16px;
+}
 
+select{
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 425px;
+    background-color: #fff;
+    border-radius: 10px;
+    border-color: #000;
+    border-style: solid;
+    font-family: "stevie-sans", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 16px;
+}

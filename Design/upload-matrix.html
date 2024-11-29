@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
     <link rel="stylesheet" href="upload-matrix.css">
-
+    <link rel="icon" type="image/png" href="img/icon.png">
 </head>
 <body>
 
     <header>
         <a href="index.html" id="logo-link">
-            <img src="img/logo.png" alt="logo-image">
+            <img src="img/logo.png" id="logo-image">
         </a>
         <div class="column" id="navigation">
             <a href="filter-page.html">Archive</a>
@@ -22,90 +22,97 @@
         </div>
     </header>
 
-<div class="upload-options"></div>
-    <label for="upload_type">Choose upload type:</label>
-    <select id="upload_type" name="upload_type" onchange="showUploadFields()">
-        <option value="" disabled selected>Select an option</option>
-        <option value="program">Upload Program</option>
-        <option value="score">Upload Score</option>
-    </select>
-</div>
+    <div class="upload-body">
+        <label for="upload_type">Upload Type</label><br>
+        <select id="upload_type" name="upload_type" onchange="showUploadFields()">
+            <option value="">Select an option</option>
+            <option value="score">Score</option>
+            <option value="program">Program</option>
+        </select><br>
 
-<div id="upload_score_fields" style="display:none;">
-    <label for="title">Title</label><br>
-    <input type="text" id="title" name="title"><br>
-    <label for="composer">Composer</label><br>
-    <input type="text" id="composer" name="composer"><br>
-    <label for="conductor">Conductor</label><br>
-    <input type="text" id="conductor" name="conductor"><br>
-    <label for="interpreter">Interpreter</label><br>
-    <input type="text" id="interpreter" name="interpreter"><br>
-    <label for="type">Type</label><br>
-    <select id="type" name="type">
-        <option value="orchestra">Orchestra</option>
-        <option value="symphony">Symphony</option>
-    </select><br>
-        <!--detta ska vara date format-->
-    <label for="year">Year</label><br>
-    <input type="text" id="year" name="year"><br>
-    <label for="filelink">Filelink</label><br>
-    <input type="text" id="filelink" name="filelink"><br>
-</div>
+        <div id="upload_score_fields" style="display:none;">
+            <label for="title">Title</label><br>
+            <input type="text" id="title" name="title" required><br>
 
-<div id="upload_score_button" style="display:none;">
-    <button type="button" onclick="uploadScoreButton()">Upload Score</button>
-</div>
+            <label for="composer">Composer</label><br>
+            <input type="text" id="composer" name="composer" required><br>
 
-<div id="upload_program_fields" style="display:none;">
-    <label for="title">Title</label><br>
-    <input type="text" id="title" name="title"><br>
-    <label for="location">Location</label><br>
-    <input type="text" id="location" name="location"><br>
-        <!--detta ska vara date format-->
-    <label for="date">Date</label><br>
-    <input type="text" id="date" name="date"><br>
-    <label for="notes">Notes</label><br>
-    <input type="text" id="notes" name="notes"><br>
-    <label for="title">Conductor</label><br>
-    <input type="text" id="conductor" name="conductor"><br>
-    <label for="title">Orchestra</label><br>
-    <input type="text" id="orchestra" name="orchestra"><br>
-    <label for="title">Soloist</label><br>
-    <input type="text" id="soloist" name="soloist"><br>
-    <label for="filelink">Filelink</label><br>
-    <input type="text" id="filelink" name="filelink"><br>
-</div>
+            <label for="conductor">Conductor</label><br>
+            <input type="text" id="conductor" name="conductor"><br>
 
-<div id="upload_program_button" style="display:none;">
-    <button type="button" onclick="uploadProgramButton()">Upload Program</button>
-</div>
+            <label for="interpreter">Interpreter</label><br>
+            <input type="text" id="interpreter" name="interpreter"><br>
 
-<script>
-    function showUploadFields() {
-        var uploadType = document.getElementById("upload_type").value;
-        var scoreFields = document.getElementById("upload_score_fields");
-        var programFields = document.getElementById("upload_program_fields");
-        var uploadScoreButton = document.getElementById("upload_score_button");
-        var uploadProgramButton = document.getElementById("upload_program_button");
-        if (uploadType === "score") {
-            scoreFields.style.display = "block";
-            uploadScoreButton.style.display = "block";
-            programFields.style.display = "none";
-            uploadProgramButton.style.display = "none";
-        } else if(uploadType === "program") {
-            programFields.style.display = "block";
-            scoreFields.style.display = "none";
-            uploadProgramButton.style.display = "block";
-            uploadScoreButton.style.display = "none";
-        }
-    }
+            <label for="type">Type</label><br>
+            <select id="type" name="type">
+                <option value="orchestra">Orchestra</option>
+                <option value="symphony">Symphony</option>
+            </select><br>
+                <!--detta ska vara date format-->
+            <label for="year">Year</label><br>
+            <input type="text" id="year" name="year"><br>
 
-</script>
- 
-<script src="../Backend/upload.js"></script>
-<footer>
-    <p>&copy; 2024 Sixten Ehrling Digital Archive. All rights reserved.</p>
-</footer>
-  
+            <label for="filelink">Filelink</label><br>
+            <input type="text" id="filelink" name="filelink" required><br>
+        </div>
+        
+        <div id="upload_program_fields" style="display:none;">
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" name="title" required><br>
+
+            <label for="location">Location</label><br>
+            <input type="text" id="location" name="location"><br>
+
+            <!--detta ska vara date format-->
+            <label for="date">Date</label><br>
+            <input type="text" id="date" name="date"><br>
+
+            <label for="notes">Notes</label><br>
+            <input type="text" id="notes" name="notes"><br>
+
+            <label for="conductor">Conductor:</label><br>
+            <input type="text" id="conductor" name="conductor" required><br>
+
+            <label for="title">Orchestra</label><br>
+            <input type="text" id="orchestra" name="orchestra"><br>
+
+            <label for="title">Soloist</label><br>
+            <input type="text" id="soloist" name="soloist"><br>
+
+            <label for="filelink">File link</label><br>
+            <input type="text" id="filelink" name="filelink" required><br>
+        </div>
+
+        <div id="upload_score_button" style="display:none;">
+            <button type="button" onclick="uploadScoreButton()">Upload Score</button>
+        </div>
+
+        <div id="upload_program_button" style="display:none;">
+            <button type="button" onclick="uploadProgramButton()">Upload Program</button>
+        </div>
+
+        <script>
+            function showUploadFields() {
+                var uploadType = document.getElementById("upload_type").value;
+                var scoreFields = document.getElementById("upload_score_fields");
+                var programFields = document.getElementById("upload_program_fields");
+                var uploadScoreButton = document.getElementById("upload_score_button");
+                var uploadProgramButton = document.getElementById("upload_program_button");
+                if (uploadType === "score") {
+                    scoreFields.style.display = "block";
+                    uploadScoreButton.style.display = "block";
+                    programFields.style.display = "none";
+                    uploadProgramButton.style.display = "none";
+                } else if(uploadType === "program") {
+                    programFields.style.display = "block";
+                    scoreFields.style.display = "none";
+                    uploadProgramButton.style.display = "block";
+                    uploadScoreButton.style.display = "none";
+                }
+            }
+        </script>
+    </div>
+
+    <script src="../Backend/upload.js"></script>
 </body>
 </html>
