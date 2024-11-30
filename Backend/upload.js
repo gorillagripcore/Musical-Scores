@@ -40,6 +40,29 @@
 
 }*/
 
+async function showUploadFields() {
+
+    var uploadType = document.getElementById("upload_type").value;
+    var scoreFields = document.getElementById("upload_score_fields");
+    var programFields = document.getElementById("upload_program_fields");
+    var uploadScoreButton = document.getElementById("upload_score_button");
+    var uploadProgramButton = document.getElementById("upload_program_button");
+
+    if (uploadType === "score") {
+        scoreFields.style.display = "block";
+        uploadScoreButton.style.display = "block";
+        programFields.style.display = "none";
+        uploadProgramButton.style.display = "none";
+    } else if(uploadType === "program") {
+        programFields.style.display = "block";
+        scoreFields.style.display = "none";
+        uploadProgramButton.style.display = "block";
+        uploadScoreButton.style.display = "none";
+    }
+    
+}
+
+
 async function uploadScoreButton() {
 
     console.log('upload score button clicked');  // Log to confirm button click

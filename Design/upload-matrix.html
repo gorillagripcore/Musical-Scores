@@ -90,27 +90,7 @@
         <div id="upload_program_button" style="display:none;">
             <button type="button" onclick="uploadProgramButton()">Upload Program</button>
         </div>
-
-        <script>
-            function showUploadFields() {
-                var uploadType = document.getElementById("upload_type").value;
-                var scoreFields = document.getElementById("upload_score_fields");
-                var programFields = document.getElementById("upload_program_fields");
-                var uploadScoreButton = document.getElementById("upload_score_button");
-                var uploadProgramButton = document.getElementById("upload_program_button");
-                if (uploadType === "score") {
-                    scoreFields.style.display = "block";
-                    uploadScoreButton.style.display = "block";
-                    programFields.style.display = "none";
-                    uploadProgramButton.style.display = "none";
-                } else if(uploadType === "program") {
-                    programFields.style.display = "block";
-                    scoreFields.style.display = "none";
-                    uploadProgramButton.style.display = "block";
-                    uploadScoreButton.style.display = "none";
-                }
-            }
-        </script>
+        
     </div>
 
     <script src="../Backend/upload.js"></script>
