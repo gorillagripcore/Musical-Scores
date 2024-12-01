@@ -87,3 +87,9 @@ pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
     renderPage(pageNum)
 })
 
+// Turn off right click
+document.addEventListener('contextmenu', (event) => {
+    if (event.target.tagName === 'CANVAS') {
+        event.preventDefault();
+    }
+});
