@@ -1,65 +1,57 @@
-/* Apply box-sizing globally to prevent overflow */
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-/* Center the entire gallery container */
 .gallery-container {
-    display: flex;
-    justify-content: center; /* Center the gallery horizontally */
-    align-items: flex-start; /* Align items to the top */
-    min-height: 100vh; /* Ensure the container takes the full height of the viewport */
-    padding: 50px; /* Adjust padding around the container */
-    width: 100%; /* Ensure the container takes up the full width */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 50px;
+  padding-top: 20px;
+  width: 100%;
+  overflow-x: hidden;
 }
 
-/* Multi-column layout to tile images and descriptions together */
 .gallery {
-    column-count: 4; /* Adjusted to 4 columns for better fit */
-    column-gap: 20px; /* Space between columns */
-    text-align: center; /* Center the images and descriptions inside the columns */
-    width: 100%; /* Ensure the gallery takes the full width of its container */
-    overflow: hidden; /* Prevent overflow within the gallery */
+  column-count: 4;
+  column-gap: 20px;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
 }
 
-/* Container for each image and description */
 .image-container {
-    display: block; /* Ensure the image and description stack vertically */
-    margin-bottom: 20px; /* Space between each image-description pair */
+  break-inside: avoid;
+  margin-bottom: 20px;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
 }
 
-/* Image styling */
 .gallery img {
-    width: 100%; /* Ensure images fit the column width */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 8px; /* Optional: round corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: add shadow */
-    break-inside: avoid; /* Prevents image splitting across columns */
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Description styling under the image */
 .gallery p {
-    text-align: center;
-    margin: 5px 0;
-    font-size: 14px;
-    color: #333;
-    white-space: nowrap; /* Prevent text from overflowing */
-    overflow: hidden; /* Hide any overflow text */
-    text-overflow: ellipsis; /* Add "..." if the text is too long */
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
-    .gallery {
-        column-count: 3; /* Reduced to 3 columns on medium screens */
-    }
+  .gallery {
+    column-count: 3;
+  }
 }
 
 @media (max-width: 480px) {
-    .gallery {
-        column-count: 2; /* Fewer columns on smaller screens */
-    }
+  .gallery {
+    column-count: 2;
+  }
 }

@@ -1,22 +1,23 @@
-// Fetch the JSON data
-fetch('../Code/Temp-JSON/img.json')
-    .then(response => response.json())
-    .then(data => {
-        const gallery = document.getElementById('gallery');
+fetch("../Code/Temp-JSON/img.json")
+  .then((response) => response.json())
+  .then((data) => {
+    const gallery = document.getElementById("gallery");
 
-        data.forEach(item => {
-            // Create the image element
-            const img = document.createElement('img');
-            img.src = item.src;
-            img.alt = item.description;
+    data.forEach((item) => {
+      const container = document.createElement("div");
+      container.classList.add("image-container");
 
-            // Create the description element
-            const description = document.createElement('p');
-            description.textContent = item.description;
+      const img = document.createElement("img");
+      img.src = item.src;
+      img.alt = item.alt;
 
-            // Append the image and description to the gallery container
-            gallery.appendChild(img);
-            gallery.appendChild(description);
-        });
-    })
-    .catch(error => console.error('Error loading gallery:', error));
+      const description = document.createElement("p");
+      description.textContent = item.description;
+
+      container.appendChild(img);
+      container.appendChild(description);
+
+      gallery.appendChild(container);
+    });
+  })
+  .catch((error) => console.error("Error loading gallery:", error));

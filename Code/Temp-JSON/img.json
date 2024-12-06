@@ -58,5 +58,10 @@
         "src": "../../Design/img/Gallery/img12.jpg",
         "alt": "Dog",
         "description": "12"
+    },
+    {
+        "src": "../../Design/img/Gallery/img13.jpg",
+        "alt": "Dog",
+        "description": "13"
     }
 ]
