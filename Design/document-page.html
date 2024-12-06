@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sixten Ehrling Digital Archive</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="document-page.css">
+    <link rel="stylesheet" href="https://use.typekit.net/gfw0sqd.css">
+    <script src="https://kit.fontawesome.com/cac3e4b00e.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/png" href="img/icon.png">
+</head>
+<body>
+    <header>
+        <a href="index.html" id="logo-link">
+            <img src="img/logo.png" id="logo-image">
+        </a>
+        <div class="column" id="navigation">
+            <a href="filter-page.html">Archive</a>
+            <a href="about.html">About Ehrling</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </header>
+    <main>
+        <div class="score-container">
+            <span class="btn" id="prev-page">
+                <i class="fa-solid fa-angle-left"></i>
+            </span>
+            
+            <canvas id="pdf-render" onclick="openZoomPage()"></canvas>
+            <span class="btn" id="next-page">
+                <i class="fa-solid fa-angle-right"></i>
+            </span>
+            <span class="page-info">
+                page <span id="page-num"></span> of <span id="page-count"></span>
+            </span>
+        </div>
+        <section>
+            <div class="title-box">
+                <h1 id="document-title">Example Document</h1>
+                <h3 id="date">1925</h3>
+            </div>
+            <hr>
+            <h3>Additional Information</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"> </script>
+    <script src="../Code/score-page-script.js"></script>
+    <script src="../Code/open-zoom.js"></script>
+</body>
+</html>
