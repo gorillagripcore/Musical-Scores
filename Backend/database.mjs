@@ -28,7 +28,7 @@ export async function testConnection() {
 
 export async function fetchData(searchTerm) {
     try {
-        const searchTitlesFromConductor = "SELECT s.title AS score_title, s.composer, i.type, i.publicationYear, i.fileLink, c.name AS conductor_name " + 
+        const searchTitlesFromConductor = "SELECT s.title AS score_title, s.composer, i.type, i.year, i.fileLink, c.name AS conductor_name " + 
             " FROM Interpretation i" +
             " JOIN Conductor c ON i.conductor = c.id" + 
             " JOIN Score s ON i.score = s.id" + 
@@ -36,11 +36,11 @@ export async function fetchData(searchTerm) {
 
             const searchConductorByName = "SELECT * FROM Conductor WHERE name LIKE '%" + searchTerm + "%'";
 
-            const searchConductorByTitle = "SELECT Conductor.name FROM Conductor " + 
-            "JOIN Interpretation ON Conductor.id = Interpretation.conductor " +
+            const searchConductorByTitle = "SELECT conductor.name FROM Conductor " + 
+            "JOIN Interpretation ON conductor.id = Interpretation.conductor " +
             "JOIN Score ON Interpretation.score = Score.id WHERE Score.title LIKE '%" + searchTerm + "%'";
 
-        const [rows] = await pool.query(searchTitlesFromConductor);
+        const [rows] = await pool.query(searchConductorByName);
         if (rows.length > 0) {
             return rows;  // Om det finns rader, returnera dem
         } else {
