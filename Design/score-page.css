@@ -102,10 +102,6 @@ canvas {
   border-radius: 5px;
 }
 
-footer {
-  position: fixed;
-}
-
 @media screen and (max-width: 1283px) {
   section {
     width: 30%;
