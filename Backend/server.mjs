@@ -6,9 +6,9 @@ const app = express();
 const port = 5001;
 
 app.use(cors({
-    //origin: ['http://sixtenehrlingdigitalarchive.com', 'http://13.61.87.232:5001'],   
-    origin: '*', // Tillåt alla origins (du kan specificera en domän här, t.ex. 'http://example.com')
-    methods: ['GET', 'POST'], // Specifika metoder som tillåts
+    origin: ['https://sixtenehrlingdigitalarchive.com', 'https://13.61.87.232:5001', 
+            'http://localhost:5001', 'https://www.sixtenehrlingdigitalarchive.com'],   
+    methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json()); 

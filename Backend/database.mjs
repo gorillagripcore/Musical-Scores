@@ -36,6 +36,7 @@ export async function fetchData(searchTerm) {
         const [rows] = await pool.query(searchConductorByName);
         if (rows.length > 0) {
             return rows; 
+            console.log('Data found:', rows);
         } else {
             console.log('No data found');
             return []; 
