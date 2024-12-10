@@ -81,7 +81,7 @@ async function uploadScoreButton() {
 
     try {
     
-        const response = await fetch('http://localhost:5001/uploadToDatabase', {
+        const response = await fetch('https://localhost:5001/uploadToDatabase', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -119,7 +119,7 @@ async function uploadProgramButton() {
 
     try {
     
-        const response = await fetch('http://localhost:5001/uploadToDatabase', {
+        const response = await fetch('https://localhost:5001/uploadToDatabase', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
