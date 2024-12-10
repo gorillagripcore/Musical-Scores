@@ -5,7 +5,7 @@
 
 /*async function uploadToDataBase(){
 
-    var uploadData = {
+    const uploadData = {
         title: document.getElementById("title").value,
         composer: document.getElementById("composer").value,
         conductor: document.getElementById("conductor").value,
@@ -42,22 +42,31 @@
 
 async function showUploadFields() {
 
-    var uploadType = document.getElementById("upload_type").value;
-    var scoreFields = document.getElementById("upload_score_fields");
-    var programFields = document.getElementById("upload_program_fields");
-    var uploadScoreButton = document.getElementById("upload_score_button");
-    var uploadProgramButton = document.getElementById("upload_program_button");
+    const uploadType = document.getElementById("upload_type").value;
 
-    if (uploadType === "score") {
-        scoreFields.style.display = "block";
-        uploadScoreButton.style.display = "block";
-        programFields.style.display = "none";
-        uploadProgramButton.style.display = "none";
-    } else if(uploadType === "program") {
-        programFields.style.display = "block";
-        scoreFields.style.display = "none";
-        uploadProgramButton.style.display = "block";
-        uploadScoreButton.style.display = "none";
+    // dela upp kategorier enligt typ
+
+    const typeMappings = {
+        score: ["upload_score_fields", "upload_score_button"],
+        program: ["upload_program_fields", "upload_program_button"],
+        document: ["upload_document_fields", "upload_document_button"],
+        image: ["upload_image_fields", "upload_image_button"]
+    };
+
+    // loopa igenom kategorier & ändra utseende av fields
+
+    for(const [type, [fieldsID, buttonID]] of Object.entries(typeMappings)) {
+        const fields = document.getElementById(fieldsID);
+        const button = document.getElementById(buttonID);
+
+        if(uploadType === type) {
+            fields.style.display = "block";
+            button.style.display = "block";
+        } else {
+            fields.style.display = "none";
+            button.style.display = "none";
+        }
+
     }
     
 }
@@ -67,7 +76,7 @@ async function uploadScoreButton() {
 
     console.log('upload score button clicked');  // Log to confirm button click
 
-    var uploadData = {
+    const uploadData = {
         title: document.getElementById("title").value,
         composer: document.getElementById("composer").value,
         conductor: document.getElementById("conductor").value,
@@ -104,7 +113,7 @@ async function uploadProgramButton() {
 
     console.log('upload program button clicked');  // Log to confirm button click
 
-    var uploadData = {
+    const uploadData = {
         title: document.getElementById("title").value,
         location: document.getElementById("location").value,
         date: document.getElementById("date").value,
