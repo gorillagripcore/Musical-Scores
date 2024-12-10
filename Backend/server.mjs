@@ -5,7 +5,12 @@ import { fetchData, uploadToDataBase } from './database.mjs';
 const app = express();
 const port = 5001;
 
-app.use(cors());
+app.use(cors({
+    //origin: ['http://sixtenehrlingdigitalarchive.com', 'http://13.61.87.232:5001'],   
+    origin: '*', // Tillåt alla origins (du kan specificera en domän här, t.ex. 'http://example.com')
+    methods: ['GET', 'POST'], // Specifika metoder som tillåts
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json()); 
 
 app.use(express.static('Design')); 
@@ -23,7 +28,7 @@ app.get('/fetchData', async (req, res) => {
     
     try{
         const data = await fetchData(myString);
-        res.json(data); // Returnera JSON data till klienten
+        res.json(data); 
     } catch(error){
         console.error('Error fetching data:', error);
         res.status(500).json({error: error.message});
@@ -47,16 +52,3 @@ app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
 
-/*
-app.get('/startUpFetchData', async (req, res) => {
-
-    try{
-        const data = await startUpFetchData
-        console.log('Fetched data:', data);  // Skriv ut vad servern hämtar i konsollen 
-        res.json(data); // Returnera JSON data till klienten
-    } catch(error){
-        console.error('Error fetching data:', error);
-        res.status(500).json({error: error.message});
-    }
-});
-*/
