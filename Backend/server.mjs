@@ -1,5 +1,7 @@
 import express from 'express';
+import https from 'https';
 import cors from 'cors';  
+import fs from 'fs';  
 import { fetchData, uploadToDataBase } from './database.mjs';
 
 const app = express();
@@ -49,6 +51,6 @@ app.post('/uploadToDatabase', async (req, res) => {
 
 
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Server listening at https://localhost:5001`);
+    console.log(`Server listening at https://13.61.87.232:5001`);
 });
 
