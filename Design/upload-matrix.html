@@ -28,7 +28,11 @@
             <option value="">Select an option</option>
             <option value="score">Score</option>
             <option value="program">Program</option>
+            <option value="document">Document</option>
+            <option value="image">Image</option>
         </select> 
+
+        <!-- score -->
 
         <div id="upload_score_fields" style="display:none;">
             <label for="title">Title</label> 
@@ -48,24 +52,24 @@
                 <option value="orchestra">Orchestra</option>
                 <option value="symphony">Symphony</option>
             </select> 
-                <!--detta ska vara date format-->
             <label for="year">Year</label> 
             <input type="text" id="year" name="year"> 
 
             <label for="filelink">Filelink</label> 
             <input type="text" id="filelink" name="filelink" required> 
         </div>
+
+        <!-- program -->
         
         <div id="upload_program_fields" style="display:none;">
-            <label for="title">Title:</label> 
+            <label for="title">Title</label> 
             <input type="text" id="title" name="title" required> 
 
             <label for="location">Location</label> 
             <input type="text" id="location" name="location"> 
 
-            <!--detta ska vara date format-->
-            <label for="date">Date</label> 
-            <input type="text" id="date" name="date">
+            <label for="year">Year</label>
+            <input type="text" id="year" name="year">
 
             <label for="notes">Notes</label> 
             <input type="text" id="notes" name="notes"> 
@@ -83,12 +87,46 @@
             <input type="text" id="filelink" name="filelink" required> 
         </div>
 
+        <!-- document -->
+
+        <div id="upload_document_fields" style="display:none;">
+            <label for="title">Title</label> 
+            <input type="text" id="title" name="title" required> 
+
+            <label for="notes">Notes</label> 
+            <input type="text" id="notes" name="notes"> 
+
+            <label for="year">Year</label>
+            <input type="text" id="year" name="year">
+
+            <label for="filelink">File link</label> 
+            <input type="text" id="filelink" name="filelink" required> 
+        </div>
+
+        <!-- image -->
+
+        <div id="upload_image_fields" style="display:none;">
+            <label for="description">Description</label> 
+            <input type="text" id="description" name="description" required> 
+
+            <label for="filelink">File link</label> 
+            <input type="text" id="filelink" name="filelink" required> 
+        </div>
+
         <div id="upload_score_button" style="display:none;">
             <button type="button" onclick="uploadScoreButton()">Upload Score</button>
         </div>
 
         <div id="upload_program_button" style="display:none;">
             <button type="button" onclick="uploadProgramButton()">Upload Program</button>
+        </div>
+
+        <div id="upload_document_button" style="display:none;">
+            <button type="button" onclick="uploadDocumentButton()">Upload Document</button>
+        </div>
+
+        <div id="upload_image_button" style="display:none;">
+            <button type="button" onclick="uploadImageButton()">Upload Image</button>
         </div>
         
     </div>
