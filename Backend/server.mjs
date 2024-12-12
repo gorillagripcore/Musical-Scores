@@ -2,18 +2,37 @@ import express from 'express';
 import https from 'https';
 import cors from 'cors';  
 import fs from 'fs';  
+import dotenv from 'dotenv';
+import path from 'path';
 import { fetchData, uploadToDataBase } from './database.mjs';
+import { fileURLToPath } from 'url';
+dotenv.config();
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 5001;
 
+const ssl = {
+privateKey: process.env.PRIVKEYDEV,
+certificate: process.env.FULLCHAINDEV,
+}
+
+const sslOptions = {
+    key: fs.readFileSync(ssl.certificate),  
+    cert: fs.readFileSync(ssl.privateKey), 
+};
+
 app.use(cors({
-    origin: ['https://sixtenehrlingdigitalarchive.com', 'https://13.61.87.232:5001', 
-            'http://localhost:5001', 'https://www.sixtenehrlingdigitalarchive.com',
-            'http://13.61.87.232:5001'],   
+    origin: [
+                'https://sixtenehrlingdigitalarchive.com', 
+                'https://13.61.87.232:5001', 
+                'http://localhost:5001',
+                'http://13.61.87.232:5001'],   
     methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 app.use(express.json()); 
 
 app.use(express.static('Design')); 
@@ -51,7 +70,7 @@ app.post('/uploadToDatabase', async (req, res) => {
 
 
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Server listening at https://13.61.87.232:5001`);
+https.createServer(sslOptions, app).listen(port, '0.0.0.0', () => {
+    console.log(`Server listening at https://13.61.87.232:${port}`);
 });
 

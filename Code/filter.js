@@ -16,7 +16,6 @@ const mockResults = [
     "Sixten Ehrling",
 ];
 
-// search preview js 
 const searchInput = document.querySelector('.search-bar input');
 const searchPreview = document.getElementById('search-preview');
 

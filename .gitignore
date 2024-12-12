@@ -1,3 +1,5 @@
 Backend/.env
 node_modules/
 dist/
+Backend/localhost-cert.pem
+Backend/localhost-key.pem
