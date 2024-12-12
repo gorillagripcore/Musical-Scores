@@ -27,7 +27,6 @@ document.addEventListener('click', function(event) {
 });
 
 document.getElementById('search-button').addEventListener('click', function() {
-    console.log('Search button clicked');  // Log to confirm button click
     fetchData();
 });
 
@@ -62,7 +61,7 @@ async function fetchData() {
         try {
             const searchQuery = document.querySelector('.search-bar input').value;
             // Get-request till servern med query-parametern
-            const response = await fetch(`https://13.61.87.232:5001/fetchData?myString=${encodeURIComponent(searchQuery)}`);
+            const response = await fetch(`http://13.61.87.232:5001/fetchData?myString=${encodeURIComponent(searchQuery)}`);
             const data = await response.json();
             console.log(data); // Skriv ut resultatet i konsolen
             populateResultContainer(data);

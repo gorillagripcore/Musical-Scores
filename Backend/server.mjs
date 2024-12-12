@@ -9,7 +9,8 @@ const port = 5001;
 
 app.use(cors({
     origin: ['https://sixtenehrlingdigitalarchive.com', 'https://13.61.87.232:5001', 
-            'http://localhost:5001', 'https://www.sixtenehrlingdigitalarchive.com'],   
+            'http://localhost:5001', 'https://www.sixtenehrlingdigitalarchive.com',
+            'http://13.61.87.232:5001'],   
     methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
