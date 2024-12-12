@@ -94,4 +94,9 @@ body {
     gap: 20px;
     background-color: #ffc818;
   }
+
+  .pdf-container{
+    padding: 5px;
+    width: 90%;
+  }
 }
