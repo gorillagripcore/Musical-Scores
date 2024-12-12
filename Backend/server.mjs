@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fetchData, uploadToDataBase } from './database.mjs';
 import { fileURLToPath } from 'url';
-dotenv.config();
+dotenv.config({ path: '/etc/app.env' });  // Specifika sökvägen till din .env-fil
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
