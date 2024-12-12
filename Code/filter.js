@@ -27,7 +27,8 @@ document.addEventListener('click', function(event) {
 });
 
 document.getElementById('search-button').addEventListener('click', function() {
-    console.log('Search button clicked');  
+    console.log('Search button clicked');  // Log to confirm button click
+    fetchData();
 });
 
 searchInput.addEventListener('input', function() {
