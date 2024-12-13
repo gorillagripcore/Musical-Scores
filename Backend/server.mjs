@@ -25,11 +25,12 @@ const sslOptions = {
 
 app.use(cors({
     origin: [
-                'https://sixtenehrlingdigitalarchive.com', 
-                'https://13.61.87.232:5001', 
-                'http://localhost:5001',
-                'http://13.61.87.232:5001'],   
-    methods: ['GET', 'POST'], 
+            'https://sixtenehrlingdigitalarchive.com', 
+            'https://13.61.87.232:5001', 
+            'https://localhost:5002',
+            'https://localhost:5001',],   
+   
+             methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
@@ -68,12 +69,6 @@ app.post('/uploadToDatabase', async (req, res) => {
     }
 });
 
-
-
-https.createServer(sslOptions, app).listen(port, '0.0.0.0', () => {
-    console.log(`Server listening at https://13.61.87.232:${port}`);
-});
-
 app.post('/uploadProgram', async (req, res) => {
     try {
         const data = req.body;
@@ -107,16 +102,6 @@ app.post('/uploadImage', async (req, res) => {
     }
 });
 
-/*
-app.get('/startUpFetchData', async (req, res) => {
-
-    try{
-        const data = await startUpFetchData
-        console.log('Fetched data:', data);  // Skriv ut vad servern hämtar i konsollen 
-        res.json(data); // Returnera JSON data till klienten
-    } catch(error){
-        console.error('Error fetching data:', error);
-        res.status(500).json({error: error.message});
-    }
+https.createServer(sslOptions, app).listen(port, '0.0.0.0', () => {
+    console.log(`Server listening at https://13.61.87.232:${port}`);
 });
-*/

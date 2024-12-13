@@ -120,7 +120,7 @@ async function uploadDocumentButton() {
 
     try {
     
-        const response = await fetch('http://localhost:5001/uploadDocument', {
+        const response = await fetch('https://13.61.87.232:5001/uploadDocument', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -152,7 +152,7 @@ async function uploadImageButton() {
 
     try {
     
-        const response = await fetch('http://localhost:5001/uploadImage', {
+        const response = await fetch('https://13.61.87.232:5001/uploadImage', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
