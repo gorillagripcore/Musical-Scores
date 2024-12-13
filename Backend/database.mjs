@@ -51,10 +51,13 @@ export async function fetchData(searchTerm) {
 export async function uploadToDataBase(data) {
     
     let parsedData = checkDataType(data);
+    
     await uploadScore(parsedData.title, parsedData.composer);
     const scoreId = await temporaryScoreId(parsedData.title);
     let conductorId = await uploadConductor(parsedData);
-    await uploadInterpretation(parsedData, conductorId, scoreId);
+    await uploadInterpreter(parsedData.interpreter);
+    const interpreterId = await temporaryInterpreterId(parsedData.interpreter);
+    await uploadInterpretation(parsedData, conductorId, scoreId, interpreterId);
 }
 
 async function uploadConductor(parsedData) {
@@ -81,12 +84,12 @@ async function uploadScore(title, composer) {
     }
 }
 
-async function uploadInterpretation(parsedData, conductorId, scoreId) {
+async function uploadInterpretation(parsedData, conductorId, scoreId, interpreterId) {
     console.log('Score ID argument:', scoreId);
     
     try{
-       await pool.query('INSERT INTO Interpretation(score, conductor, interpreter, type, publicationYear, fileLink) VALUES(?, ?, ?, ?, ?, ?)', 
-        [scoreId, conductorId, parsedData.interpreter, parsedData.type, parsedData.year, parsedData.filelink]);
+       await pool.query('INSERT INTO Interpretation(conductor, fileLink, interpreter, score, type, year) VALUES(?, ?, ?, ?, ?, ?)', 
+        [conductorId, parsedData.filelink, interpreterId, scoreId, parsedData.type, parsedData.year]);
     } catch {
         error => console.error('Error when inserting data:', error);
     }
@@ -164,6 +167,25 @@ export async function uploadDocument(data) {
         console.error('Error when inserting data:', error);
     }
 
+}
+
+async function uploadInterpreter(interpreter) {
+
+    try{
+        await pool.query('INSERT INTO Interpreter(name) VALUES(?)', [interpreter]);
+    } catch (error) {
+        console.error('Error when inserting data:', error);
+    }
+}
+
+async function temporaryInterpreterId(interpreter) {
+    try{
+        const [rows] = await pool.query('SELECT id FROM Interpreter where name = ?', [interpreter]);
+        console.log('I fetched and will return interpreter ID:', rows[0].id);
+        return rows[0].id;
+    } catch {
+        error => console.error('Error when inserting data:', error);
+    }
 }
 
 

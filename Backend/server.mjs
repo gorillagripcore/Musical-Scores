@@ -61,7 +61,7 @@ app.get('/fetchData', async (req, res) => {
 app.post('/uploadToDatabase', async (req, res) => {
     try {
         const data = req.body;
-        const result = await uploadToDataBase(data);
+        await uploadToDataBase(data);
         res.json({ message: 'Data sent to database.mjs' });
     } catch (error) {
         console.error('Error when inserting data:', error);
