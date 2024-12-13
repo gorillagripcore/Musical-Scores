@@ -113,27 +113,93 @@ async function uploadProgramButton() {
 
     console.log('upload program button clicked');  // Log to confirm button click
 
-    const uploadData = {
-        title: document.getElementById("title").value,
-        location: document.getElementById("location").value,
-        date: document.getElementById("date").value,
-        notes: document.getElementById("notes").value,
-        filelink: document.getElementById("filelink").value,
-        conductor: document.getElementById("conductor").value,
-        orchestra: document.getElementById("orchestra").value,
-        soloist: document.getElementById("soloist").value
+    const programData = {
+        title: document.getElementById("programTitle").value,
+        location: document.getElementById("programLocation").value,
+        season: document.getElementById("programSeason").value,
+        notes: document.getElementById("programNotes").value,
+        filelink: document.getElementById("programFilelink").value,
+        conductor: document.getElementById("programConductor").value,
+        orchestra: document.getElementById("programOrchestra").value,
+        soloist: document.getElementById("programSoloist").value // läggs in i array med , som separator
     };
     
-    console.log(JSON.stringify(uploadData));
+    console.log(JSON.stringify(programData));
 
     try {
     
-        const response = await fetch('http://localhost:5001/uploadToDatabase', {
+        const response = await fetch('http://localhost:5001/uploadProgram', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(uploadData)
+            body: JSON.stringify(programData)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data); // Skriv ut resultatet i konsolen
+
+    } catch (error) {
+        console.error('Error when inserting data:', error);
+    }
+
+}
+
+async function uploadDocumentButton() {
+
+    console.log('upload document button clicked');  // Log to confirm button click
+
+    const documentData = {
+        title: document.getElementById("documentTitle").value,
+        notes: document.getElementById("documentNotes").value,
+        year: document.getElementById("documentYear").value,
+        filelink: document.getElementById("documentFilelink").value
+    };
+    
+    console.log(JSON.stringify(documentData));
+
+    try {
+    
+        const response = await fetch('http://localhost:5001/uploadDocument', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(documentData)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data); // Skriv ut resultatet i konsolen
+
+    } catch (error) {
+        console.error('Error when inserting data:', error);
+    }
+
+}
+
+async function uploadImageButton() {
+
+    console.log('upload image button clicked');  // Log to confirm button click
+
+    const imageData = {
+        description: document.getElementById("imageDescription").value,
+        filelink: document.getElementById("imageFilelink").value
+    };
+    
+    console.log(JSON.stringify(imageData));
+
+    try {
+    
+        const response = await fetch('http://localhost:5001/uploadImage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(imageData)
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
