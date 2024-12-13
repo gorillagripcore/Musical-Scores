@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';  
-import { fetchData, uploadToDataBase } from './database.mjs';
+import { fetchData, uploadToDataBase, uploadProgram, uploadDocument, uploadImage } from './database.mjs';
 
 const app = express();
 const port = 5001;
@@ -45,6 +45,39 @@ app.post('/uploadToDatabase', async (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
+});
+
+app.post('/uploadProgram', async (req, res) => {
+    try {
+        const data = req.body;
+        await uploadProgram(data);
+        res.status(200).json({ message: 'Program uploaded successfully!' });
+    } catch (error) {
+        console.error('Error when uploading program:', error);
+        res.status(500).json({ error: 'Failed to upload program' });
+    }
+});
+
+app.post('/uploadDocument', async (req, res) => {
+    try {
+        const data = req.body;
+        await uploadDocument(data);
+        res.status(200).json({ message: 'Document uploaded successfully!' });
+    } catch (error) {
+        console.error('Error when uploading document:', error);
+        res.status(500).json({ error: 'Failed to upload document' });
+    }
+});
+
+app.post('/uploadImage', async (req, res) => {
+    try {
+        const data = req.body;
+        await uploadImage(data);
+        res.status(200).json({ message: 'Image uploaded successfully!' });
+    } catch (error) {
+        console.error('Error when uploading image:', error);
+        res.status(500).json({ error: 'Failed to upload image' });
+    }
 });
 
 /*
