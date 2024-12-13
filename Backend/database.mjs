@@ -6,7 +6,8 @@ const pool = mysql.createPool({
 host: process.env.HOST,
 user: process.env.USER,
 password: process.env.PASSWORD,
-database: process.env.DATABASE
+database: process.env.DATABASE,
+multipleStatements: true
 });
 
 export async function testConnection() {
@@ -119,6 +120,66 @@ function checkDataType(data) {
             return;
         }
     }
+}
+
+export async function uploadProgram(data) {
+
+    try {
+        //const insertProgram= "call addProgram(?, ?, ?, ?, ?, ?, ?, ?)";
+        const insertProgram = `
+        CALL addProgram(?, ?, ?, ?, ?, ?, ?);
+        `;
+        await pool.query(insertProgram, [data.title, data.location, data.year, data.notes, data.filelink, data.conductor, data.orchestra]);
+        const programIDQuery = 'SELECT @programID AS programID';
+        const [rows] = await pool.query(programIDQuery);
+        const programID = rows[0].programID;
+        console.log("Program #" + programID + ": " + data.title + " inserted to database");
+
+        if(data.soloist !== undefined || data.soloist !== null) {
+            const soloists = data.soloist.split(', ').map(soloist => soloist.trim());
+
+            for(const soloistName of soloists) {
+                const insertSoloist = 'CALL addSoloist(?, ?)';
+                await pool.query(insertSoloist, [soloistName, programID]);
+                console.log("Soloist: " + soloistName + " inserted to database");
+            } 
+        }
+
+    } catch (error) {
+        console.error('Error when inserting data:', error);
+    }
+
+}
+
+export async function uploadDocument(data) {
+
+    try {
+        const insertDocument = `
+        CALL addDocument(?, ?, ?, ?);
+        `;
+        await pool.query(insertDocument, [data.title, data.type, data.year, data.filelink]);
+        console.log("Document " + data.title + " inserted to database");
+
+    } catch (error) {
+        console.error('Error when inserting data:', error);
+    }
+
+}
+
+
+export async function uploadImage(data) {
+
+    try {
+        const insertImage = `
+        CALL addImage(?, ?);
+        `;
+        await pool.query(insertImage, [data.description, data.filelink]);
+        console.log("Image " + data.description + " inserted to database");
+
+    } catch (error) {
+        console.error('Error when inserting data:', error);
+    }
+
 }
 
 

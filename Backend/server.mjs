@@ -4,7 +4,7 @@ import cors from 'cors';
 import fs from 'fs';  
 import dotenv from 'dotenv';
 import path from 'path';
-import { fetchData, uploadToDataBase } from './database.mjs';
+import { fetchData, uploadToDataBase, uploadProgram, uploadDocument, uploadImage } from './database.mjs';
 import { fileURLToPath } from 'url';
 dotenv.config({ path: '/etc/app.env' });  // Specifika sökvägen till din .env-fil
 
@@ -74,3 +74,49 @@ https.createServer(sslOptions, app).listen(port, '0.0.0.0', () => {
     console.log(`Server listening at https://13.61.87.232:${port}`);
 });
 
+app.post('/uploadProgram', async (req, res) => {
+    try {
+        const data = req.body;
+        await uploadProgram(data);
+        res.status(200).json({ message: 'Program uploaded successfully!' });
+    } catch (error) {
+        console.error('Error when uploading program:', error);
+        res.status(500).json({ error: 'Failed to upload program' });
+    }
+});
+
+app.post('/uploadDocument', async (req, res) => {
+    try {
+        const data = req.body;
+        await uploadDocument(data);
+        res.status(200).json({ message: 'Document uploaded successfully!' });
+    } catch (error) {
+        console.error('Error when uploading document:', error);
+        res.status(500).json({ error: 'Failed to upload document' });
+    }
+});
+
+app.post('/uploadImage', async (req, res) => {
+    try {
+        const data = req.body;
+        await uploadImage(data);
+        res.status(200).json({ message: 'Image uploaded successfully!' });
+    } catch (error) {
+        console.error('Error when uploading image:', error);
+        res.status(500).json({ error: 'Failed to upload image' });
+    }
+});
+
+/*
+app.get('/startUpFetchData', async (req, res) => {
+
+    try{
+        const data = await startUpFetchData
+        console.log('Fetched data:', data);  // Skriv ut vad servern hämtar i konsollen 
+        res.json(data); // Returnera JSON data till klienten
+    } catch(error){
+        console.error('Error fetching data:', error);
+        res.status(500).json({error: error.message});
+    }
+});
+*/
