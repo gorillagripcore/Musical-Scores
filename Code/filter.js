@@ -59,10 +59,9 @@ searchInput.addEventListener('input', function() {
 async function fetchData() {
         try {
             const searchQuery = document.querySelector('.search-bar input').value;
-            // Get-request till servern med query-parametern
             const response = await fetch(`/api/fetchData?myString=${encodeURIComponent(searchQuery)}`);
             const data = await response.json();
-            console.log(data); // Skriv ut resultatet i konsolen
+            console.log(data); 
             populateResultContainer(data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -81,7 +80,7 @@ async function fetchData() {
             thumbnailDiv.classList.add('thumbnail');
             
             const thumbnailImg = document.createElement('img');
-            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; //When debugging, change to '/img/Conductors/Sixten_test.jpg' and move file to filter.js to design folder
+            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; 
             thumbnailDiv.appendChild(thumbnailImg);
             itemDiv.appendChild(thumbnailDiv);
             

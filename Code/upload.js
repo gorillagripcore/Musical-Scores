@@ -2,7 +2,6 @@ async function showUploadFields() {
 
     const uploadType = document.getElementById("upload_type").value;
 
-    // dela upp kategorier enligt typ
 
     const typeMappings = {
         score: ["upload_score_fields", "upload_score_button"],
@@ -11,7 +10,6 @@ async function showUploadFields() {
         image: ["upload_image_fields", "upload_image_button"]
     };
 
-    // loopa igenom kategorier & ändra utseende av fields
 
     for(const [type, [fieldsID, buttonID]] of Object.entries(typeMappings)) {
         const fields = document.getElementById(fieldsID);
@@ -32,7 +30,7 @@ async function showUploadFields() {
 
 async function uploadScoreButton() {
 
-    console.log('upload score button clicked');  // Log to confirm button click
+    console.log('upload score button clicked');  
 
     const uploadData = {
         title: document.getElementById("title").value,
@@ -59,7 +57,7 @@ async function uploadScoreButton() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data); // Skriv ut resultatet i konsolen
+        console.log(data); 
 
     } catch (error) {
         console.error('Error when inserting data:', error);
@@ -69,7 +67,7 @@ async function uploadScoreButton() {
 
 async function uploadProgramButton() {
 
-    console.log('upload program button clicked');  // Log to confirm button click
+    console.log('upload program button clicked'); 
 
     const programData = {
         title: document.getElementById("programTitle").value,
@@ -97,7 +95,7 @@ async function uploadProgramButton() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data); // Skriv ut resultatet i konsolen
+        console.log(data); 
 
     } catch (error) {
         console.error('Error when inserting data:', error);
@@ -107,7 +105,7 @@ async function uploadProgramButton() {
 
 async function uploadDocumentButton() {
 
-    console.log('upload document button clicked');  // Log to confirm button click
+    console.log('upload document button clicked');  
 
     const documentData = {
         title: document.getElementById("documentTitle").value,
@@ -131,7 +129,7 @@ async function uploadDocumentButton() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data); // Skriv ut resultatet i konsolen
+        console.log(data); 
 
     } catch (error) {
         console.error('Error when inserting data:', error);
@@ -141,7 +139,7 @@ async function uploadDocumentButton() {
 
 async function uploadImageButton() {
 
-    console.log('upload image button clicked');  // Log to confirm button click
+    console.log('upload image button clicked');  
 
     const imageData = {
         description: document.getElementById("imageDescription").value,
@@ -163,7 +161,7 @@ async function uploadImageButton() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data); // Skriv ut resultatet i konsolen
+        console.log(data); 
 
     } catch (error) {
         console.error('Error when inserting data:', error);
