@@ -48,7 +48,7 @@ async function uploadScoreButton() {
 
     try {
     
-        const response = await fetch('https://sixtenehrlingdigitalarchive.com/uploadToDatabase', {
+        const response = await fetch('/api/uploadToDatabase', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -86,7 +86,7 @@ async function uploadProgramButton() {
 
     try {
     
-        const response = await fetch('https://sixtenehrlingdigitalarchive.com/uploadProgram', {
+        const response = await fetch('/api/uploadProgram', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -120,7 +120,7 @@ async function uploadDocumentButton() {
 
     try {
     
-        const response = await fetch('https://sixtenehrlingdigitalarchive.com/uploadDocument', {
+        const response = await fetch('/api/uploadDocument', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -152,7 +152,7 @@ async function uploadImageButton() {
 
     try {
     
-        const response = await fetch('https://sixtenehrlingdigitalarchive.com/uploadImage', {
+        const response = await fetch('/api/uploadImage', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

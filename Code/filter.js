@@ -60,7 +60,7 @@ async function fetchData() {
         try {
             const searchQuery = document.querySelector('.search-bar input').value;
             // Get-request till servern med query-parametern
-            const response = await fetch(`https://sixtenehrlingdigitalarchive.com/fetchData?myString=${encodeURIComponent(searchQuery)}`);
+            const response = await fetch(`/api/fetchData?myString=${encodeURIComponent(searchQuery)}`);
             const data = await response.json();
             console.log(data); // Skriv ut resultatet i konsolen
             populateResultContainer(data);
