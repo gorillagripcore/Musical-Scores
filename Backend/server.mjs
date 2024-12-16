@@ -26,7 +26,8 @@ const sslOptions = {
 app.use(cors({
     origin: [
             'https://sixtenehrlingdigitalarchive.com', 
-            'https://13.61.87.232:5001'],   
+            'https://13.61.87.232:5001',
+            'https://localhost:5001',],   
    
              methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'],

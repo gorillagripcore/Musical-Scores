@@ -39,7 +39,7 @@ async function uploadScoreButton() {
         composer: document.getElementById("composer").value,
         conductor: document.getElementById("conductor").value,
         interpreter: document.getElementById("interpreter").value,
-        type: document.getElementById("type").value,
+        opus: document.getElementById("opus").value,
         year: document.getElementById("year").value,
         filelink: document.getElementById("filelink").value
     };
