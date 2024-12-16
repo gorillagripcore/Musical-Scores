@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fetchData, uploadToDataBase, uploadProgram, uploadDocument, uploadImage } from './database.mjs';
 import { fileURLToPath } from 'url';
-dotenv.config({ path: '/etc/app.env' });  // Specifika sökvägen till din .env-fil
+dotenv.config({ path: '/etc/app.env' });  
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -26,9 +26,7 @@ const sslOptions = {
 app.use(cors({
     origin: [
             'https://sixtenehrlingdigitalarchive.com', 
-            'https://13.61.87.232:5001', 
-            'https://localhost:5002',
-            'https://localhost:5001',],   
+            'https://13.61.87.232:5001'],   
    
              methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
