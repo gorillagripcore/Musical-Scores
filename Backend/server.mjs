@@ -4,7 +4,7 @@ import cors from 'cors';
 import fs from 'fs';  
 import dotenv from 'dotenv';
 import path from 'path';
-import { fetchData, uploadToDataBase, uploadProgram, uploadDocument, uploadImage } from './database.mjs';
+import { fetchData, uploadInterpretation, uploadProgram, uploadDocument, uploadImage } from './database.mjs';
 import { fileURLToPath } from 'url';
 dotenv.config({ path: '/etc/app.env' });  
 
@@ -19,7 +19,7 @@ certificate: process.env.FULLCHAINDEV,
 }
 
 const sslOptions = {
-    key: fs.readFileSync(ssl.certificate),  
+    key: fs.readFileSync(ssl.certificate),
     cert: fs.readFileSync(ssl.privateKey), 
 };
 
@@ -57,13 +57,13 @@ app.get('/api/fetchData', async (req, res) => {
     }
 });
 
-app.post('/api/uploadToDatabase', async (req, res) => {
+app.post('/api/uploadInterpretation', async (req, res) => {
     try {
         const data = req.body;
-        await uploadToDataBase(data);
-        res.json({ message: 'Data sent to database.mjs' });
+        await uploadInterpretation(data);
+        res.status(200).json({ message: 'Interpretation uploaded successfully!' });
     } catch (error) {
-        console.error('Error when inserting data:', error);
+        console.error('Error when uploading interpretation:', error);
         res.status(500).json({ error: error.message });
     }
 });

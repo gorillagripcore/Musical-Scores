@@ -32,26 +32,26 @@ async function uploadScoreButton() {
 
     console.log('upload score button clicked');  
 
-    const uploadData = {
-        title: document.getElementById("title").value,
-        composer: document.getElementById("composer").value,
-        conductor: document.getElementById("conductor").value,
-        interpreter: document.getElementById("interpreter").value,
-        opus: document.getElementById("opus").value,
-        year: document.getElementById("year").value,
-        filelink: document.getElementById("filelink").value
+    const interpretationData = {
+        title: document.getElementById("scoreTitle").value,
+        composer: document.getElementById("scoreComposer").value,
+        conductor: document.getElementById("interpretationConductor").value,
+        interpreter: document.getElementById("interpretationInterpreter").value,
+        opusNumber: document.getElementById("interpretationOpusNumber").value,
+        year: document.getElementById("interpretationYear").value,
+        filelink: document.getElementById("interpretationFileLink").value
     };
     
-    console.log(JSON.stringify(uploadData));
+    console.log(JSON.stringify(interpretationData));
 
     try {
     
-        const response = await fetch('/api/uploadToDatabase', {
+        const response = await fetch('/api/uploadInterpretation', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(uploadData)
+            body: JSON.stringify(interpretationData)
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

@@ -48,81 +48,20 @@ export async function fetchData(searchTerm) {
     }
 }
 
-export async function uploadToDataBase(data) {
+export async function uploadInterpretation(data) {
     
-    let parsedData = checkDataType(data);
-    
-    await uploadScore(parsedData.title, parsedData.composer);
-    const scoreId = await temporaryScoreId(parsedData.title);
-    let conductorId = await uploadConductor(parsedData);
-    await uploadInterpreter(parsedData.interpreter);
-    const interpreterId = await temporaryInterpreterId(parsedData.interpreter);
-    await uploadInterpretation(parsedData, conductorId, scoreId, interpreterId);
-}
+    try {
+        const insertInterpretation = `
+        CALL addInterpretation(?, ?, ?, ?, ?, ?, ?);
+        `;
+        await pool.query(insertInterpretation, [data.title, data.composer, data.conductor, data.interpreter, data.year, data.filelink, data.opusNumber]);
+        const [rows] = await pool.query(programIDQuery);
+        console.log("Interpretation " + data.title + " inserted to database");
 
-async function uploadConductor(parsedData) {
-
-    let conductor = parsedData.conductor;
-    let conductorId = null;
-
-    try{
-        await pool.query('CALL checkConductor(?, @conductorId)', [conductor]);
-        const [rows] = await pool.query('SELECT @conductorId AS output');
-        conductorId = rows[0].output;
-        return conductorId;
     } catch (error) {
         console.error('Error when inserting data:', error);
     }
-}
 
-async function uploadScore(title, composer) {
-    try{
-        await pool.query('INSERT INTO Score(title, composer) VALUES(?, ?)', [title, composer]);
-    } catch (error) {
-        console.error('Error when fetching score ID:', error);
-        return null;
-    }
-}
-
-async function uploadInterpretation(parsedData, conductorId, scoreId, interpreterId) {
-    console.log('Score ID argument:', scoreId);
-    
-    try{
-       await pool.query('INSERT INTO Interpretation(score, conductor, interpreter, year, fileLink,  opusNumber) VALUES(?, ?, ?, ?, ?, ?)', 
-        [scoreId, conductorId, interpreterId, parsedData.year, parsedData.filelink, parsedData.opus]); 
-    } catch {
-        error => console.error('Error when inserting data:', error);
-    }
-}
-
-async function temporaryScoreId(title) {
-    try{
-        const [rows] = await pool.query('SELECT id FROM Score where title = ?', [title]);
-        console.log('I fetched and will return Score ID:', rows[0].id);
-        return rows[0].id;
-    } catch {
-        error => console.error('Error when inserting data:', error);
-    }
-}
-
-function checkDataType(data) {
-
-    let parsedData;
-    if (data !== undefined && data !== null) {
-        try {
-            if (typeof data === 'string') {
-                parsedData = JSON.parse(data);
-            } else {
-                parsedData = data;
-            }
-
-            return parsedData;
-
-        } catch (error) {
-            console.error('Invalid JSON data received:', error);
-            return;
-        }
-    }
 }
 
 export async function uploadProgram(data) {
@@ -168,26 +107,6 @@ export async function uploadDocument(data) {
     }
 
 }
-
-async function uploadInterpreter(interpreter) {
-
-    try{
-        await pool.query('INSERT INTO Interpreter(name) VALUES(?)', [interpreter]);
-    } catch (error) {
-        console.error('Error when inserting data:', error);
-    }
-}
-
-async function temporaryInterpreterId(interpreter) {
-    try{
-        const [rows] = await pool.query('SELECT id FROM Interpreter where name = ?', [interpreter]);
-        console.log('I fetched and will return interpreter ID:', rows[0].id);
-        return rows[0].id;
-    } catch {
-        error => console.error('Error when inserting data:', error);
-    }
-}
-
 
 export async function uploadImage(data) {
 
