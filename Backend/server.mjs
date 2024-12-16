@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(express.static('Design')); 
 app.use(express.static('Code')); 
 
-app.get('/fetchData', async (req, res) => {
+app.get('/api/fetchData', async (req, res) => {
 
     const myString = req.query.myString;
 
@@ -56,7 +56,7 @@ app.get('/fetchData', async (req, res) => {
     }
 });
 
-app.post('/uploadToDatabase', async (req, res) => {
+app.post('/api/uploadToDatabase', async (req, res) => {
     try {
         const data = req.body;
         await uploadToDataBase(data);
@@ -67,7 +67,7 @@ app.post('/uploadToDatabase', async (req, res) => {
     }
 });
 
-app.post('/uploadProgram', async (req, res) => {
+app.post('/api/uploadProgram', async (req, res) => {
     try {
         const data = req.body;
         await uploadProgram(data);
@@ -78,7 +78,7 @@ app.post('/uploadProgram', async (req, res) => {
     }
 });
 
-app.post('/uploadDocument', async (req, res) => {
+app.post('/api/uploadDocument', async (req, res) => {
     try {
         const data = req.body;
         await uploadDocument(data);
@@ -89,7 +89,7 @@ app.post('/uploadDocument', async (req, res) => {
     }
 });
 
-app.post('/uploadImage', async (req, res) => {
+app.post('/api/uploadImage', async (req, res) => {
     try {
         const data = req.body;
         await uploadImage(data);
