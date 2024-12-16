@@ -88,7 +88,7 @@ async function uploadInterpretation(parsedData, conductorId, scoreId, interprete
     console.log('Score ID argument:', scoreId);
     
     try{
-       await pool.query('INSERT INTO Interpretation(score, conductor, interpreter, year, filelink,  opus) VALUES(?, ?, ?, ?, ?, ?)', 
+       await pool.query('INSERT INTO Interpretation(score, conductor, interpreter, year, fileLink,  opusNumber) VALUES(?, ?, ?, ?, ?, ?)', 
         [scoreId, conductorId, interpreterId, parsedData.year, parsedData.filelink, parsedData.opus]); //det strular här
     } catch {
         error => console.error('Error when inserting data:', error);
