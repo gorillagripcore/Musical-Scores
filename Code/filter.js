@@ -16,7 +16,6 @@ const mockResults = [
     "Sixten Ehrling",
 ];
 
-// search preview js 
 const searchInput = document.querySelector('.search-bar input');
 const searchPreview = document.getElementById('search-preview');
 
@@ -27,7 +26,6 @@ document.addEventListener('click', function(event) {
 });
 
 document.getElementById('search-button').addEventListener('click', function() {
-    console.log('Search button clicked');  // Log to confirm button click
     fetchData();
 });
 
@@ -61,10 +59,9 @@ searchInput.addEventListener('input', function() {
 async function fetchData() {
         try {
             const searchQuery = document.querySelector('.search-bar input').value;
-            // Get-request till servern med query-parametern
-            const response = await fetch(`http://localhost:5001/fetchData?myString=${encodeURIComponent(searchQuery)}`);
+            const response = await fetch(`/api/fetchData?myString=${encodeURIComponent(searchQuery)}`);
             const data = await response.json();
-            console.log(data); // Skriv ut resultatet i konsolen
+            console.log(data); 
             populateResultContainer(data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -83,7 +80,7 @@ async function fetchData() {
             thumbnailDiv.classList.add('thumbnail');
             
             const thumbnailImg = document.createElement('img');
-            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; //When debugging, change to '/img/Conductors/Sixten_test.jpg' and move file to filter.js to design folder
+            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; 
             thumbnailDiv.appendChild(thumbnailImg);
             itemDiv.appendChild(thumbnailDiv);
             

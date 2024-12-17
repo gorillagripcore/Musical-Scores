@@ -1,17 +1,44 @@
 import express from 'express';
+import https from 'https';
 import cors from 'cors';  
-import { fetchData, uploadToDataBase, uploadProgram, uploadDocument, uploadImage } from './database.mjs';
+import fs from 'fs';  
+import dotenv from 'dotenv';
+import path from 'path';
+import { fetchData, uploadInterpretation, uploadProgram, uploadDocument, uploadImage } from './database.mjs';
+import { fileURLToPath } from 'url';
+dotenv.config({ path: '/etc/app.env' });  
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 5001;
 
-app.use(cors());
+const ssl = {
+privateKey: process.env.PRIVKEYDEV,
+certificate: process.env.FULLCHAINDEV,
+}
+
+const sslOptions = {
+    key: fs.readFileSync(ssl.certificate),
+    cert: fs.readFileSync(ssl.privateKey), 
+};
+
+app.use(cors({
+    origin: [
+            'https://sixtenehrlingdigitalarchive.com', 
+            'https://13.61.87.232:5001',
+            'https://localhost:5001',],   
+   
+             methods: ['GET', 'POST'], 
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 app.use(express.json()); 
 
 app.use(express.static('Design')); 
 app.use(express.static('Code')); 
 
-app.get('/fetchData', async (req, res) => {
+app.get('/api/fetchData', async (req, res) => {
 
     const myString = req.query.myString;
 
@@ -23,31 +50,25 @@ app.get('/fetchData', async (req, res) => {
     
     try{
         const data = await fetchData(myString);
-        res.json(data); // Returnera JSON data till klienten
+        res.json(data); 
     } catch(error){
         console.error('Error fetching data:', error);
         res.status(500).json({error: error.message});
     }
 });
 
-app.post('/uploadToDatabase', async (req, res) => {
+app.post('/api/uploadInterpretation', async (req, res) => {
     try {
         const data = req.body;
-        const result = await uploadToDataBase(data);
-        res.json({ message: 'Data sent to database.mjs' });
+        await uploadInterpretation(data);
+        res.status(200).json({ message: 'Interpretation uploaded successfully!' });
     } catch (error) {
-        console.error('Error when inserting data:', error);
+        console.error('Error when uploading interpretation:', error);
         res.status(500).json({ error: error.message });
     }
 });
 
-
-
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
-});
-
-app.post('/uploadProgram', async (req, res) => {
+app.post('/api/uploadProgram', async (req, res) => {
     try {
         const data = req.body;
         await uploadProgram(data);
@@ -58,7 +79,7 @@ app.post('/uploadProgram', async (req, res) => {
     }
 });
 
-app.post('/uploadDocument', async (req, res) => {
+app.post('/api/uploadDocument', async (req, res) => {
     try {
         const data = req.body;
         await uploadDocument(data);
@@ -69,7 +90,7 @@ app.post('/uploadDocument', async (req, res) => {
     }
 });
 
-app.post('/uploadImage', async (req, res) => {
+app.post('/api/uploadImage', async (req, res) => {
     try {
         const data = req.body;
         await uploadImage(data);
@@ -80,16 +101,6 @@ app.post('/uploadImage', async (req, res) => {
     }
 });
 
-/*
-app.get('/startUpFetchData', async (req, res) => {
-
-    try{
-        const data = await startUpFetchData
-        console.log('Fetched data:', data);  // Skriv ut vad servern hämtar i konsollen 
-        res.json(data); // Returnera JSON data till klienten
-    } catch(error){
-        console.error('Error fetching data:', error);
-        res.status(500).json({error: error.message});
-    }
+https.createServer(sslOptions, app).listen(port, '0.0.0.0', () => {
+    console.log(`Server listening at https://13.61.87.232:${port}`);
 });
-*/

@@ -2,13 +2,6 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
 
-/*
-console.log('HOST:', process.env.HOST);
-console.log('USER:', process.env.USER);
-console.log('PASSWORD:', process.env.PASSWORD ? '✔️' : '❌'); 
-console.log('DATABASE:', process.env.DATABASE);
-*/
-
 const pool = mysql.createPool({
 host: process.env.HOST,
 user: process.env.USER,
@@ -21,7 +14,7 @@ export async function testConnection() {
     try {
         const connection = await pool.getConnection();
         console.log('Database connected successfully!');
-        connection.release();  // Släpp anslutningen när den inte behövs
+        connection.release(); 
     } catch (error) {
         console.error('Error connecting to the database:', error);
     }
@@ -43,10 +36,11 @@ export async function fetchData(searchTerm) {
 
         const [rows] = await pool.query(searchConductorByName);
         if (rows.length > 0) {
-            return rows;  // Om det finns rader, returnera dem
+            return rows; 
+            console.log('Data found:', rows);
         } else {
             console.log('No data found');
-            return [];  // Om ingen data hittades, returnera en tom array
+            return []; 
         }
     } catch (error) {
         console.error('Error executing query:', error);
@@ -54,42 +48,20 @@ export async function fetchData(searchTerm) {
     }
 }
 
-export async function uploadToDataBase(data) {
+export async function uploadInterpretation(data) {
     
-    let parsedData = checkDataType(data);
-  
     try {
-        if (parsedData.conductor != "") {
-            const insertConductorByName = "INSERT INTO Conductor(name) VALUE(?)";
-            await pool.query(insertConductorByName, [parsedData.conductor]);
-            console.log("Conductor: " + parsedData.conductor + " inserted to database");
-            fetchData(parsedData.conductor);
-        } else {
-            console.log('No conductor name provided');
-        }
+        const insertInterpretation = `
+        CALL addInterpretation(?, ?, ?, ?, ?, ?, ?);
+        `;
+        await pool.query(insertInterpretation, [data.title, data.composer, data.conductor, data.interpreter, data.year, data.filelink, data.opusNumber]);
+        const [rows] = await pool.query(programIDQuery);
+        console.log("Interpretation " + data.title + " inserted to database");
+
     } catch (error) {
         console.error('Error when inserting data:', error);
     }
-}
 
-function checkDataType(data) {
-
-    let parsedData;
-    if (data !== undefined && data !== null) {
-        try {
-            if (typeof data === 'string') {
-                parsedData = JSON.parse(data);
-            } else {
-                parsedData = data;
-            }
-
-            return parsedData;
-
-        } catch (error) {
-            console.error('Invalid JSON data received:', error);
-            return;
-        }
-    }
 }
 
 export async function uploadProgram(data) {
@@ -135,7 +107,6 @@ export async function uploadDocument(data) {
     }
 
 }
-
 
 export async function uploadImage(data) {
 
