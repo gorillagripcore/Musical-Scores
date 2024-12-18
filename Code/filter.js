@@ -18,7 +18,6 @@ const mockResults = [
     "Sixten Ehrling",
 ];
 
-// search preview js 
 const searchInput = document.querySelector('.search-bar input');
 const searchPreview = document.getElementById('search-preview');
 
@@ -28,9 +27,7 @@ document.addEventListener('click', function (event) {
     }
 });
 
-document.getElementById('search-button').addEventListener('click', function () {
-    console.log('Search button clicked');  // Log to confirm button click
-    //fetchData();
+document.getElementById('search-button').addEventListener('click', function() {
     searchDatabase();
 });
 
@@ -61,19 +58,6 @@ searchInput.addEventListener('input', function () {
     }
 });
 
-async function fetchData() {
-    try {
-        const searchQuery = document.querySelector('.search-bar input').value;
-        // Get-request till servern med query-parametern
-        const response = await fetch(`http://localhost:5001/fetchData?myString=${encodeURIComponent(searchQuery)}`);
-        const data = await response.json();
-        console.log(data); // Skriv ut resultatet i konsolen
-        populateResultContainer(data);
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
-
 async function searchDatabase() {
     try {
         const searchQuery = document.querySelector('.search-bar input').value;
@@ -100,7 +84,7 @@ function populateResultContainer(data) {
             thumbnailDiv.classList.add('thumbnail');
 
             const thumbnailImg = document.createElement('img');
-            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; //When debugging, change to '/img/Conductors/Sixten_test.jpg' and move file to filter.js to design folder
+            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; 
             thumbnailDiv.appendChild(thumbnailImg);
             itemDiv.appendChild(thumbnailDiv);
 
@@ -201,5 +185,13 @@ function populateResultContainer(data) {
             resultContainer.appendChild(itemDiv);
         }
     });
+}
+
+    function getEnvironmentUrl(){
+        if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+            return 'http://127.0.0.1:5001/api' 
+        } else {
+            return '/api'
+        }
 }
 
