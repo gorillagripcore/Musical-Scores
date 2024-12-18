@@ -41,7 +41,8 @@ app.use(cors({
             'https://sixtenehrlingdigitalarchive.com', 
             'https://13.61.87.232:5001',
             'https://localhost:5001',
-            'http://127.0.0.1:8080'
+            'http://127.0.0.1:8080',
+            'http://127.0.0.1:5500'
         ],   
    
              methods: ['GET', 'POST'], 
@@ -97,7 +98,7 @@ app.post('/api/uploadImage', async (req, res) => {
     }
 });
 
-app.get('/searchDatabase', async (req, res) => { 
+app.get('/api/searchDatabase', async (req, res) => { 
     // try {
     //     const data = req.body;
     //     await searchDatabase(data);

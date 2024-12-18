@@ -62,7 +62,8 @@ async function searchDatabase() {
     try {
         const searchQuery = document.querySelector('.search-bar input').value;
         // Get-request till servern med query-parametern
-        const response = await fetch(`http://localhost:5001/searchDatabase?myString=${encodeURIComponent(searchQuery)}`);
+        const apiUrl = getEnvironmentUrl();
+        const response = await fetch(`${apiUrl}/searchDatabase?myString=${encodeURIComponent(searchQuery)}`);
         const data = await response.json();
         console.log(data); // Skriv ut resultatet i konsolen
         populateResultContainer(data);
