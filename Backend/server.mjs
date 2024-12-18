@@ -1,5 +1,6 @@
 import express from 'express';
 import https from 'https';
+import http from 'http';
 import cors from 'cors';  
 import fs from 'fs';  
 import dotenv from 'dotenv';
@@ -8,26 +9,40 @@ import { fetchData, uploadInterpretation, uploadProgram, uploadDocument, uploadI
 import { fileURLToPath } from 'url';
 dotenv.config({ path: '/etc/app.env' });  
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-const port = 5001;
+const port = process.env.PORT || 5001;
+const httpPort = process.env.HTTPPORT || 5001;
 
 const ssl = {
 privateKey: process.env.PRIVKEYDEV,
 certificate: process.env.FULLCHAINDEV,
 }
 
-const sslOptions = {
-    key: fs.readFileSync(ssl.certificate),
-    cert: fs.readFileSync(ssl.privateKey), 
-};
+if (isProduction) {
+    const sslOptions = {
+        key: fs.readFileSync(ssl.certificate),
+        cert: fs.readFileSync(ssl.privateKey)
+    };
+    https.createServer(sslOptions, app).listen(port, '0.0.0.0', () => {
+        console.log(`Server listening at https://13.61.87.232:${port}`);
+    });
+} else {
+    http.createServer(app).listen(httpPort, '0.0.0.0', () => {
+        console.log(`HTTP Server listening at http://127.0.0.1:${httpPort}`);
+    });
+}
 
 app.use(cors({
     origin: [
             'https://sixtenehrlingdigitalarchive.com', 
             'https://13.61.87.232:5001',
-            'https://localhost:5001',],   
+            'https://localhost:5001',
+            'http://127.0.0.1:8080'
+        ],   
    
              methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -101,6 +116,13 @@ app.post('/api/uploadImage', async (req, res) => {
     }
 });
 
+/*
+//For debugging
+http.createServer(app).listen(httpPort, '0.0.0.0', () => {
+    console.log(`HTTP Server listening at http://127.0.0.1:${httpPort}`);
+});
+
 https.createServer(sslOptions, app).listen(port, '0.0.0.0', () => {
     console.log(`Server listening at https://13.61.87.232:${port}`);
 });
+*/

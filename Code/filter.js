@@ -59,7 +59,11 @@ searchInput.addEventListener('input', function() {
 async function fetchData() {
         try {
             const searchQuery = document.querySelector('.search-bar input').value;
-            const response = await fetch(`/api/fetchData?myString=${encodeURIComponent(searchQuery)}`);
+
+        // Dynamisk URL baserat på miljö
+        const apiUrl = getEnvironmentUrl();
+
+        const response = await fetch(`${apiUrl}/fetchData?myString=${encodeURIComponent(searchQuery)}`);
             const data = await response.json();
             console.log(data); 
             populateResultContainer(data);
@@ -103,4 +107,12 @@ async function fetchData() {
             resultContainer.appendChild(itemDiv);
         });
     }
+
+    function getEnvironmentUrl(){
+        if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+            return 'http://127.0.0.1:5001/api' 
+        } else {
+            return '/api'
+        }
+}
 

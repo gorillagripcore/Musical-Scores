@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd Backend && node server.mjs",
+    "dev": "cd Backend && NODE_ENV=development node server.mjs",
     "build": "mkdir -p dist/Design && cp -r ./Design/* dist/Design/ && mkdir -p dist/Code && cp -r ./Code/*.js dist/Code/ && mkdir -p dist/Backend && cp -r ./Backend/* dist/Backend/"
   },
   "repository": {
@@ -19,6 +20,8 @@
   },
   "homepage": "https://github.com/gorillagripcore/Musical-Scores#readme",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.714.0",
+    "@aws-sdk/s3-request-presigner": "^3.714.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
