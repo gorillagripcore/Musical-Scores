@@ -46,7 +46,8 @@ async function uploadScoreButton() {
 
     try {
     
-        const response = await fetch('/api/uploadInterpretation', {
+        const apiUrl = getEnvironmentUrl();
+        const response = await fetch(`${apiUrl}/uploadInterpretation`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -84,7 +85,8 @@ async function uploadProgramButton() {
 
     try {
     
-        const response = await fetch('/api/uploadProgram', {
+        const apiUrl = getEnvironmentUrl();
+        const response = await fetch(`${apiUrl}/uploadProgram`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -118,7 +120,8 @@ async function uploadDocumentButton() {
 
     try {
     
-        const response = await fetch('/api/uploadDocument', {
+        const apiUrl = getEnvironmentUrl();
+        const response = await fetch(`${apiUrl}/uploadDocument`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -150,7 +153,8 @@ async function uploadImageButton() {
 
     try {
     
-        const response = await fetch('/api/uploadImage', {
+        const apiUrl = getEnvironmentUrl();
+        const response = await fetch(`${apiUrl}/uploadImage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -167,4 +171,12 @@ async function uploadImageButton() {
         console.error('Error when inserting data:', error);
     }
 
+}
+
+function getEnvironmentUrl() {
+    if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+        return 'http://127.0.0.1:5001/api' 
+    } else {
+        return '/api'
+    }
 }
