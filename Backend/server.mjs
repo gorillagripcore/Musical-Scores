@@ -5,7 +5,7 @@ import cors from 'cors';
 import fs from 'fs';  
 import dotenv from 'dotenv';
 import path from 'path';
-import { fetchData, uploadInterpretation, uploadProgram, uploadDocument, uploadImage } from './database.mjs';
+import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase } from './database.mjs';
 import { fileURLToPath } from 'url';
 dotenv.config({ path: '/etc/app.env' });  
 
@@ -41,7 +41,8 @@ app.use(cors({
             'https://sixtenehrlingdigitalarchive.com', 
             'https://13.61.87.232:5001',
             'https://localhost:5001',
-            'http://127.0.0.1:8080'
+            'http://127.0.0.1:8080',
+            'http://127.0.0.1:5500'
         ],   
    
              methods: ['GET', 'POST'], 
@@ -52,25 +53,6 @@ app.use(express.json());
 
 app.use(express.static('Design')); 
 app.use(express.static('Code')); 
-
-app.get('/api/fetchData', async (req, res) => {
-
-    const myString = req.query.myString;
-
-    if (myString === undefined || myString === '') {
-        return res.status(400).json({ error: 'Query string is required' });
-    } else {
-        console.log('Received request with query:', myString)
-    }
-    
-    try{
-        const data = await fetchData(myString);
-        res.json(data); 
-    } catch(error){
-        console.error('Error fetching data:', error);
-        res.status(500).json({error: error.message});
-    }
-});
 
 app.post('/api/uploadInterpretation', async (req, res) => {
     try {
@@ -115,6 +97,27 @@ app.post('/api/uploadImage', async (req, res) => {
         res.status(500).json({ error: 'Failed to upload image' });
     }
 });
+
+app.get('/api/searchDatabase', async (req, res) => { 
+
+    const myString = req.query.myString;
+
+    if (myString === undefined || myString === '') {
+        return res.status(400).json({ error: 'Query string is required' });
+    } else {
+        console.log('Received request with query:', myString)
+    }
+    
+    try{
+        const data = await searchDatabase(myString);
+        res.json(data); // Returnera JSON data till klienten
+    } catch(error){
+        console.error('Error fetching data:', error);
+        res.status(500).json({error: error.message});
+    }
+
+});
+
 
 /*
 //For debugging
