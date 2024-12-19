@@ -1,7 +1,38 @@
+let loginState = false;
+
+function pageCheck() {
+    const blur = document.querySelector(".blur")
+    const popup = document.querySelector(".popup")
+    blur.style.display = "block"
+    popup.style.display = "block"
+}
+
+document.getElementById("check").addEventListener("click", e => {
+    e.preventDefault()
+    const textBox = document.getElementById("pwd")
+    const blur = document.querySelector(".blur")
+    const popup = document.querySelector(".popup")
+    if (textBox.value == "123") {
+        blur.style.display = "none"
+        popup.style.display = "none"
+
+        const uploadType = document.getElementById("upload_type");
+        uploadType.disabled = false;
+        loginState = true;
+    }
+    else {
+        alert("Wrong password")
+    }
+})
+
 async function showUploadFields() {
 
-    const uploadType = document.getElementById("upload_type").value;
+    if (!loginState) {
+        alert("You need to enter the password")
+        return
+    }
 
+    const uploadType = document.getElementById("upload_type").value;
 
     const typeMappings = {
         score: ["upload_score_fields", "upload_score_button"],
