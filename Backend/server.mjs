@@ -99,14 +99,6 @@ app.post('/api/uploadImage', async (req, res) => {
 });
 
 app.get('/api/searchDatabase', async (req, res) => { 
-    // try {
-    //     const data = req.body;
-    //     await searchDatabase(data);
-    //     res.status(200).json({ message: 'Image uploaded successfully!' });
-    // } catch (error) {
-    //     console.error('Error when uploading image:', error);
-    //     res.status(500).json({ error: 'Failed to upload image' });
-    // }
 
     const myString = req.query.myString;
 
