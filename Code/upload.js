@@ -1,3 +1,9 @@
+
+document.addEventListener("DOMContentLoaded", () => {
+    const uploadTypeElement = document.getElementById("upload_type");
+    uploadTypeElement.addEventListener("change", showUploadFields);
+});
+
 async function showUploadFields() {
 
     const uploadType = document.getElementById("upload_type").value;
@@ -22,15 +28,16 @@ async function showUploadFields() {
             fields.style.display = "none";
             button.style.display = "none";
         }
-
     }
-    
 }
 
 
 async function uploadScoreButton() {
 
     console.log('upload score button clicked');  
+
+    const fileInput = document.getElementById("myFile");
+    const file = fileInput.files[0];
 
     const interpretationData = {
         title: document.getElementById("scoreTitle").value,
@@ -39,13 +46,19 @@ async function uploadScoreButton() {
         interpreter: document.getElementById("interpretationInterpreter").value,
         opusNumber: document.getElementById("interpretationOpusNumber").value,
         year: document.getElementById("interpretationYear").value,
-        filelink: document.getElementById("interpretationFileLink").value
+        filelink: file.name
     };
+
+    console.log("file name: " + file.name);
     
     console.log(JSON.stringify(interpretationData));
+    console.log(interpretationData.filelink);
 
+    await uploadScoreToS3();
+  
     try {
     
+
         const apiUrl = getEnvironmentUrl();
         const response = await fetch(`${apiUrl}/uploadInterpretation`, {
             method: 'POST',
@@ -63,8 +76,9 @@ async function uploadScoreButton() {
     } catch (error) {
         console.error('Error when inserting data:', error);
     }
-
+        
 }
+
 
 async function uploadProgramButton() {
 
@@ -167,6 +181,38 @@ async function uploadImageButton() {
         const data = await response.json();
         console.log(data); 
 
+    } catch (error) {
+        console.error('Error when inserting data:', error);
+    }
+
+}
+
+async function uploadScoreToS3(){
+    const fileInput = document.getElementById("myFile"); 
+
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]); 
+
+    if (!fileInput || fileInput.files.length === 0) {
+        console.error('No file selected');
+        return;
+    }
+
+    try {
+    
+        const apiUrl = getEnvironmentUrl();
+        const response = await fetch(`${apiUrl}/uploadScoreToS3`, {
+            method: 'POST',
+            body: formData,
+        });
+    
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        console.log(data);
+    
     } catch (error) {
         console.error('Error when inserting data:', error);
     }

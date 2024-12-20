@@ -27,7 +27,6 @@ export async function uploadInterpretation(data) {
         CALL addInterpretation(?, ?, ?, ?, ?, ?, ?);
         `;
         await pool.query(insertInterpretation, [data.title, data.composer, data.conductor, data.interpreter, data.year, data.filelink, data.opusNumber]);
-        const [rows] = await pool.query(programIDQuery);
         console.log("Interpretation " + data.title + " inserted to database");
 
     } catch (error) {
@@ -110,7 +109,8 @@ export async function searchDatabase(data) {
         '' AS orchestra, 
         '' AS soloists, 
         '' AS document_title, 
-        '' AS document_year
+        '' AS document_year,
+        i.filelink AS file_link
         FROM Interpretation i
         JOIN Conductor c ON i.conductor = c.id
         JOIN Score s ON i.score = s.id
@@ -129,7 +129,8 @@ export async function searchDatabase(data) {
         o.name AS orchestra, 
         GROUP_CONCAT(s.name SEPARATOR ', ') AS soloists, 
         '' AS document_title, 
-        '' AS document_year
+        '' AS document_year,
+        '' AS file_link
         FROM Program p
         JOIN Conductor c ON p.conductor = c.id
         JOIN Orchestra o ON p.orchestra = o.id
@@ -159,7 +160,8 @@ export async function searchDatabase(data) {
         '' AS orchestra, 
         '' AS soloists, 
         d.title AS document_title, 
-        d.year AS document_year
+        d.year AS document_year,
+        '' AS file_link
         FROM Document d
         WHERE d.title LIKE ?;`;
         const wildCard = `%${data}%`;

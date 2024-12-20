@@ -1,6 +1,3 @@
-//This is just mock code to get the filter page to look as it should. Put the actual code here later. 
-
-//import { searchDatabase } from "../Backend/database.mjs";
 
 // replace with real data fetching
 const mockResults = [
@@ -74,6 +71,14 @@ async function searchDatabase() {
 
 function populateResultContainer(data) {
     const resultContainer = document.querySelector('.result');
+    resultContainer.addEventListener('click', async function(event) {
+        if (event.target.tagName === 'IMG') {
+           // const fileNameP = document.createElement('p');
+           // fileNameP.textContent = `${result.file_link}`;
+            //await fetchUrlFromS3(fileNameP.textContent);
+            window.location.href = 'score-page.html';
+        }
+    });
     resultContainer.innerHTML = '';
 
     data.forEach(result => {

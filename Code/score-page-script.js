@@ -93,3 +93,11 @@ document.addEventListener('contextmenu', (event) => {
         event.preventDefault();
     }
 });
+
+function getEnvironmentUrl(){
+    if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+        return 'http://127.0.0.1:5001/api' 
+    } else {
+        return '/api'
+    }
+}
