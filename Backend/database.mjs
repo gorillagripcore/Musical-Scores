@@ -38,7 +38,6 @@ export async function uploadInterpretation(data) {
 export async function uploadProgram(data) {
 
     try {
-        //const insertProgram= "call addProgram(?, ?, ?, ?, ?, ?, ?, ?)";
         const insertProgram = `
         CALL addProgram(?, ?, ?, ?, ?, ?, ?);
         `;

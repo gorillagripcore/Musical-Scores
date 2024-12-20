@@ -7,8 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function showUploadFields() {
 
     const uploadType = document.getElementById("upload_type").value;
-
-
+    
     const typeMappings = {
         score: ["upload_score_fields", "upload_score_button"],
         program: ["upload_program_fields", "upload_program_button"],
@@ -36,7 +35,7 @@ async function uploadScoreButton() {
 
     console.log('upload score button clicked');  
 
-    const fileInput = document.getElementById("myFile");
+    const fileInput = document.getElementById("scoreFile");
     const file = fileInput.files[0];
 
     const interpretationData = {
@@ -49,16 +48,11 @@ async function uploadScoreButton() {
         filelink: file.name
     };
 
-    console.log("file name: " + file.name);
-    
     console.log(JSON.stringify(interpretationData));
-    console.log(interpretationData.filelink);
-
-    await uploadToS3();
+    await uploadToS3(fileInput);
   
     try {
     
-
         const apiUrl = getEnvironmentUrl();
         const response = await fetch(`${apiUrl}/uploadInterpretation`, {
             method: 'POST',
@@ -79,12 +73,11 @@ async function uploadScoreButton() {
         
 }
 
-
 async function uploadProgramButton() {
 
     console.log('upload program button clicked'); 
 
-    const fileInput = document.getElementById("myFile");
+    const fileInput = document.getElementById("programFile");
     const file = fileInput.files[0];
 
     const programData = {
@@ -97,8 +90,8 @@ async function uploadProgramButton() {
         orchestra: document.getElementById("programOrchestra").value,
         soloist: document.getElementById("programSoloist").value // läggs in i array med , som separator
     };
-    await uploadToS3();
 
+    await uploadToS3(fileInput);
     console.log(JSON.stringify(programData));
 
     try {
@@ -127,7 +120,7 @@ async function uploadDocumentButton() {
 
     console.log('upload document button clicked');
     
-    const fileInput = document.getElementById("myFile");
+    const fileInput = document.getElementById("documentFile");
     const file = fileInput.files[0];
 
     const documentData = {
@@ -138,8 +131,7 @@ async function uploadDocumentButton() {
     };
     
     console.log(JSON.stringify(documentData));
-    await uploadToS3();
-
+    await uploadToS3(fileInput);
 
     try {
     
@@ -167,7 +159,7 @@ async function uploadImageButton() {
 
     console.log('upload image button clicked');  
 
-    const fileInput = document.getElementById("myFile");
+    const fileInput = document.getElementById("imageFile");
     const file = fileInput.files[0];
 
     const imageData = {
@@ -176,8 +168,7 @@ async function uploadImageButton() {
     };
     
     console.log(JSON.stringify(imageData));
-    await uploadToS3();
-
+    await uploadToS3(fileInput);
 
     try {
     
@@ -201,38 +192,41 @@ async function uploadImageButton() {
 
 }
 
-async function uploadToS3(){
-    const fileInput = document.getElementById("myFile"); 
+async function uploadToS3(fileInput) {
+
     const folderName = document.getElementById("upload_type").value;
     const lowerCaseFolderName = folderName.toLowerCase();
 
-    const formData = new FormData();
-    formData.append('file', fileInput.files[0]); 
-
-    if (!fileInput || fileInput.files.length === 0) {
-        console.error('No file selected');
+    if (!fileInput) {
+        console.error(`File input with ID "${fileInput}" not found in DOM.`);
         return;
     }
 
+    if (!fileInput.files || fileInput.files.length === 0) {
+        console.error(`No file selected for "${folderName}".`);
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+
     try {
-    
         const apiUrl = getEnvironmentUrl();
         const response = await fetch(`${apiUrl}/${lowerCaseFolderName + 's'}/uploadToS3`, {
             method: 'POST',
             body: formData,
         });
-    
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-    
+
         const data = await response.json();
         console.log(data);
-    
-    } catch (error) {
-        console.error('Error when inserting data:', error);
-    }
 
+    } catch (error) {
+        console.error('Error when uploading file:', error);
+    }
 }
 
 function getEnvironmentUrl() {
