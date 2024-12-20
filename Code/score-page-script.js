@@ -94,6 +94,7 @@ document.addEventListener('contextmenu', (event) => {
     }
 });
 
+
 function getEnvironmentUrl(){
     if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
         return 'http://127.0.0.1:5001/api' 

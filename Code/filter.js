@@ -73,9 +73,6 @@ function populateResultContainer(data) {
     const resultContainer = document.querySelector('.result');
     resultContainer.addEventListener('click', async function(event) {
         if (event.target.tagName === 'IMG') {
-           // const fileNameP = document.createElement('p');
-           // fileNameP.textContent = `${result.file_link}`;
-            //await fetchUrlFromS3(fileNameP.textContent);
             window.location.href = 'score-page.html';
         }
     });

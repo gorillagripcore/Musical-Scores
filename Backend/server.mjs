@@ -138,14 +138,15 @@ app.get('/api/searchDatabase', async (req, res) => {
 
 });
 
-app.post('/api/uploadScoreToS3', upload.single('file'), async (req, res) => {   
+app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {   
 
-        const folderName = 'scores/';   
+        //const folderName = 'scores/';   
         const fileName = req.file.originalname; 
+        const folder = req.params.folder;
 
         const parameters = {
             Bucket: bucketName,
-            Key: `${folderName}${fileName}`,
+            Key: `${folder}/${fileName}`,
             Body: req.file.buffer,
             ContentType: req.file.mimetype,
         };
@@ -157,14 +158,15 @@ app.post('/api/uploadScoreToS3', upload.single('file'), async (req, res) => {
         res.send({});
     });
 
-    app.get('/api/fetchScoreFromS3/:fileName', async (req, res) => {   
+    app.get('/api/fetchFromS3/:folder/:fileName', async (req, res) => {   
         const fileName = req.params.fileName;
+        const folder = req.params.folder;
 
         console.log(`Requested file: ${fileName}`);
 
         const getObjectParams = {
             Bucket: bucketName,
-            Key: `scores/${fileName}`
+            Key: `${folder}/${fileName}`
         };
         const command = new GetObjectCommand(getObjectParams);
         const url = await getSignedUrl(s3, command, { expiresIn: 3600 });

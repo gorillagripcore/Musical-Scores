@@ -54,7 +54,7 @@ async function uploadScoreButton() {
     console.log(JSON.stringify(interpretationData));
     console.log(interpretationData.filelink);
 
-    await uploadScoreToS3();
+    await uploadToS3();
   
     try {
     
@@ -84,17 +84,21 @@ async function uploadProgramButton() {
 
     console.log('upload program button clicked'); 
 
+    const fileInput = document.getElementById("myFile");
+    const file = fileInput.files[0];
+
     const programData = {
         title: document.getElementById("programTitle").value,
         location: document.getElementById("programLocation").value,
         season: document.getElementById("programSeason").value,
         notes: document.getElementById("programNotes").value,
-        filelink: document.getElementById("programFilelink").value,
+        filelink: file.name,
         conductor: document.getElementById("programConductor").value,
         orchestra: document.getElementById("programOrchestra").value,
         soloist: document.getElementById("programSoloist").value // läggs in i array med , som separator
     };
-    
+    await uploadToS3();
+
     console.log(JSON.stringify(programData));
 
     try {
@@ -121,16 +125,21 @@ async function uploadProgramButton() {
 
 async function uploadDocumentButton() {
 
-    console.log('upload document button clicked');  
+    console.log('upload document button clicked');
+    
+    const fileInput = document.getElementById("myFile");
+    const file = fileInput.files[0];
 
     const documentData = {
         title: document.getElementById("documentTitle").value,
         notes: document.getElementById("documentNotes").value,
         year: document.getElementById("documentYear").value,
-        filelink: document.getElementById("documentFilelink").value
+        filelink: file.name
     };
     
     console.log(JSON.stringify(documentData));
+    await uploadToS3();
+
 
     try {
     
@@ -158,12 +167,17 @@ async function uploadImageButton() {
 
     console.log('upload image button clicked');  
 
+    const fileInput = document.getElementById("myFile");
+    const file = fileInput.files[0];
+
     const imageData = {
         description: document.getElementById("imageDescription").value,
-        filelink: document.getElementById("imageFilelink").value
+        filelink: file.name
     };
     
     console.log(JSON.stringify(imageData));
+    await uploadToS3();
+
 
     try {
     
@@ -187,8 +201,10 @@ async function uploadImageButton() {
 
 }
 
-async function uploadScoreToS3(){
+async function uploadToS3(){
     const fileInput = document.getElementById("myFile"); 
+    const folderName = document.getElementById("upload_type").value;
+    const lowerCaseFolderName = folderName.toLowerCase();
 
     const formData = new FormData();
     formData.append('file', fileInput.files[0]); 
@@ -201,7 +217,7 @@ async function uploadScoreToS3(){
     try {
     
         const apiUrl = getEnvironmentUrl();
-        const response = await fetch(`${apiUrl}/uploadScoreToS3`, {
+        const response = await fetch(`${apiUrl}/${lowerCaseFolderName + 's'}/uploadToS3`, {
             method: 'POST',
             body: formData,
         });

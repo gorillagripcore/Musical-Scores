@@ -83,8 +83,10 @@
             <label for="soloist">Soloist</label> 
             <input type="text" id="programSoloist" name="soloist" placeholder="Soloist 1, Soloist 2, etc.">
 
-            <label for="filelink">File link</label> 
-            <input type="text" id="programFilelink" name="filelink" required> 
+            <label for="filelink">Filelink</label> 
+            <form action="/action_page.php">
+                <input type="file" id="myFile" name="filename">
+              </form>
         </div>
 
         <!-- document -->
@@ -99,8 +101,10 @@
             <label for="year">Year</label>
             <input type="text" id="documentYear" name="year">
 
-            <label for="filelink">File link</label> 
-            <input type="text" id="documentFilelink" name="filelink" required> 
+            <label for="filelink">Filelink</label> 
+            <form action="/action_page.php">
+                <input type="file" id="myFile" name="filename">
+              </form>
         </div>
 
         <!-- image -->
@@ -109,8 +113,10 @@
             <label for="description">Description</label> 
             <input type="text" id="imageDescription" name="description" required> 
 
-            <label for="filelink">File link</label> 
-            <input type="text" id="imageFilelink" name="filelink" required> 
+            <label for="filelink">Filelink</label> 
+            <form action="/action_page.php">
+                <input type="file" id="myFile" name="filename">
+              </form>
         </div>
 
         <div id="upload_score_button" style="display:none;">
