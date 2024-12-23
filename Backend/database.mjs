@@ -24,9 +24,9 @@ export async function uploadInterpretation(data) {
     
     try {
         const insertInterpretation = `
-        CALL addInterpretation(?, ?, ?, ?, ?, ?, ?);
+        CALL addInterpretation(?, ?, ?, ?, ?, ?);
         `;
-        await pool.query(insertInterpretation, [data.title, data.composer, data.conductor, data.interpreter, data.year, data.filelink, data.opusNumber]);
+        await pool.query(insertInterpretation, [data.title, data.composer, data.conductor, data.publisher, data.year, data.filelink]);
         console.log("Interpretation " + data.title + " inserted to database");
 
     } catch (error) {
@@ -82,10 +82,10 @@ export async function uploadImage(data) {
 
     try {
         const insertImage = `
-        CALL addImage(?, ?);
+        CALL addImage(?, ?, ?);
         `;
-        await pool.query(insertImage, [data.description, data.filelink]);
-        console.log("Image " + data.description + " inserted to database");
+        await pool.query(insertImage, [data.description, data.filelink, data.photographer]);
+        console.log("Image inserted to database");
 
     } catch (error) {
         console.error('Error when inserting data:', error);

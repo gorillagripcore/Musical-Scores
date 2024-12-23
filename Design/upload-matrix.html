@@ -44,34 +44,31 @@
         <!-- score -->
 
         <div id="upload_score_fields" style="display:none;">
-            <label for="title">Title</label> 
-            <input type="text" id="scoreTitle" name="title" required> 
+            <label for="title">Title<span class="required"> *</span></label> 
+            <input type="text" id="scoreTitle" name="title" placeholder="Title OpusNr" required> 
 
-            <label for="composer">Composer</label> 
-            <input type="text" id="scoreComposer" name="composer" required> 
+            <label for="composer">Composer<span class="required"> *</span></label> 
+            <input type="text" id="scoreComposer" name="composer" required>
 
-            <label for="conductor">Conductor</label> 
+            <label for="conductor">Conductor/Interpreter<span class="required"> *</span></label> 
             <input type="text" id="interpretationConductor" name="conductor" required> 
 
-            <label for="interpreter">Interpreter/Publisher</label> 
-            <input type="text" id="interpretationInterpreter" name="interpreter"> 
-
-            <label for="opus">Opus Number</label> 
-            <input type="text" id="interpretationOpusNumber" name="opus">
+            <label for="interpreter">Publisher</label> 
+            <input type="text" id="interpretationPublisher" name="publisher"> 
 
             <label for="year">Year</label> 
             <input type="text" id="interpretationYear" name="year"> 
 
-            <label for="filelink">Filelink</label> 
+            <label for="filelink">Filelink <span class="required"> *</span></label> 
             <form action="/action_page.php">
-                <input type="file" id="scoreFile" name="filename">
+                <input type="file" id="scoreFile" name="filename" required>
               </form>
         </div>
 
         <!-- program -->
         
         <div id="upload_program_fields" style="display:none;">
-            <label for="title">Title</label> 
+            <label for="title">Title <span class="required"> *</span></label> 
             <input type="text" id="programTitle" name="title" required> 
 
             <label for="location">Location</label> 
@@ -83,7 +80,7 @@
             <label for="notes">Notes</label> 
             <input type="text" id="programNotes" name="notes"> 
 
-            <label for="conductor">Conductor</label> 
+            <label for="conductor">Conductor <span class="required"> *</span></label> 
             <input type="text" id="programConductor" name="conductor" required> 
 
             <label for="orchestra">Orchestra</label> 
@@ -92,16 +89,16 @@
             <label for="soloist">Soloist</label> 
             <input type="text" id="programSoloist" name="soloist" placeholder="Soloist 1, Soloist 2, etc.">
 
-            <label for="filelink">Filelink</label> 
+            <label for="filelink">Filelink <span class="required"> *</span></label> 
             <form action="/action_page.php">
-                <input type="file" id="programFile" name="filename">
+                <input type="file" id="programFile" name="filename" required>
               </form>
         </div>
 
         <!-- document -->
 
         <div id="upload_document_fields" style="display:none;">
-            <label for="title">Title</label> 
+            <label for="title">Title <span class="required"> *</span></label> 
             <input type="text" id="documentTitle" name="title" required> 
 
             <label for="notes">Notes</label> 
@@ -110,9 +107,9 @@
             <label for="year">Year</label>
             <input type="text" id="documentYear" name="year">
 
-            <label for="filelink">Filelink</label> 
+            <label for="filelink">Filelink <span class="required"> *</span></label> 
             <form action="/action_page.php">
-                <input type="file" id="documentFile" name="filename">
+                <input type="file" id="documentFile" name="filename" required>
               </form>
         </div>
 
@@ -120,11 +117,14 @@
 
         <div id="upload_image_fields" style="display:none;">
             <label for="description">Description</label> 
-            <input type="text" id="imageDescription" name="description" required> 
+            <input type="text" id="imageDescription" name="description" required>
 
-            <label for="filelink">Filelink</label> 
+            <label for="photographer">Photographer</label> 
+            <input type="text" id="imagePhotographer" name="photographer">
+
+            <label for="filelink">Filelink <span class="required"> *</span></label> 
             <form action="/action_page.php">
-                <input type="file" id="imageFile" name="filename">
+                <input type="file" id="imageFile" name="filename" required>
               </form>
         </div>
 
