@@ -11,7 +11,7 @@ import multer from 'multer';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-dotenv.config({ path: '/etc/app.env' });  
+dotenv.config({ path: '.env.dev' });
 
 const isProduction = process.env.NODE_ENV === 'production';
 
