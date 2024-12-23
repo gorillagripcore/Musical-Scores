@@ -125,3 +125,8 @@ input {
 #pwd {
     width: 80%;
 }
+
+.required {
+    color: red;
+    vertical-align: 4.5px;
+}

@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
 async function showUploadFields() {
 
     if (!loginState) {
-        alert("You need to enter the password")
-        return
+        alert("You need to enter the password");
+        return;
     }
 
     const uploadType = document.getElementById("upload_type").value;
@@ -76,8 +76,7 @@ async function uploadScoreButton() {
     title: document.getElementById("scoreTitle").value,
     composer: document.getElementById("scoreComposer").value,
     conductor: document.getElementById("interpretationConductor").value,
-    interpreter: document.getElementById("interpretationInterpreter").value,
-    opusNumber: document.getElementById("interpretationOpusNumber").value,
+    publisher: document.getElementById("interpretationPublisher").value,
     year: document.getElementById("interpretationYear").value,
     filelink: file.name,
   };
@@ -186,6 +185,7 @@ async function uploadImageButton() {
 
   const imageData = {
     description: document.getElementById("imageDescription").value,
+    photographer: document.getElementById("imagePhotographer").value,
     filelink: file.name,
   };
 
