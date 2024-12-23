@@ -53,7 +53,7 @@
             <label for="conductor">Conductor</label> 
             <input type="text" id="interpretationConductor" name="conductor" required> 
 
-            <label for="interpreter">Interpreter</label> 
+            <label for="interpreter">Interpreter/Publisher</label> 
             <input type="text" id="interpretationInterpreter" name="interpreter"> 
 
             <label for="opus">Opus Number</label> 
@@ -63,7 +63,9 @@
             <input type="text" id="interpretationYear" name="year"> 
 
             <label for="filelink">Filelink</label> 
-            <input type="text" id="interpretationFileLink" name="filelink" required> 
+            <form action="/action_page.php">
+                <input type="file" id="scoreFile" name="filename">
+              </form>
         </div>
 
         <!-- program -->
@@ -90,8 +92,10 @@
             <label for="soloist">Soloist</label> 
             <input type="text" id="programSoloist" name="soloist" placeholder="Soloist 1, Soloist 2, etc.">
 
-            <label for="filelink">File link</label> 
-            <input type="text" id="programFilelink" name="filelink" required> 
+            <label for="filelink">Filelink</label> 
+            <form action="/action_page.php">
+                <input type="file" id="programFile" name="filename">
+              </form>
         </div>
 
         <!-- document -->
@@ -106,8 +110,10 @@
             <label for="year">Year</label>
             <input type="text" id="documentYear" name="year">
 
-            <label for="filelink">File link</label> 
-            <input type="text" id="documentFilelink" name="filelink" required> 
+            <label for="filelink">Filelink</label> 
+            <form action="/action_page.php">
+                <input type="file" id="documentFile" name="filename">
+              </form>
         </div>
 
         <!-- image -->
@@ -116,25 +122,28 @@
             <label for="description">Description</label> 
             <input type="text" id="imageDescription" name="description" required> 
 
-            <label for="filelink">File link</label> 
-            <input type="text" id="imageFilelink" name="filelink" required> 
+            <label for="filelink">Filelink</label> 
+            <form action="/action_page.php">
+                <input type="file" id="imageFile" name="filename">
+              </form>
         </div>
 
         <div id="upload_score_button" style="display:none;">
-            <button type="button" onclick="uploadScoreButton()">Upload Score</button>
+            <button type="button" onclick="uploadScoreButton(); clearFields()">Upload Score</button>
         </div>
-
+        
         <div id="upload_program_button" style="display:none;">
-            <button type="button" onclick="uploadProgramButton()">Upload Program</button>
+            <button type="button" onclick="uploadProgramButton(); clearFields()">Upload Program</button>
         </div>
-
+        
         <div id="upload_document_button" style="display:none;">
-            <button type="button" onclick="uploadDocumentButton()">Upload Document</button>
+            <button type="button" onclick="uploadDocumentButton(); clearFields()">Upload Document</button>
         </div>
-
+        
         <div id="upload_image_button" style="display:none;">
-            <button type="button" onclick="uploadImageButton()">Upload Image</button>
+            <button type="button" onclick="uploadImageButton(); clearFields()">Upload Image</button>
         </div>
+        
         
     </div>
 

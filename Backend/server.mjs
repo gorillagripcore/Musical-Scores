@@ -5,12 +5,32 @@ import cors from 'cors';
 import fs from 'fs';  
 import dotenv from 'dotenv';
 import path from 'path';
-import { fetchData, uploadInterpretation, uploadProgram, uploadDocument, uploadImage } from './database.mjs';
+import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase } from './database.mjs';
 import { fileURLToPath } from 'url';
-dotenv.config({ path: '/etc/app.env' });  
+import multer from 'multer';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+dotenv.config({ path: '.env.dev' });
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+
+const bucketName = process.env.AWS_BUCKET_NAME
+const accessKey = process.env.AWS_ACCESSKEYID
+const secretAccessKey = process.env.AWS_SECRETACCESSKEY
+const bucketRegion = process.env.AWS_REGION
+
+const s3 = new S3Client({
+    credentials: {
+        accessKeyId: accessKey,
+        secretAccessKey: secretAccessKey,
+    },
+    region: bucketRegion
+});
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
@@ -41,7 +61,8 @@ app.use(cors({
             'https://sixtenehrlingdigitalarchive.com', 
             'https://13.61.87.232:5001',
             'https://localhost:5001',
-            'http://127.0.0.1:8080'
+            'http://127.0.0.1:8080',
+            'http://127.0.0.1:5500'
         ],   
    
              methods: ['GET', 'POST'], 
@@ -52,25 +73,6 @@ app.use(express.json());
 
 app.use(express.static('Design')); 
 app.use(express.static('Code')); 
-
-app.get('/api/fetchData', async (req, res) => {
-
-    const myString = req.query.myString;
-
-    if (myString === undefined || myString === '') {
-        return res.status(400).json({ error: 'Query string is required' });
-    } else {
-        console.log('Received request with query:', myString)
-    }
-    
-    try{
-        const data = await fetchData(myString);
-        res.json(data); 
-    } catch(error){
-        console.error('Error fetching data:', error);
-        res.status(500).json({error: error.message});
-    }
-});
 
 app.post('/api/uploadInterpretation', async (req, res) => {
     try {
@@ -116,13 +118,61 @@ app.post('/api/uploadImage', async (req, res) => {
     }
 });
 
-/*
-//For debugging
-http.createServer(app).listen(httpPort, '0.0.0.0', () => {
-    console.log(`HTTP Server listening at http://127.0.0.1:${httpPort}`);
+app.get('/api/searchDatabase', async (req, res) => { 
+
+    const myString = req.query.myString;
+
+    if (myString === undefined || myString === '') {
+        return res.status(400).json({ error: 'Query string is required' });
+    } else {
+        console.log('Received request with query:', myString)
+    }
+    
+    try{
+        const data = await searchDatabase(myString);
+        res.json(data); // Returnera JSON data till klienten
+    } catch(error){
+        console.error('Error fetching data:', error);
+        res.status(500).json({error: error.message});
+    }
+
 });
 
-https.createServer(sslOptions, app).listen(port, '0.0.0.0', () => {
-    console.log(`Server listening at https://13.61.87.232:${port}`);
-});
-*/
+app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {   
+
+        //const folderName = 'scores/';   
+        const fileName = req.file.originalname; 
+        const folder = req.params.folder;
+
+        const parameters = {
+            Bucket: bucketName,
+            Key: `${folder}/${fileName}`,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype,
+        };
+        const command = new PutObjectCommand(parameters);
+
+        await s3.send(command);
+        console.log(`File uploaded: ${fileName}`);
+
+        res.send({});
+    });
+
+    app.get('/api/fetchFromS3/:folder/:fileName', async (req, res) => {   
+        const fileName = req.params.fileName;
+        const folder = req.params.folder;
+
+        console.log(`Requested file: ${fileName}`);
+
+        const getObjectParams = {
+            Bucket: bucketName,
+            Key: `${folder}/${fileName}`
+        };
+        const command = new GetObjectCommand(getObjectParams);
+        const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+
+        res.json({ url });
+    });
+
+
+  
