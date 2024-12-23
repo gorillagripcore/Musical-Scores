@@ -42,7 +42,7 @@ export async function uploadProgram(data) {
         CALL addProgram(?, ?, ?, ?, ?, ?, ?);
         `;
         await pool.query(insertProgram, [data.title, data.location, data.season, data.notes, data.filelink, data.conductor, data.orchestra]);
-        const programIDQuery = 'SELECT @programID AS programID';
+        const programIDQuery = 'SELECT LAST_INSERT_ID() AS programID';
         const [rows] = await pool.query(programIDQuery);
         const programID = rows[0].programID;
         console.log("Program #" + programID + ": " + data.title + " inserted to database");
