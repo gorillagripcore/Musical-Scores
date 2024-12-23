@@ -1,12 +1,51 @@
+let loginState = false;
+
+function pageCheck() {
+    const blur = document.querySelector(".blur");
+    const popup = document.querySelector(".popup");
+    blur.style.display = "block";
+    popup.style.display = "block";
+}
+
+document.getElementById("check").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const textBox = document.getElementById("pwd");
+    const blur = document.querySelector(".blur");
+    const popup = document.querySelector(".popup");
+
+    try {
+        const uploadPassword = await getUploadPassword();
+        const inputPassword = textBox.value;
+        if (inputPassword === uploadPassword) {
+          blur.style.display = "none";
+          popup.style.display = "none";
+  
+          const uploadType = document.getElementById("upload_type");
+          uploadType.disabled = false;
+          loginState = true;
+      } else {
+          alert("Wrong password.");
+      }
+    } catch (error) {
+        console.error("Error when getting upload password:"), error
+    }
+
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   const uploadTypeElement = document.getElementById("upload_type");
   uploadTypeElement.addEventListener("change", showUploadFields);
 });
 
 async function showUploadFields() {
-  const uploadType = document.getElementById("upload_type").value;
 
-  const typeMappings = {
+    if (!loginState) {
+        alert("You need to enter the password")
+        return
+    }
+
+    const uploadType = document.getElementById("upload_type").value;
+    const typeMappings = {
     score: ["upload_score_fields", "upload_score_button"],
     program: ["upload_program_fields", "upload_program_button"],
     document: ["upload_document_fields", "upload_document_button"],
@@ -235,4 +274,29 @@ function clearFields() {
     "#upload_score_fields, #upload_program_fields, #upload_document_fields, #upload_image_fields"
   );
   sections.forEach((section) => (section.style.display = "none"));
+}
+
+async function getUploadPassword() {
+
+  try {
+    const apiUrl = getEnvironmentUrl();
+    const response = await fetch(
+      `${apiUrl}/getUploadPassword`,
+      {
+        method: "GET"
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data.uploadPassword;
+
+  } catch (error) {
+    console.error("Error when getting upload password:", error);
+  }
+
 }

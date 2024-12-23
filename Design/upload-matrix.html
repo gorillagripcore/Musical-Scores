@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="upload-matrix.css">
     <link rel="icon" type="image/png" href="img/icon.png">
 </head>
-<body>
+<body onload="pageCheck()">
     <header>
         <a href="index.html" id="logo-link">
             <img src="img/logo.png" id="logo-image">
@@ -22,9 +22,18 @@
         </div>
     </header>
 
+    <div class="blur"></div>
+    <div class="popup">
+        <form action="">
+            <p>Password</p>
+            <input type="password" name="pwd" id="pwd">
+            <button id="check">Login</button>
+        </form>
+    </div>
+
     <div class="upload-body">
         <label for="upload_type">Upload Type</label> 
-        <select id="upload_type" name="upload_type">
+        <select id="upload_type" name="upload_type" onchange="showUploadFields()" disabled>
             <option value="">Select an option</option>
             <option value="score">Score</option>
             <option value="program">Program</option>
