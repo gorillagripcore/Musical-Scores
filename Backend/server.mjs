@@ -174,5 +174,17 @@ app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {
         res.json({ url });
     });
 
+    app.get('/api/getUploadPassword', async (req, res) => {
+
+        const uploadPassword = process.env.UPLOAD_PASSWORD;
+
+        if(uploadPassword === undefined || uploadPassword === ''){
+            return res.status(500).json({error: 'Upload password not found'});
+        }
+
+        res.json({ uploadPassword });
+
+    });
+
 
   

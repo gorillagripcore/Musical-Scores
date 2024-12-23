@@ -7,23 +7,30 @@ function pageCheck() {
     popup.style.display = "block";
 }
 
-document.getElementById("check").addEventListener("click", e => {
+document.getElementById("check").addEventListener("click", async (e) => {
     e.preventDefault();
     const textBox = document.getElementById("pwd");
     const blur = document.querySelector(".blur");
     const popup = document.querySelector(".popup");
-    if (textBox.value == "123") {
-        blur.style.display = "none";
-        popup.style.display = "none";
 
-        const uploadType = document.getElementById("upload_type");
-        uploadType.disabled = false;
-        loginState = true;
+    try {
+        const uploadPassword = await getUploadPassword();
+        const inputPassword = textBox.value;
+        if (inputPassword === uploadPassword) {
+          blur.style.display = "none";
+          popup.style.display = "none";
+  
+          const uploadType = document.getElementById("upload_type");
+          uploadType.disabled = false;
+          loginState = true;
+      } else {
+          alert("Wrong password.");
+      }
+    } catch (error) {
+        console.error("Error when getting upload password:"), error
     }
-    else {
-        alert("Wrong password");
-    }
-})
+
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   const uploadTypeElement = document.getElementById("upload_type");
@@ -267,4 +274,29 @@ function clearFields() {
     "#upload_score_fields, #upload_program_fields, #upload_document_fields, #upload_image_fields"
   );
   sections.forEach((section) => (section.style.display = "none"));
+}
+
+async function getUploadPassword() {
+
+  try {
+    const apiUrl = getEnvironmentUrl();
+    const response = await fetch(
+      `${apiUrl}/getUploadPassword`,
+      {
+        method: "GET"
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data.uploadPassword;
+
+  } catch (error) {
+    console.error("Error when getting upload password:", error);
+  }
+
 }
