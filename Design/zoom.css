@@ -5,6 +5,15 @@ body {
   flex-direction: column;
   background-color: #fff;
 }
+
+#pdf-render, #pdf-zoom-render {
+  display: block;
+  margin: 0 auto;  
+  max-width: 100%;  
+  height: auto; 
+  background-color: #fff; 
+}
+
 #pdf-viewer {
   flex: 1;
   display: flex;
