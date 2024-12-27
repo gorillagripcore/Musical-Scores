@@ -200,6 +200,12 @@ if (!fetchedUrl) {
         }
     }
 
+    document.addEventListener('contextmenu', (event) => {
+        if (event.target.tagName === 'CANVAS') {
+            event.preventDefault();
+        }
+    });
+
     function getCorrectCanvasBasedOnUrl() {
         const currentFile = window.location.pathname.split('/').pop();
         let canvas = "";
