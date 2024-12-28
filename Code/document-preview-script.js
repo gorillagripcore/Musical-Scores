@@ -155,7 +155,6 @@ if (!fetchedUrl) {
             }).promise;
 
             document.getElementById('page-num').textContent = pageNum;
-            console.log('Page rendered:', pageNum);
         } catch (error) {
             console.error('Error rendering page:', error);
         }
@@ -208,7 +207,6 @@ if (!fetchedUrl) {
 
     function getCorrectCanvasBasedOnUrl() {
         const currentFile = window.location.pathname.split('/').pop();
-        console.log('currentFile: ', currentFile);
         let canvas = "";
         if (currentFile.includes('zoom')) {   
             console.log('Zoom page');
