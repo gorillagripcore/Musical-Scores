@@ -208,8 +208,10 @@ if (!fetchedUrl) {
 
     function getCorrectCanvasBasedOnUrl() {
         const currentFile = window.location.pathname.split('/').pop();
+        console.log('currentFile: ', currentFile);
         let canvas = "";
-        if (currentFile === 'zoom.html') {   
+        if (currentFile.includes('zoom')) {   
+            console.log('Zoom page');
             canvas = document.getElementById('pdf-zoom-render');
             document.getElementById('zoom-in').addEventListener('click', zoomIn);
             document.getElementById('zoom-out').addEventListener('click', zoomOut); 
