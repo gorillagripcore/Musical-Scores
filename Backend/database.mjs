@@ -129,7 +129,7 @@ export async function searchDatabase(data) {
         GROUP_CONCAT(s.name SEPARATOR ', ') AS soloists, 
         '' AS document_title, 
         '' AS document_year,
-        '' AS file_link
+        p.filelink AS file_link
         FROM Program p
         JOIN Conductor c ON p.conductor = c.id
         JOIN Orchestra o ON p.orchestra = o.id
@@ -160,11 +160,11 @@ export async function searchDatabase(data) {
         '' AS soloists, 
         d.title AS document_title, 
         d.year AS document_year,
-        '' AS file_link
+        d.filelink AS file_link
         FROM Document d
         WHERE d.title LIKE ?;`;
         const wildCard = `%${data}%`;
-        const wildCardParameters = [ // en wildcard för varje parameter i queryn
+        const wildCardParameters = [
             wildCard,
             wildCard,
             wildCard,

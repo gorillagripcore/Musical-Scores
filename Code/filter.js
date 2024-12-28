@@ -1,5 +1,3 @@
-
-// replace with real data fetching
 const mockResults = [
     "Symphony No. 5 - Sixten Ehrling's Notes",
     "Piano Concerto No. 21 - Program from 1965",
@@ -31,7 +29,6 @@ document.getElementById('search-button').addEventListener('click', function() {
 searchInput.addEventListener('input', function () {
     const query = searchInput.value.toLowerCase().trim();
 
-
     searchPreview.innerHTML = '';
 
     if (query.length > 0) {
@@ -58,29 +55,82 @@ searchInput.addEventListener('input', function () {
 async function searchDatabase() {
     try {
         const searchQuery = document.querySelector('.search-bar input').value;
-        // Get-request till servern med query-parametern
         const apiUrl = getEnvironmentUrl();
         const response = await fetch(`${apiUrl}/searchDatabase?myString=${encodeURIComponent(searchQuery)}`);
         const data = await response.json();
-        console.log(data); // Skriv ut resultatet i konsolen
+        console.log(data); 
         populateResultContainer(data);
     } catch (error) {
         console.error('Error searching data:', error);
     }
 }
-
+    
 function populateResultContainer(data) {
     const resultContainer = document.querySelector('.result');
-    resultContainer.addEventListener('click', async function(event) {
+    resultContainer.addEventListener('click', function (event) {
         if (event.target.tagName === 'IMG') {
-            window.location.href = 'score-page.html';
+            const fileLink = event.target.getAttribute('data-filelink');
+    
+            if (!fileLink) {
+                console.error('File link not found for the clicked image.');
+                return; 
+            }
+    
+            const itemElement = event.target.closest('.item');
+            if (!itemElement) {
+                console.error('Item element not found.');
+                return; 
+            }
+    
+            const itemTypeElement = itemElement.querySelector('.info p');
+            if (!itemTypeElement) {
+                console.error('Item type not found.');
+                return; 
+            }
+    
+            const itemType = itemTypeElement.textContent.split(': ')[1];
+            if (!itemType) {
+                console.error('Unable to determine item type.');
+                return; 
+            }
+                
+            let folder = '';
+            switch (itemType) {
+                case 'Program':
+                    folder = 'programs';
+                    window.location.href = `program-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`;
+                    break;
+                case 'Interpretation':
+                    folder = 'scores';
+                    window.location.href = `score-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`;
+                    break;
+                case 'Document':
+                    folder = 'documents';
+                    window.location.href = `document-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`;
+                    break;
+                default:
+                    console.error('Unknown item type:', itemType);
+                    return; 
+            }
+    
         }
     });
+    
     resultContainer.innerHTML = '';
 
     data.forEach(result => {
         if(result.type === 'Interpretation') {
-            const itemDiv = document.createElement('div');
+            populateInterpretation(result, resultContainer);
+        } else if(result.type === 'Program') {
+            populateProgram(result, resultContainer);
+        } else if(result.type === 'Document') {
+            populateDocument(result, resultContainer);
+        }
+    });
+}
+
+function populateInterpretation(result,resultContainer) {
+    const itemDiv = document.createElement('div');
             itemDiv.classList.add('item');
 
             const thumbnailDiv = document.createElement('div');
@@ -88,6 +138,7 @@ function populateResultContainer(data) {
 
             const thumbnailImg = document.createElement('img');
             thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; 
+            thumbnailImg.setAttribute('data-filelink', result.file_link); 
             thumbnailDiv.appendChild(thumbnailImg);
             itemDiv.appendChild(thumbnailDiv);
 
@@ -112,15 +163,18 @@ function populateResultContainer(data) {
 
             itemDiv.appendChild(infoDiv);
             resultContainer.appendChild(itemDiv);
-        } else if(result.type === 'Program') {
-            const itemDiv = document.createElement('div');
+}
+
+function populateProgram(result,resultContainer) {
+    const itemDiv = document.createElement('div');
             itemDiv.classList.add('item');
 
             const thumbnailDiv = document.createElement('div');
             thumbnailDiv.classList.add('thumbnail');
 
             const thumbnailImg = document.createElement('img');
-            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; //When debugging, change to '/img/Conductors/Sixten_test.jpg' and move file to filter.js to design folder
+            thumbnailImg.setAttribute('data-filelink', result.file_link); 
+            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; 
             thumbnailDiv.appendChild(thumbnailImg);
             itemDiv.appendChild(thumbnailDiv);
 
@@ -155,41 +209,63 @@ function populateResultContainer(data) {
             programSoloistsP.textContent = `Soloists: ${result.soloists}`;
             infoDiv.appendChild(programSoloistsP);
 
+            const programFileLink = document.createElement('p');
+            programFileLink.textContent = `File Link: ${result.file_link}`;
+
             itemDiv.appendChild(infoDiv);
             resultContainer.appendChild(itemDiv);
-        } else if(result.type === 'Document') {
-            const itemDiv = document.createElement('div');
+}
+
+function populateDocument(result,resultContainer) {
+    const itemDiv = document.createElement('div');
             itemDiv.classList.add('item');
 
             const thumbnailDiv = document.createElement('div');
             thumbnailDiv.classList.add('thumbnail');
 
             const thumbnailImg = document.createElement('img');
-            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; //When debugging, change to '/img/Conductors/Sixten_test.jpg' and move file to filter.js to design folder
+            thumbnailImg.setAttribute('data-filelink', result.file_link); 
+            thumbnailImg.src = '../Design/img/Conductors/Sixten_test.jpg'; 
             thumbnailDiv.appendChild(thumbnailImg);
             itemDiv.appendChild(thumbnailDiv);
 
             const infoDiv = document.createElement('div');
             infoDiv.classList.add('info');
 
-            const documentTypeP = document.createElement('p');
-            documentTypeP.textContent = `Type: ${result.type}`;
-            infoDiv.appendChild(documentTypeP);
+            const programTypeP = document.createElement('p');
+            programTypeP.textContent = `Type: ${result.type}`;
+            infoDiv.appendChild(programTypeP);
 
-            const documentTitleP = document.createElement('p');
-            documentTitleP.textContent = `Title: ${result.document_title}`;
-            infoDiv.appendChild(documentTitleP);
+            const programTitleP = document.createElement('p');
+            programTitleP.textContent = `Title: ${result.program_title}`;
+            infoDiv.appendChild(programTitleP);
 
-            const documentYearP = document.createElement('p');
-            documentYearP.textContent = `Year: ${result.document_year}`;
-            infoDiv.appendChild(documentYearP);
+            const programSeasonP = document.createElement('p');
+            programSeasonP.textContent = `Season: ${result.season}`;
+            infoDiv.appendChild(programSeasonP);
+
+            const programConductorP = document.createElement('p');
+            programConductorP.textContent = `Conductor: ${result.conductor_name}`;
+            infoDiv.appendChild(programConductorP);
+
+            const programLocationP = document.createElement('p');
+            programLocationP.textContent = `Location: ${result.location}`;
+            infoDiv.appendChild(programLocationP);
+
+            const programOrchestraP = document.createElement('p');
+            programOrchestraP.textContent = `Orchestra: ${result.orchestra}`;
+            infoDiv.appendChild(programOrchestraP);
+
+            const programSoloistsP = document.createElement('p');
+            programSoloistsP.textContent = `Soloists: ${result.soloists}`;
+            infoDiv.appendChild(programSoloistsP);
+
+            const programFileLink = document.createElement('p');
+            programFileLink.textContent = `File Link: ${result.file_link}`;
 
             itemDiv.appendChild(infoDiv);
             resultContainer.appendChild(itemDiv);
-        }
-    });
 }
-
     function getEnvironmentUrl(){
         if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
             return 'http://127.0.0.1:5001/api' 

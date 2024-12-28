@@ -144,6 +144,8 @@ app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {
         const fileName = req.file.originalname; 
         const folder = req.params.folder;
 
+        fileName = reformatFileName(fileName);
+
         const parameters = {
             Bucket: bucketName,
             Key: `${folder}/${fileName}`,
@@ -158,21 +160,71 @@ app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {
         res.send({});
     });
 
-    app.get('/api/fetchFromS3/:folder/:fileName', async (req, res) => {   
-        const fileName = req.params.fileName;
+
+    app.get('/api/fetchFromS3/:folder/:fileName', async (req, res) => {
+        let fileName = req.params.fileName;
         const folder = req.params.folder;
-
+    
+        console.log(`Requested folder: ${folder}`);
         console.log(`Requested file: ${fileName}`);
-
+    
+        fileName = reformatFileName(fileName);
+        const range = req.headers.range;
+    
+        if (!range) {
+            return res.status(400).send('Range header is required');
+        }
+    
+        console.log(`Requested range: ${range}`);
+    
         const getObjectParams = {
             Bucket: bucketName,
-            Key: `${folder}/${fileName}`
+            Key: `${folder}/${fileName}`,
+            Range: range, // Hantera byte-ranges
         };
-        const command = new GetObjectCommand(getObjectParams);
-        const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
-
-        res.json({ url });
+    
+        try {
+            const command = new GetObjectCommand(getObjectParams);
+            const { Body, ContentType, ContentRange, ContentLength } = await s3.send(command);
+    
+            const chunks = [];
+            Body.on('data', (chunk) => {
+                chunks.push(chunk);
+            });
+    
+            Body.on('end', () => {
+                const fileBuffer = Buffer.concat(chunks); // Sammanfoga alla bitarna
+                res.status(200).setHeader('Content-Type', ContentType || 'application/octet-stream');
+                res.setHeader('Content-Length', fileBuffer.length);
+                res.send(fileBuffer); // Skicka hela filen när alla bitar är nedladdade
+            });
+    
+            Body.on('error', (err) => {
+                console.error('Error fetching file from S3:', err);
+                res.status(500).send('Error fetching file from S3');
+            });
+        } catch (error) {
+            console.error('Error fetching file from S3:', error);
+    
+            if (error.$metadata?.httpStatusCode === 416) {
+                res.status(416).send('Requested range not satisfiable');
+            } else {
+                res.status(500).send('Error fetching file from S3');
+            }
+        }
     });
+
+    function reformatFileName(fileName){
+        fileName = fileName.replace(/[åäö]/gi, (match) => {
+            switch (match.toLowerCase()) {
+                case 'å': return 'a';
+                case 'ä': return 'a';
+                case 'ö': return 'o';
+                default: return match;
+            }
+        });
+        return fileName;  
+    }
 
     app.get('/api/getUploadPassword', async (req, res) => {
 
@@ -185,6 +237,8 @@ app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {
         res.json({ uploadPassword });
 
     });
+
+
 
 
   
