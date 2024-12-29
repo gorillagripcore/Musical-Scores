@@ -15,6 +15,7 @@ const mockResults = [
 
 const searchInput = document.querySelector('.search-bar input');
 const searchPreview = document.getElementById('search-preview');
+randomsuggestions();
 
 document.addEventListener('click', function (event) {
     if (!searchInput.contains(event.target)) {
@@ -64,56 +65,24 @@ async function searchDatabase() {
         console.error('Error searching data:', error);
     }
 }
+
+async function randomsuggestions() {
+    try {
+        const searchQuery = " ";
+        const apiUrl = getEnvironmentUrl();
+        const response = await fetch(`${apiUrl}/searchDatabase?myString=${encodeURIComponent(searchQuery)}`);
+        const data = await response.json();
+        console.log(data); 
+        populateResultContainerOnStartup(data);
+        } catch (error) {
+        console.error('Error searching data:', error);
+    }
+}
     
 function populateResultContainer(data) {
     const resultContainer = document.querySelector('.result');
     resultContainer.addEventListener('click', function (event) {
-        if (event.target.tagName === 'IMG') {
-            const fileLink = event.target.getAttribute('data-filelink');
-    
-            if (!fileLink) {
-                console.error('File link not found for the clicked image.');
-                return; 
-            }
-    
-            const itemElement = event.target.closest('.item');
-            if (!itemElement) {
-                console.error('Item element not found.');
-                return; 
-            }
-    
-            const itemTypeElement = itemElement.querySelector('.info p');
-            if (!itemTypeElement) {
-                console.error('Item type not found.');
-                return; 
-            }
-    
-            const itemType = itemTypeElement.textContent.split(': ')[1];
-            if (!itemType) {
-                console.error('Unable to determine item type.');
-                return; 
-            }
-                
-            let folder = '';
-            switch (itemType) {
-                case 'Program':
-                    folder = 'programs';
-                    window.location.href = `program-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`;
-                    break;
-                case 'Interpretation':
-                    folder = 'scores';
-                    window.location.href = `score-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`;
-                    break;
-                case 'Document':
-                    folder = 'documents';
-                    window.location.href = `document-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`;
-                    break;
-                default:
-                    console.error('Unknown item type:', itemType);
-                    return; 
-            }
-    
-        }
+        navigateToCorrectPage(event);
     });
     
     resultContainer.innerHTML = '';
@@ -266,6 +235,76 @@ function populateDocument(result,resultContainer) {
             itemDiv.appendChild(infoDiv);
             resultContainer.appendChild(itemDiv);
 }
+
+function populateResultContainerOnStartup(data){
+    const resultContainer = document.querySelector('.result');
+    resultContainer.innerHTML = '';
+
+    const randomResults = data.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+    randomResults.forEach(result => {
+       if(result.type === 'Interpretation') {
+          populateInterpretation(result, resultContainer);
+        } else if(result.type === 'Program') {
+          populateProgram(result, resultContainer);
+        } else if(result.type === 'Document') {
+        populateDocument(result, resultContainer);
+        }
+    });
+    resultContainer.addEventListener('click', function (event) {
+        navigateToCorrectPage(event);
+    });
+}
+
+function navigateToCorrectPage(event) {
+    if (event.target.tagName === 'IMG') {
+        const fileLink = event.target.getAttribute('data-filelink');
+
+        if (!fileLink) {
+            console.error('File link not found for the clicked image.');
+            return; 
+        }
+
+        const itemElement = event.target.closest('.item');
+        if (!itemElement) {
+            console.error('Item element not found.');
+            return; 
+        }
+
+        const itemTypeElement = itemElement.querySelector('.info p');
+        if (!itemTypeElement) {
+            console.error('Item type not found.');
+            return; 
+        }
+
+        const itemType = itemTypeElement.textContent.split(': ')[1];
+        if (!itemType) {
+            console.error('Unable to determine item type.');
+            return; 
+        }
+            
+        let folder = '';
+        switch (itemType) {
+            case 'Program':
+                folder = 'programs';
+                window.location.href = `program-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`;
+                break;
+            case 'Interpretation':
+                folder = 'scores';
+                window.location.href = `score-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`;
+                break;
+            case 'Document':
+                folder = 'documents';
+                window.location.href = `document-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`;
+                break;
+            default:
+                console.error('Unknown item type:', itemType);
+                return; 
+        }
+
+    }
+}
+
     function getEnvironmentUrl(){
         if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
             return 'http://127.0.0.1:5001/api' 

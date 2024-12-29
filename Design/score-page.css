@@ -97,7 +97,7 @@ a {
 }
 
 canvas {
-  width: 80%;            /* Justera bredden enligt behov */
+  width: 80%;           
   height: 600px;
   border: 1px solid black;
   border-radius: 5px;
