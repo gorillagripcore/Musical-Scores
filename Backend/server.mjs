@@ -8,7 +8,7 @@ import path from 'path';
 import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase } from './database.mjs';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 dotenv.config({ path: '.env.dev' });
@@ -225,6 +225,33 @@ app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {
         });
         return fileName;  
     }
+
+    app.get('/api/fetchImagesFromS3', async (req, res) => {
+        const folder = req.query.folder || 'images'; 
+    
+        const params = {
+            Bucket: bucketName,
+            Prefix: `${folder}/`, 
+        };
+    
+        try {
+            const command = new ListObjectsV2Command(params);
+            const data = await s3.send(command);
+    
+            if (!data.Contents || data.Contents.length === 0) {
+                return res.status(404).json({ message: 'No images found in the specified folder.' });
+            }
+    
+            const imageUrls = data.Contents
+                .filter(item => /\.(jpg|jpeg|png|gif)$/i.test(item.Key)) 
+                .map(item => `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${item.Key}`);
+            console.log('I am fetching images from S3 once again');
+            res.status(200).json({ images: imageUrls });
+        } catch (error) {
+            console.error('Error fetching images from S3:', error);
+            res.status(500).json({ message: 'Error fetching images from S3', error: error.message });
+        }
+    });
 
     app.get('/api/getUploadPassword', async (req, res) => {
 

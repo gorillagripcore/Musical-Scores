@@ -5,7 +5,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs
 const urlParams = new URLSearchParams(window.location.search);
 const fetchedUrl = urlParams.get('fileLink');
 const folder = urlParams.get('folder');
-let zoomLevel = 1.0; // Starta med en grundnivå för zoom
+let zoomLevel = 2.0; // Starta med en grundnivå för zoom
 
 if (!fetchedUrl) {
     console.error('Missing fileLink parameter in URL');
