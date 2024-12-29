@@ -15,7 +15,7 @@ const mockResults = [
 
 const searchInput = document.querySelector('.search-bar input');
 const searchPreview = document.getElementById('search-preview');
-randomsuggestions();
+randomSuggestionsOnStartup();
 
 document.addEventListener('click', function (event) {
     if (!searchInput.contains(event.target)) {
@@ -66,7 +66,7 @@ async function searchDatabase() {
     }
 }
 
-async function randomsuggestions() {
+async function randomSuggestionsOnStartup() {
     try {
         const searchQuery = " ";
         const apiUrl = getEnvironmentUrl();
