@@ -115,7 +115,7 @@ function populateInterpretation(result, resultContainer) {
   thumbnailDiv.classList.add("thumbnail");
 
   const thumbnailImg = document.createElement("img");
-  thumbnailImg.src = "../Design/img/Conductors/Sixten_test.jpg";
+  thumbnailImg.src = "../Design/img/Document.png";
   thumbnailImg.setAttribute("data-filelink", result.file_link);
   thumbnailDiv.appendChild(thumbnailImg);
   itemDiv.appendChild(thumbnailDiv);
