@@ -1,7 +1,6 @@
-const mockResults = [];
-
-const searchInput = document.querySelector(".search-bar input");
 randomSuggestionsOnStartup();
+const mockResults = [];
+const searchInput = document.querySelector(".search-bar input");
 
 document.getElementById("search-button").addEventListener("click", function () {
   searchDatabase();
@@ -60,57 +59,6 @@ function populateResultContainer(data) {
     navigateToCorrectPage(event);
   });
 
-  resultContainer.innerHTML = "";
-
-  if (!fileLink) {
-    console.error("File link not found for the clicked image.");
-    return;
-  }
-
-  const itemElement = event.target.closest(".item");
-  if (!itemElement) {
-    console.error("Item element not found.");
-    return;
-  }
-
-  const itemTypeElement = itemElement.querySelector(".info p");
-  if (!itemTypeElement) {
-    console.error("Item type not found.");
-    return;
-  }
-
-  const itemType = itemTypeElement.textContent.split(": ")[1];
-  if (!itemType) {
-    console.error("Unable to determine item type.");
-    return;
-  }
-
-  let folder = "";
-  switch (itemType) {
-    case "Program":
-      folder = "programs";
-      window.location.href = `program-page.html?folder=${folder}&fileLink=${encodeURIComponent(
-        fileLink
-      )}`;
-      break;
-    case "Interpretation":
-      folder = "scores";
-      window.location.href = `score-page.html?folder=${folder}&fileLink=${encodeURIComponent(
-        fileLink
-      )}`;
-      break;
-    case "Document":
-      folder = "documents";
-      window.location.href = `document-page.html?folder=${folder}&fileLink=${encodeURIComponent(
-        fileLink
-      )}`;
-      break;
-    default:
-      console.error("Unknown item type:", itemType);
-      return;
-  }
-}
-
 resultContainer.innerHTML = "";
 
 data.forEach((result) => {
@@ -122,6 +70,7 @@ data.forEach((result) => {
     populateDocument(result, resultContainer);
   }
 });
+}
 
 function populateInterpretation(result, resultContainer) {
   const itemDiv = document.createElement("div");
@@ -283,8 +232,8 @@ function populateResultContainerOnStartup(data) {
 }
 
 function navigateToCorrectPage(event) {
-  if (event.target.tagName === "IMG") {
-    const fileLink = event.target.getAttribute("data-filelink");
+if (event.target.closest(".item")) {
+    const fileLink = event.target.closest(".item").getAttribute("data-filelink");
 
     if (!fileLink) {
       console.error("File link not found for the clicked image.");
