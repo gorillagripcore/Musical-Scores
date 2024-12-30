@@ -110,13 +110,13 @@ function populateResultContainer(data) {
 function populateInterpretation(result, resultContainer) {
   const itemDiv = document.createElement("div");
   itemDiv.classList.add("item");
+  itemDiv.setAttribute("data-filelink", result.file_link);
 
   const thumbnailDiv = document.createElement("div");
   thumbnailDiv.classList.add("thumbnail");
 
   const thumbnailImg = document.createElement("img");
   thumbnailImg.src = "../Design/img/note.png";
-  thumbnailImg.setAttribute("data-filelink", result.file_link);
   thumbnailDiv.appendChild(thumbnailImg);
   itemDiv.appendChild(thumbnailDiv);
 
@@ -146,12 +146,12 @@ function populateInterpretation(result, resultContainer) {
 function populateProgram(result, resultContainer) {
   const itemDiv = document.createElement("div");
   itemDiv.classList.add("item");
+  itemDiv.setAttribute("data-filelink", result.file_link);
 
   const thumbnailDiv = document.createElement("div");
   thumbnailDiv.classList.add("thumbnail");
 
   const thumbnailImg = document.createElement("img");
-  thumbnailImg.setAttribute("data-filelink", result.file_link);
   thumbnailImg.src = "../Design/img/Program.png";
   thumbnailDiv.appendChild(thumbnailImg);
   itemDiv.appendChild(thumbnailDiv);
@@ -197,12 +197,13 @@ function populateProgram(result, resultContainer) {
 function populateDocument(result, resultContainer) {
   const itemDiv = document.createElement("div");
   itemDiv.classList.add("item");
+  itemDiv.setAttribute("data-filelink", result.file_link);
 
   const thumbnailDiv = document.createElement("div");
   thumbnailDiv.classList.add("thumbnail");
 
   const thumbnailImg = document.createElement("img");
-  thumbnailImg.setAttribute("data-filelink", result.file_link);
+
   thumbnailImg.src = "../Design/img/Document.png";
   thumbnailDiv.appendChild(thumbnailImg);
   itemDiv.appendChild(thumbnailDiv);
