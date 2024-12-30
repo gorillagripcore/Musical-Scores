@@ -115,7 +115,7 @@ function populateInterpretation(result, resultContainer) {
   thumbnailDiv.classList.add("thumbnail");
 
   const thumbnailImg = document.createElement("img");
-  thumbnailImg.src = "../Design/img/Document.png";
+  thumbnailImg.src = "../Design/img/note.png";
   thumbnailImg.setAttribute("data-filelink", result.file_link);
   thumbnailDiv.appendChild(thumbnailImg);
   itemDiv.appendChild(thumbnailDiv);
@@ -152,7 +152,7 @@ function populateProgram(result, resultContainer) {
 
   const thumbnailImg = document.createElement("img");
   thumbnailImg.setAttribute("data-filelink", result.file_link);
-  thumbnailImg.src = "../Design/img/Conductors/Sixten_test.jpg";
+  thumbnailImg.src = "../Design/img/Program.png";
   thumbnailDiv.appendChild(thumbnailImg);
   itemDiv.appendChild(thumbnailDiv);
 
@@ -203,7 +203,7 @@ function populateDocument(result, resultContainer) {
 
   const thumbnailImg = document.createElement("img");
   thumbnailImg.setAttribute("data-filelink", result.file_link);
-  thumbnailImg.src = "../Design/img/Conductors/Sixten_test.jpg";
+  thumbnailImg.src = "../Design/img/Document.png";
   thumbnailDiv.appendChild(thumbnailImg);
   itemDiv.appendChild(thumbnailDiv);
 
