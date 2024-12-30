@@ -191,12 +191,7 @@ if (!fetchedUrl) {
 
     function openZoomPage() {
         const zoomUrl = `zoom.html?folder=${folder}&fileLink=${encodeURIComponent(fetchedUrl)}`;
-        const newWindow = window.open(zoomUrl, "_blank");
-
-    
-        if (newWindow) {
-            newWindow.focus();
-        }
+        window.location.href = zoomUrl;
     }
 
     document.addEventListener('contextmenu', (event) => {

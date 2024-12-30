@@ -261,26 +261,20 @@ if (event.target.closest(".item")) {
     let folder = "";
     switch (itemType) {
       case "Program":
-        folder = "programs";
-        window.location.href = `program-page.html?folder=${folder}&fileLink=${encodeURIComponent(
-          fileLink
-        )}`;
-        break;
+      folder = "programs";
+      window.open(`program-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`, '_blank');
+      break;
       case "Interpretation":
-        folder = "scores";
-        window.location.href = `score-page.html?folder=${folder}&fileLink=${encodeURIComponent(
-          fileLink
-        )}`;
-        break;
+      folder = "scores";
+      window.open(`score-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`, '_blank');
+      break;
       case "Document":
-        folder = "documents";
-        window.location.href = `document-page.html?folder=${folder}&fileLink=${encodeURIComponent(
-          fileLink
-        )}`;
-        break;
+      folder = "documents";
+      window.open(`document-page.html?folder=${folder}&fileLink=${encodeURIComponent(fileLink)}`, '_blank');
+      break;
       default:
-        console.error("Unknown item type:", itemType);
-        return;
+      console.error("Unknown item type:", itemType);
+      return;
     }
   }
 }
