@@ -22,11 +22,11 @@
     }
   }
 
-  function populateGallery(data) {
+  async function populateGallery(data) {
     const gallery = document.getElementById("gallery");
     gallery.innerHTML = ""; 
 
-    data.forEach((url) => {
+    data.forEach(async (url) => {
       const container = document.createElement("div");
       container.classList.add("image-container");
 
@@ -34,9 +34,17 @@
       img.src = url;  
       img.alt = "Image from S3"; 
       
-      const description = document.createElement("p");
-      description.textContent = "No description available"; 
+      const descriptionUrl = getEnvironmentUrl();
 
+      const description = document.createElement("p");
+      try {
+        const response = await fetch(`${descriptionUrl}/fetchImageDescription?url=${url}`);
+        const result = await response.json();
+        description.textContent = result.description; 
+    } catch (error) {
+        console.error('Error fetching image description:', error);
+        description.textContent = "Description not available";
+    }
       container.appendChild(img);
       container.appendChild(description);
 
