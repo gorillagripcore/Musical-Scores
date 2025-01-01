@@ -35,6 +35,17 @@ export async function uploadInterpretation(data) {
 
 }
 
+export async function getImageDescription(url) {
+    const filename = url.split('/').pop(); 
+    try {
+        const imageQuery = 'SELECT description FROM Image WHERE filelink = ?';
+        const [rows] = await pool.query(imageQuery, [filename]); 
+        return rows[0].description;
+    } catch (error) {
+        console.error('Error fetching image description:', error);
+    }
+}
+
 export async function uploadProgram(data) {
 
     try {

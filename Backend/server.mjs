@@ -5,11 +5,10 @@ import cors from 'cors';
 import fs from 'fs';  
 import dotenv from 'dotenv';
 import path from 'path';
-import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase } from './database.mjs';
+import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase, getImageDescription } from './database.mjs';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
 
 dotenv.config({ path: '.env.dev' });
 
@@ -118,6 +117,21 @@ app.post('/api/uploadImage', async (req, res) => {
     }
 });
 
+app.get('/api/fetchImageDescription', async (req, res) => {
+    const url = req.query.url;
+    if (!url) {
+        return res.status(400).json({ error: 'URL is required' });
+    }
+
+    try {
+        const description = await getImageDescription(url);
+        res.json({ description });
+    } catch (error) {
+        console.error('Error fetching image description:', error);
+        res.status(500).json({ error: 'Error fetching image description' });
+    }
+});
+
 app.get('/api/searchDatabase', async (req, res) => { 
 
     const myString = req.query.myString;
@@ -130,7 +144,7 @@ app.get('/api/searchDatabase', async (req, res) => {
     
     try{
         const data = await searchDatabase(myString);
-        res.json(data); // Returnera JSON data till klienten
+        res.json(data);
     } catch(error){
         console.error('Error fetching data:', error);
         res.status(500).json({error: error.message});
@@ -140,7 +154,6 @@ app.get('/api/searchDatabase', async (req, res) => {
 
 app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {   
 
-        //const folderName = 'scores/';   
         const fileName = req.file.originalname; 
         const folder = req.params.folder;
 
@@ -165,9 +178,6 @@ app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {
         let fileName = req.params.fileName;
         const folder = req.params.folder;
     
-        console.log(`Requested folder: ${folder}`);
-        console.log(`Requested file: ${fileName}`);
-    
         fileName = reformatFileName(fileName);
         const range = req.headers.range;
     
@@ -180,7 +190,7 @@ app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {
         const getObjectParams = {
             Bucket: bucketName,
             Key: `${folder}/${fileName}`,
-            Range: range, // Hantera byte-ranges
+            Range: range,
         };
     
         try {
@@ -193,10 +203,10 @@ app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {
             });
     
             Body.on('end', () => {
-                const fileBuffer = Buffer.concat(chunks); // Sammanfoga alla bitarna
+                const fileBuffer = Buffer.concat(chunks); // Connect all chunks to get the full file
                 res.status(200).setHeader('Content-Type', ContentType || 'application/octet-stream');
                 res.setHeader('Content-Length', fileBuffer.length);
-                res.send(fileBuffer); // Skicka hela filen när alla bitar är nedladdade
+                res.send(fileBuffer); 
             });
     
             Body.on('error', (err) => {
@@ -225,6 +235,33 @@ app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {
         });
         return fileName;  
     }
+
+    app.get('/api/fetchImagesFromS3', async (req, res) => {
+        const folder = req.query.folder || 'images'; 
+    
+        const params = {
+            Bucket: bucketName,
+            Prefix: `${folder}/`, 
+        };
+    
+        try {
+            const command = new ListObjectsV2Command(params);
+            const data = await s3.send(command);
+    
+            if (!data.Contents || data.Contents.length === 0) {
+                return res.status(404).json({ message: 'No images found in the specified folder.' });
+            }
+    
+            const imageUrls = data.Contents
+                .filter(item => /\.(jpg|jpeg|png|gif)$/i.test(item.Key)) 
+                .map(item => `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${item.Key}`);
+            console.log('No images found in cache, fetching from S3...');
+            res.status(200).json({ images: imageUrls });
+        } catch (error) {
+            console.error('Error fetching images from S3:', error);
+            res.status(500).json({ message: 'Error fetching images from S3', error: error.message });
+        }
+    });
 
     app.get('/api/getUploadPassword', async (req, res) => {
 
