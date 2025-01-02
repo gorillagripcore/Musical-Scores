@@ -43,7 +43,12 @@ function populateProgramData(jsonData) {
       document.getElementById('orchestra').textContent = orchestraData[0].name;
       document.getElementById('interpreter').textContent = conductorData[0].name;
       document.getElementById('additional-info').textContent = programData[0].notes;
-      document.getElementById('soloist').textContent = soloistData.map(soloist => soloist.name).join(', ');
+      
+      if (soloistData[0].name === undefined || soloistData[0].name === null || soloistData[0].name === '') {
+        document.getElementById('soloist').textContent = 'No specified soloist';
+      } else {
+        document.getElementById('soloist').textContent = soloistData.map(soloist => soloist.name).join(', ');
+      }
     }
   }
 }
