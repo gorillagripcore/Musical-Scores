@@ -29,6 +29,7 @@ function populateProgramData(jsonData) {
     const programData = jsonData.data[0];
     const conductorData = jsonData.data[1];
     const orchestraData = jsonData.data[2];
+    const soloistData = jsonData.data[3];
     if (programData && programData.length > 0) {
 
       if (programData[0].season === null || programData[0].season === undefined || programData[0].season === 0) {
@@ -42,6 +43,7 @@ function populateProgramData(jsonData) {
       document.getElementById('orchestra').textContent = orchestraData[0].name;
       document.getElementById('interpreter').textContent = conductorData[0].name;
       document.getElementById('additional-info').textContent = programData[0].notes;
+      document.getElementById('soloist').textContent = soloistData.map(soloist => soloist.name).join(', ');
     }
   }
 }
@@ -59,16 +61,12 @@ function populateScoreData(jsonData) {
         document.getElementById('date').textContent = interpretationData[0].year;
       }
 
-      if (interpretationData[0].opusNumber === null || interpretationData[0].opusNumber === '') {
-        document.getElementById('opus').textContent = 'Opus number not available';
-      } else {
-        document.getElementById('opus').textContent = interpretationData[0].opusNumber;
-      }
       document.getElementById('publisher').textContent = interpretationData[0].publisher;
       document.getElementById('score-title').textContent = scoreData[0].title;
       document.getElementById('original-composer').textContent = scoreData[0].composer;
       document.getElementById('interpreter').textContent = conductorData[0].name;
-      document.getElementById('additional-info').textContent = conductorData[0].name + "'s interpretation of " + scoreData[0].title + " by " + scoreData[0].composer;
+      document.getElementById('additional-info').textContent = (conductorData[0].name + "'s interpretation of " + scoreData[0].title + " by " + scoreData[0].composer).trim();
+
     }
   }
 }
