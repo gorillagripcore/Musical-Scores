@@ -61,7 +61,8 @@
   .mau-info img {
     width: 150px;
   }
-  footer {
-    display: none;
+
+  #content {
+    margin-bottom: 40px;
   }
 }
