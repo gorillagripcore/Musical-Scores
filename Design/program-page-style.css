@@ -26,7 +26,7 @@ section p {
 }
 
 a {
-  color: #6a6a6a;
+  color: #000000;
 }
 
 .no-margin {
@@ -37,33 +37,8 @@ a {
   margin-bottom: 1rem;
 }
 
-#instrumentation-txt {
-  margin-bottom: 1rem;
-}
-
 .contributers-txt {
   display: inline;
-}
-
-.instrument {
-  color: #000000;
-}
-
-.instrumentation-list {
-  list-style: none;
-  padding-left: 0px;
-}
-
-.instrumentation-list li {
-  display: inline-block;
-}
-
-.instrumentation-list li p {
-  margin: 0px;
-}
-
-.instrumentation-list li p:first-child {
-  padding-left: 10px;
 }
 
 canvas {

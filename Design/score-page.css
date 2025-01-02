@@ -67,7 +67,7 @@ section p {
 }
 
 a {
-  color: #6a6a6a;
+  color: #000000;
 }
 
 .no-margin {
@@ -97,12 +97,12 @@ a {
 }
 
 canvas {
-  width: 80%;           
+  width: 80%;
   height: 600px;
   border: 1px solid black;
   border-radius: 5px;
-  display: block;       
-  margin: 0 auto; 
+  display: block;
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 1283px) {
