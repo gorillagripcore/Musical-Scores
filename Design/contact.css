@@ -65,6 +65,10 @@
     text-align: center;
   }
 
+  .contact-img img {
+    width: 200px;
+  }
+
   .mau-info {
     font-size: 17px;
   }
