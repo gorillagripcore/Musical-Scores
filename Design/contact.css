@@ -4,7 +4,7 @@
   margin: 0 auto;
 }
 
-#content h2 {
+#content h1 {
   text-align: center;
   margin-bottom: 20px;
 }
@@ -46,6 +46,17 @@
   height: 30px;
   vertical-align: middle;
   margin-right: 10px;
+}
+
+.contact-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact-img img {
+  width: 350px;
+  border-radius: 10px;
 }
 
 @media (max-width: 768px) {
