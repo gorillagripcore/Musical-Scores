@@ -5,7 +5,7 @@ import cors from 'cors';
 import fs from 'fs';  
 import dotenv from 'dotenv';
 import path from 'path';
-import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase, getImageDescription } from './database.mjs';
+import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase, getImageDescription, getRelevantDataForDisplayedPdf } from './database.mjs';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
@@ -126,6 +126,20 @@ app.get('/api/fetchImageDescription', async (req, res) => {
     try {
         const description = await getImageDescription(url);
         res.json({ description });
+    } catch (error) {
+        console.error('Error fetching image description:', error);
+        res.status(500).json({ error: 'Error fetching image description' });
+    }
+});
+
+app.get('/api/fetchRelevantDocumentData', async (req, res) => {
+    const url = req.originalUrl;
+    if (!url) {
+        return res.status(400).json({ error: 'URL is required' });
+    }
+    try {
+        const data = await getRelevantDataForDisplayedPdf(url);
+        res.json({ data });
     } catch (error) {
         console.error('Error fetching image description:', error);
         res.status(500).json({ error: 'Error fetching image description' });

@@ -46,6 +46,35 @@ export async function getImageDescription(url) {
     }
 }
 
+export async function getRelevantDataForDisplayedPdf(url) {
+    const urlParams = new URLSearchParams(url.split('?')[1]);
+    const folder = urlParams.get('folder');
+    const fileName = urlParams.get('url');
+    let informationQuery ='';
+    let folderTable;
+    if (folder === 'documents') {
+        folderTable = 'Document';
+    } else if (folder === 'programs') {
+        folderTable = 'Program';
+        informationQuery = `CALL GetProgramDetails(?)`;
+    } else if (folder === 'scores') {
+        folderTable = 'Interpretation';
+        informationQuery = `CALL GetInterpretationDetails(?)`;
+    } else {
+        console.error('Unknown folder:', folder);
+        return null; 
+    }
+
+    try {
+        const [results] = await pool.query(informationQuery, [fileName]);
+        const allResults = results.map(resultSet => resultSet);
+        return allResults;
+    } catch (error) {
+        console.error('Error fetching data from database:', error);
+        return null;
+    }
+}
+
 export async function uploadProgram(data) {
 
     try {
@@ -174,6 +203,7 @@ export async function searchDatabase(data) {
         d.filelink AS file_link
         FROM Document d
         WHERE d.title LIKE ?;`;
+        
         const wildCard = `%${data}%`;
         const wildCardParameters = [
             wildCard,

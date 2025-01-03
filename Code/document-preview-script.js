@@ -1,11 +1,11 @@
-let fileBuffer = null;  // Gör fileBuffer till en global variabel
+let fileBuffer = null;  
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const fetchedUrl = urlParams.get('fileLink');
 const folder = urlParams.get('folder');
-let zoomLevel = 2.0; // Starta med en grundnivå för zoom
+let zoomLevel = 2.0; 
 
 if (!fetchedUrl) {
     console.error('Missing fileLink parameter in URL');
@@ -48,7 +48,7 @@ if (!fetchedUrl) {
             const file = event.target.result;
             if (file) {
                 console.log('File loaded from IndexedDB:', file);
-                fileBuffer = file.buffer;  // Sätt fileBuffer här när filen har laddats
+                fileBuffer = file.buffer;  
                 loadAndRenderPdf(fileBuffer);
             } else {
                 console.log('File not found in IndexedDB, fetching from server...');
@@ -216,6 +216,8 @@ if (!fetchedUrl) {
         return canvas;
     }
 
+
+
     function getEnvironmentUrl() {
         if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
             return 'http://127.0.0.1:5001/api';
@@ -223,4 +225,5 @@ if (!fetchedUrl) {
             return '/api';
         }
     }
+
 }
