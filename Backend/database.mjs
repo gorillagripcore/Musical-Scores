@@ -224,5 +224,19 @@ export async function searchDatabase(data) {
     }
 }
 
+export async function getConductors() {
+
+    try {
+        const getConductors = `
+        SELECT name FROM Conductor;
+        `;
+        const [results] = await pool.query(getConductors);
+        return results;
+    } catch (error) {
+        console.error('Error when fetching conductors:', error);
+    }
+
+}
+
 
 testConnection();

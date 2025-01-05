@@ -5,7 +5,7 @@ import cors from 'cors';
 import fs from 'fs';  
 import dotenv from 'dotenv';
 import path from 'path';
-import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase, getImageDescription, getRelevantDataForDisplayedPdf } from './database.mjs';
+import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase, getImageDescription, getRelevantDataForDisplayedPdf, getConductors } from './database.mjs';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
@@ -286,6 +286,18 @@ app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {
         }
 
         res.json({ uploadPassword });
+
+    });
+
+    app.get('/api/getConductors', async (req, res) => {
+
+        try {
+            const data = await getConductors();
+            res.json(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            res.status(500).json({ error: error.message });
+        }
 
     });
 

@@ -1,9 +1,39 @@
 randomSuggestionsOnStartup();
 const mockResults = [];
 const searchInput = document.querySelector(".search-bar input");
+populateConductors();
 
 document.getElementById("search-button").addEventListener("click", function () {
   searchDatabase();
+});
+
+document.getElementById("clear-filters").addEventListener("click", function () {
+  const timeDropdown = document.getElementById("time");
+  const conductorDropdown = document.getElementById("conductor");
+  const typeDropdown = document.getElementById("type");
+
+  timeDropdown.selectedIndex = 0;
+  conductorDropdown.selectedIndex = 0;
+  typeDropdown.selectedIndex = 0;
+
+  const filterContainer = document.getElementById("selected-filters");
+
+  while (filterContainer.firstChild) {
+    filterContainer.removeChild(filterContainer.firstChild);
+  }
+
+});
+
+document.getElementById("time").addEventListener("change", function () {
+  updateSelectedFilters("time");
+});
+
+document.getElementById("conductor").addEventListener("change", function () {
+  updateSelectedFilters("conductor");
+});
+
+document.getElementById("type").addEventListener("change", function () {
+  updateSelectedFilters("type");
 });
 
 searchInput.addEventListener("input", function () {
@@ -277,6 +307,111 @@ if (event.target.closest(".item")) {
       return;
     }
   }
+}
+
+async function getConductors(){
+  try {
+    const apiUrl = getEnvironmentUrl();
+    const response = await fetch(
+      `${apiUrl}/getConductors`,
+      {
+        method: "GET"
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const results = await response.json();
+    return results;
+
+  } catch (error) {
+    console.error("Error when fetching conductors:", error);
+  }
+}
+
+async function populateConductors(){
+
+  try {
+
+    const conductors = await getConductors();
+    const conductorDropdown = document.getElementById('conductor');
+  
+    conductors.forEach(conductor => {
+      const option = document.createElement('option');
+      option.value = conductor.name;
+      option.textContent = conductor.name;
+      conductorDropdown.appendChild(option);
+    });
+
+  } catch (error) {
+    console.error("Error when populating conductors:", error);
+  }
+
+}
+
+function updateSelectedFilters(filterType){
+
+  const selectedTime = document.getElementById('time').value;
+  const selectedConductor = document.getElementById('conductor').value;
+  const selectedType = document.getElementById('type').value;
+  const filterContainer = document.getElementById('selected-filters');
+
+  if(filterType === 'time'){
+    const existingTag = filterContainer.querySelector(`.filter-tag[data-value="${selectedTime}"]`);
+    if (existingTag) {
+      document.getElementById('time').selectedIndex = 0;
+      return;
+    }
+    const timeTag = createTag(selectedTime, selectedTime);
+    filterContainer.appendChild(timeTag);
+    document.getElementById('time').selectedIndex = 0;
+  } else if(filterType === 'conductor'){
+    const existingTag = filterContainer.querySelector(`.filter-tag[data-value="${selectedConductor}"]`);
+    if (existingTag) {
+      document.getElementById('conductor').selectedIndex = 0;
+      return;
+    }
+    const conductorTag = createTag(selectedConductor, selectedConductor);
+    filterContainer.appendChild(conductorTag);
+    document.getElementById('conductor').selectedIndex = 0;
+  } else if(filterType === 'type'){
+    const existingTag = filterContainer.querySelector(`.filter-tag[data-value="${selectedType}"]`);
+    if (existingTag) {
+      document.getElementById('type').selectedIndex = 0;
+      return;
+    }
+    const typeTag = createTag(selectedType, selectedType);
+    filterContainer.appendChild(typeTag);
+    document.getElementById('type').selectedIndex = 0;
+  }
+
+  if(filterContainer.children.length > 0){
+    filterContainer.style.display = 'block';
+  } else {
+    filterContainer.style.display = 'none';
+  }
+
+}
+
+function createTag(label, value){
+  const tag = document.createElement('div');
+  tag.classList.add('filter-tag');
+  tag.dataset.value = value;
+  tag.innerHTML = `${label}<span class="remove-tag">x</span>`;
+  
+  const removeSpan = tag.querySelector('.remove-tag');
+  removeSpan.addEventListener('click', function() {
+    removeTag(value);
+  });
+
+  return tag;
+}
+
+function removeTag(value){
+  const tagToRemove = document.querySelector(`.filter-tag[data-value="${value}"]`);
+  tagToRemove.remove();
 }
 
 function getEnvironmentUrl() {
