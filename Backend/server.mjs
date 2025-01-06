@@ -5,7 +5,7 @@ import cors from 'cors';
 import fs from 'fs';  
 import dotenv from 'dotenv';
 import path from 'path';
-import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase, getImageDescription, getRelevantDataForDisplayedPdf, getConductors } from './database.mjs';
+import {uploadInterpretation, uploadProgram, uploadDocument, uploadImage, searchDatabase, getImageDescription, getRelevantDataForDisplayedPdf, getConductors, searchByFilters, searchWithFilters } from './database.mjs';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
@@ -158,6 +158,76 @@ app.get('/api/searchDatabase', async (req, res) => {
     
     try{
         const data = await searchDatabase(myString);
+        res.json(data);
+    } catch(error){
+        console.error('Error fetching data:', error);
+        res.status(500).json({error: error.message});
+    }
+
+});
+
+app.get('/api/searchWithFilters', async (req, res) => { 
+
+    const {myString, timePeriods, conductors, types} = req.query;
+
+    if (myString === undefined || myString === '') {
+        return res.status(400).json({ error: 'Query string is required' });
+    } else {
+        console.log('Received request with query:', myString)
+    }
+
+    if (!timePeriods && !conductors && !types) {
+        return res.status(400).json({ error: 'At least one filter must be provided' });
+    }
+    
+    try{
+        const timePeriodArray = timePeriods ? timePeriods.split(',').map(period => {
+            const start = parseInt(period.substring(0, 4));
+            return { start, end: start + 9 };
+        }) : [];
+
+        const conductorArray = conductors ? conductors.split(',') : [];
+        const typeArray = types ? types.split(',') : [];
+
+        const filters = {
+            time: timePeriodArray,
+            conductors: conductorArray,
+            types: typeArray
+        };
+
+        const data = await searchWithFilters(myString, filters);
+        res.json(data);
+    } catch(error){
+        console.error('Error fetching data:', error);
+        res.status(500).json({error: error.message});
+    }
+
+});
+
+app.get('/api/searchByFilters', async (req, res) => { 
+
+    const {timePeriods, conductors, types} = req.query;
+
+    if (!timePeriods && !conductors && !types) {
+        return res.status(400).json({ error: 'At least one filter must be provided' });
+    }
+    
+    try{
+        const timePeriodArray = timePeriods ? timePeriods.split(',').map(period => {
+            const start = parseInt(period.substring(0, 4));
+            return { start, end: start + 9 };
+        }) : [];
+
+        const conductorArray = conductors ? conductors.split(',') : [];
+        const typeArray = types ? types.split(',') : [];
+
+        const filters = {
+            time: timePeriodArray,
+            conductors: conductorArray,
+            types: typeArray
+        };
+
+        const data = await searchByFilters(filters);
         res.json(data);
     } catch(error){
         console.error('Error fetching data:', error);

@@ -4,7 +4,41 @@ const searchInput = document.querySelector(".search-bar input");
 populateConductors();
 
 document.getElementById("search-button").addEventListener("click", function () {
-  searchDatabase();
+
+  const filterContainer = document.getElementById("selected-filters");
+  const selectedFilters = filterContainer.querySelectorAll(".filter-tag");
+
+  if (selectedFilters.length === 0) {
+    const searchQuery = searchInput.value;
+    searchDatabase(searchQuery);
+    return;
+  }
+
+  const filters = {
+    time: [],
+    conductor: [],
+    type: []
+  };
+
+  selectedFilters.forEach((filter) => {
+    const value = filter.dataset.value;
+    const label = filter.textContent.replace("x", "").trim(); // tar bort X och whitespace
+
+    // TODO: finns det smidigare sätt att göra if checken?
+    if (['1900s', '1910s', '1920s', '1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s'].includes(value)) {
+      const startYear = parseInt(value.substring(0, 4));
+      filters.time.push({ start: startYear, end: startYear + 9 });
+    } else if (['Interpretation', 'Program', 'Other Documents'].includes(value)) {
+      filters.type.push(value);
+    } else {
+      filters.conductor.push(value);
+    }
+  });
+
+  console.log(filters);
+
+  searchWithFilters(searchInput.value, filters);
+
 });
 
 document.getElementById("clear-filters").addEventListener("click", function () {
@@ -53,9 +87,37 @@ searchInput.addEventListener("input", function () {
   }
 });
 
-async function searchDatabase() {
+document.getElementById("confirm-filters").addEventListener("click", function () {
+
+  const filterContainer = document.getElementById("selected-filters");
+  const selectedFilters = filterContainer.querySelectorAll(".filter-tag");
+
+  const filters = {
+    time: [],
+    conductor: [],
+    type: []
+  };
+
+  selectedFilters.forEach((filter) => {
+    const value = filter.dataset.value;
+    const label = filter.textContent.replace("x", "").trim(); // tar bort X och whitespace
+
+    // TODO: finns det smidigare sätt att göra if checken?
+    if (['1900s', '1910s', '1920s', '1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s'].includes(value)) {
+      const startYear = parseInt(value.substring(0, 4));
+      filters.time.push({ start: startYear, end: startYear + 9 });
+    } else if (['Interpretation', 'Program', 'Other Documents'].includes(value)) {
+      filters.type.push(value);
+    } else {
+      filters.conductor.push(value);
+    }
+  });
+
+  searchByFilters(filters);
+});
+
+async function searchDatabase(searchQuery) {
   try {
-    const searchQuery = document.querySelector(".search-bar input").value;
     const apiUrl = getEnvironmentUrl();
     const response = await fetch(
       `${apiUrl}/searchDatabase?myString=${encodeURIComponent(searchQuery)}`
@@ -66,6 +128,46 @@ async function searchDatabase() {
   } catch (error) {
     console.error("Error searching data:", error);
   }
+}
+
+async function searchWithFilters(searchQuery, filters) {
+  try {
+    const apiUrl = getEnvironmentUrl();
+    const timePeriods = filters.time.map(period => `${period.start}s`).join(','); // lägger in alla tidsperioder med , mellan
+    const conductors = filters.conductor.join(',');
+    const types = filters.type.join(',');
+
+    const response = await fetch(
+      `${apiUrl}/searchWithFilters?myString=${encodeURIComponent(searchQuery)}&timePeriods=${encodeURIComponent(timePeriods)}&conductors=${encodeURIComponent(conductors)}&types=${encodeURIComponent(types)}`
+    );
+    const data = await response.json();
+    console.log(data);
+    populateResultContainer(data);
+  } catch (error) {
+    console.error("Error searching data:", error);
+  }
+}
+
+async function searchByFilters(filters) {
+
+  try {
+    const apiUrl = getEnvironmentUrl();
+
+    const timePeriods = filters.time.map(period => `${period.start}s`).join(',');
+    const conductors = filters.conductor.join(',');
+    const types = filters.type.join(',');
+
+    const response = await fetch(
+      `${apiUrl}/searchByFilters?timePeriods=${encodeURIComponent(timePeriods)}&conductors=${encodeURIComponent(conductors)}&types=${encodeURIComponent(types)}`
+    );
+    
+    const data = await response.json();
+    console.log(data);
+    populateResultContainer(data);
+  } catch (error) {
+    console.error("Error searching by filters:", error);
+  }
+
 }
 
 async function randomSuggestionsOnStartup() {
@@ -334,7 +436,6 @@ async function getConductors(){
 async function populateConductors(){
 
   try {
-
     const conductors = await getConductors();
     const conductorDropdown = document.getElementById('conductor');
   
@@ -344,7 +445,6 @@ async function populateConductors(){
       option.textContent = conductor.name;
       conductorDropdown.appendChild(option);
     });
-
   } catch (error) {
     console.error("Error when populating conductors:", error);
   }
@@ -399,7 +499,7 @@ function createTag(label, value){
   const tag = document.createElement('div');
   tag.classList.add('filter-tag');
   tag.dataset.value = value;
-  tag.innerHTML = `${label}<span class="remove-tag">x</span>`;
+  tag.innerHTML = `${label}<span class="remove-tag">x</span>`; // lägger till X för att ta bort
   
   const removeSpan = tag.querySelector('.remove-tag');
   removeSpan.addEventListener('click', function() {
@@ -413,6 +513,7 @@ function removeTag(value){
   const tagToRemove = document.querySelector(`.filter-tag[data-value="${value}"]`);
   tagToRemove.remove();
 }
+
 
 function getEnvironmentUrl() {
   if (
