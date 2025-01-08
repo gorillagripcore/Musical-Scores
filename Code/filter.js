@@ -1,9 +1,73 @@
 randomSuggestionsOnStartup();
 const mockResults = [];
 const searchInput = document.querySelector(".search-bar input");
+populateConductors();
 
 document.getElementById("search-button").addEventListener("click", function () {
-  searchDatabase();
+
+  const filterContainer = document.getElementById("selected-filters");
+  const selectedFilters = filterContainer.querySelectorAll(".filter-tag");
+
+  if (selectedFilters.length === 0) {
+    const searchQuery = searchInput.value;
+    searchDatabase(searchQuery);
+    return;
+  }
+
+  const filters = {
+    time: [],
+    conductor: [],
+    type: []
+  };
+
+  selectedFilters.forEach((filter) => {
+    const value = filter.dataset.value;
+    const label = filter.textContent.replace("x", "").trim(); // tar bort X och whitespace
+
+    // TODO: finns det smidigare sätt att göra if checken?
+    if (['1900s', '1910s', '1920s', '1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s'].includes(value)) {
+      const startYear = parseInt(value.substring(0, 4));
+      filters.time.push({ start: startYear, end: startYear + 9 });
+    } else if (['Interpretation', 'Program', 'Other Documents'].includes(value)) {
+      filters.type.push(value);
+    } else {
+      filters.conductor.push(value);
+    }
+  });
+
+  console.log(filters);
+
+  searchWithFilters(searchInput.value, filters);
+
+});
+
+document.getElementById("clear-filters").addEventListener("click", function () {
+  const timeDropdown = document.getElementById("time");
+  const conductorDropdown = document.getElementById("conductor");
+  const typeDropdown = document.getElementById("type");
+
+  timeDropdown.selectedIndex = 0;
+  conductorDropdown.selectedIndex = 0;
+  typeDropdown.selectedIndex = 0;
+
+  const filterContainer = document.getElementById("selected-filters");
+
+  while (filterContainer.firstChild) {
+    filterContainer.removeChild(filterContainer.firstChild);
+  }
+
+});
+
+document.getElementById("time").addEventListener("change", function () {
+  updateSelectedFilters("time");
+});
+
+document.getElementById("conductor").addEventListener("change", function () {
+  updateSelectedFilters("conductor");
+});
+
+document.getElementById("type").addEventListener("change", function () {
+  updateSelectedFilters("type");
 });
 
 searchInput.addEventListener("input", function () {
@@ -23,9 +87,37 @@ searchInput.addEventListener("input", function () {
   }
 });
 
-async function searchDatabase() {
+document.getElementById("confirm-filters").addEventListener("click", function () {
+
+  const filterContainer = document.getElementById("selected-filters");
+  const selectedFilters = filterContainer.querySelectorAll(".filter-tag");
+
+  const filters = {
+    time: [],
+    conductor: [],
+    type: []
+  };
+
+  selectedFilters.forEach((filter) => {
+    const value = filter.dataset.value;
+    const label = filter.textContent.replace("x", "").trim(); // tar bort X och whitespace
+
+    // TODO: finns det smidigare sätt att göra if checken?
+    if (['1900s', '1910s', '1920s', '1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s'].includes(value)) {
+      const startYear = parseInt(value.substring(0, 4));
+      filters.time.push({ start: startYear, end: startYear + 9 });
+    } else if (['Interpretation', 'Program', 'Other Documents'].includes(value)) {
+      filters.type.push(value);
+    } else {
+      filters.conductor.push(value);
+    }
+  });
+
+  searchByFilters(filters);
+});
+
+async function searchDatabase(searchQuery) {
   try {
-    const searchQuery = document.querySelector(".search-bar input").value;
     const apiUrl = getEnvironmentUrl();
     const response = await fetch(
       `${apiUrl}/searchDatabase?myString=${encodeURIComponent(searchQuery)}`
@@ -36,6 +128,46 @@ async function searchDatabase() {
   } catch (error) {
     console.error("Error searching data:", error);
   }
+}
+
+async function searchWithFilters(searchQuery, filters) {
+  try {
+    const apiUrl = getEnvironmentUrl();
+    const timePeriods = filters.time.map(period => `${period.start}s`).join(','); // lägger in alla tidsperioder med , mellan
+    const conductors = filters.conductor.join(',');
+    const types = filters.type.join(',');
+
+    const response = await fetch(
+      `${apiUrl}/searchWithFilters?myString=${encodeURIComponent(searchQuery)}&timePeriods=${encodeURIComponent(timePeriods)}&conductors=${encodeURIComponent(conductors)}&types=${encodeURIComponent(types)}`
+    );
+    const data = await response.json();
+    console.log(data);
+    populateResultContainer(data);
+  } catch (error) {
+    console.error("Error searching data:", error);
+  }
+}
+
+async function searchByFilters(filters) {
+
+  try {
+    const apiUrl = getEnvironmentUrl();
+
+    const timePeriods = filters.time.map(period => `${period.start}s`).join(',');
+    const conductors = filters.conductor.join(',');
+    const types = filters.type.join(',');
+
+    const response = await fetch(
+      `${apiUrl}/searchByFilters?timePeriods=${encodeURIComponent(timePeriods)}&conductors=${encodeURIComponent(conductors)}&types=${encodeURIComponent(types)}`
+    );
+    
+    const data = await response.json();
+    console.log(data);
+    populateResultContainer(data);
+  } catch (error) {
+    console.error("Error searching by filters:", error);
+  }
+
 }
 
 async function randomSuggestionsOnStartup() {
@@ -278,6 +410,110 @@ if (event.target.closest(".item")) {
     }
   }
 }
+
+async function getConductors(){
+  try {
+    const apiUrl = getEnvironmentUrl();
+    const response = await fetch(
+      `${apiUrl}/getConductors`,
+      {
+        method: "GET"
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const results = await response.json();
+    return results;
+
+  } catch (error) {
+    console.error("Error when fetching conductors:", error);
+  }
+}
+
+async function populateConductors(){
+
+  try {
+    const conductors = await getConductors();
+    const conductorDropdown = document.getElementById('conductor');
+  
+    conductors.forEach(conductor => {
+      const option = document.createElement('option');
+      option.value = conductor.name;
+      option.textContent = conductor.name;
+      conductorDropdown.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error when populating conductors:", error);
+  }
+
+}
+
+function updateSelectedFilters(filterType){
+
+  const selectedTime = document.getElementById('time').value;
+  const selectedConductor = document.getElementById('conductor').value;
+  const selectedType = document.getElementById('type').value;
+  const filterContainer = document.getElementById('selected-filters');
+
+  if(filterType === 'time'){
+    const existingTag = filterContainer.querySelector(`.filter-tag[data-value="${selectedTime}"]`);
+    if (existingTag) {
+      document.getElementById('time').selectedIndex = 0;
+      return;
+    }
+    const timeTag = createTag(selectedTime, selectedTime);
+    filterContainer.appendChild(timeTag);
+    document.getElementById('time').selectedIndex = 0;
+  } else if(filterType === 'conductor'){
+    const existingTag = filterContainer.querySelector(`.filter-tag[data-value="${selectedConductor}"]`);
+    if (existingTag) {
+      document.getElementById('conductor').selectedIndex = 0;
+      return;
+    }
+    const conductorTag = createTag(selectedConductor, selectedConductor);
+    filterContainer.appendChild(conductorTag);
+    document.getElementById('conductor').selectedIndex = 0;
+  } else if(filterType === 'type'){
+    const existingTag = filterContainer.querySelector(`.filter-tag[data-value="${selectedType}"]`);
+    if (existingTag) {
+      document.getElementById('type').selectedIndex = 0;
+      return;
+    }
+    const typeTag = createTag(selectedType, selectedType);
+    filterContainer.appendChild(typeTag);
+    document.getElementById('type').selectedIndex = 0;
+  }
+
+  if(filterContainer.children.length > 0){
+    filterContainer.style.display = 'block';
+  } else {
+    filterContainer.style.display = 'none';
+  }
+
+}
+
+function createTag(label, value){
+  const tag = document.createElement('div');
+  tag.classList.add('filter-tag');
+  tag.dataset.value = value;
+  tag.innerHTML = `${label}<span class="remove-tag">x</span>`; // lägger till X för att ta bort
+  
+  const removeSpan = tag.querySelector('.remove-tag');
+  removeSpan.addEventListener('click', function() {
+    removeTag(value);
+  });
+
+  return tag;
+}
+
+function removeTag(value){
+  const tagToRemove = document.querySelector(`.filter-tag[data-value="${value}"]`);
+  tagToRemove.remove();
+}
+
 
 function getEnvironmentUrl() {
   if (
