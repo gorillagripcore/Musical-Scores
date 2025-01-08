@@ -50,6 +50,11 @@ section {
   display: inline;
 }
 
+#document-title {
+  margin: 0px;
+  display: inline;
+}
+
 #date {
   padding-right: 20px;
   margin: 0px;
@@ -103,6 +108,7 @@ canvas {
   border-radius: 5px;
   display: block;
   margin: 0 auto;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1283px) {
@@ -128,6 +134,5 @@ canvas {
     width: 90%;
     margin: 10px;
     margin-bottom: 40px;
-  }  
-  
+  }
 }
