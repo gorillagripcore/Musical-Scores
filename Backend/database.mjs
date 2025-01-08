@@ -133,9 +133,9 @@ export async function uploadImage(data) {
 
 }
 
-export async function searchDatabase(data) {
+export async function searchDatabase(searchTerm) {
     try {
-        console.log("searchDatabase in database.mjs");
+        //console.log("searchDatabase in database.mjs");
         const searchQuery = `
         SELECT 
         'Interpretation' AS type,
@@ -204,7 +204,7 @@ export async function searchDatabase(data) {
         FROM Document d
         WHERE d.title LIKE ?;`;
         
-        const wildCard = `%${data}%`;
+        const wildCard = `%${searchTerm}%`;
         const wildCardParameters = [
             wildCard,
             wildCard,
@@ -216,13 +216,292 @@ export async function searchDatabase(data) {
             wildCard,
             wildCard
         ];
+
         const [results] = await pool.query(searchQuery, wildCardParameters);
-        console.log('Search results:', results);
+        //console.log('Search results:', results);
         return results;
     } catch (error) {
         console.error('Error when searching database:', error);
     }
 }
 
+export async function searchWithFilters(searchTerm, filters) {
+
+    try {
+
+        let whereClausesInterpretation = [];
+        let whereClausesProgram = [];
+        let whereClausesDocument = [];
+        let queryParameters = [];
+
+        const wildCard = `%${searchTerm}%`;
+
+        whereClausesInterpretation.push(`(s.title LIKE ? OR s.composer LIKE ? OR c.name LIKE ?)`);
+        queryParameters.push(wildCard, wildCard, wildCard);
+
+        whereClausesProgram.push(`(p.title LIKE ? OR p.location LIKE ? OR c.name LIKE ? OR o.name LIKE ? OR s.name LIKE ?)`);
+        queryParameters.push(wildCard, wildCard, wildCard, wildCard, wildCard);
+
+        whereClausesDocument.push(`d.title LIKE ?`);
+        queryParameters.push(wildCard);
+
+        if (filters.time.length > 0) {
+            let timeClauses = [];
+            filters.time.forEach(period => {
+                const startYear = period.start;
+
+                whereClausesInterpretation.push(`i.year BETWEEN ? AND ?`);
+                whereClausesDocument.push(`d.year BETWEEN ? AND ?`);
+                queryParameters.push(startYear, startYear + 9, startYear, startYear + 9);
+        
+                // TODO: funkar inte, hitta annan lösning
+                timeClauses.push(`p.season LIKE ?`);
+                queryParameters.push(`%${startYear.toString().substring(0, 3)}%`);
+            });
+            if (timeClauses.length > 0) {
+                whereClausesProgram.push(`(` + timeClauses.join(' OR ') + `)`);
+            }
+        }        
+
+        if (filters.conductors.length > 0) {
+            filters.conductors.forEach(conductor => {
+                whereClausesInterpretation.push(`c.name = ?`);
+                whereClausesProgram.push(`c.name = ?`);
+                queryParameters.push(conductor, conductor);
+            });
+        }
+
+        if (filters.types.length > 0) {
+            if (!filters.types.includes('Interpretation')) {
+                whereClausesInterpretation.push(`1 = 0`); // Exclude interpretations if not selected
+            }
+            if (!filters.types.includes('Program')) {
+                whereClausesProgram.push(`1 = 0`); // Exclude programs if not selected
+            }
+            if (!filters.types.includes('Other Documents')) {
+                whereClausesDocument.push(`1 = 0`); // Exclude documents if not selected
+            }
+        } else {
+            whereClausesInterpretation.push(`1 = 1`);
+            whereClausesProgram.push(`1 = 1`);
+            whereClausesDocument.push(`1 = 1`);
+        }
+
+        const baseQuery = `
+        SELECT 
+            'Interpretation' AS type,
+            s.title AS score_title, 
+            c.name AS conductor_name, 
+            s.composer AS score_composer,
+            '' AS program_title, 
+            '' AS season, 
+            '' AS location, 
+            '' AS orchestra, 
+            '' AS soloists, 
+            '' AS document_title, 
+            '' AS document_year,
+            i.filelink AS file_link
+        FROM Interpretation i
+        JOIN Conductor c ON i.conductor = c.id
+        JOIN Score s ON i.score = s.id
+        ${whereClausesInterpretation.length > 0 ? 'WHERE ' + whereClausesInterpretation.join(' AND ') : ''}
+        
+        UNION ALL
+
+        SELECT 
+            'Program' AS type,
+            '' AS score_title, 
+            c.name AS conductor_name, 
+            '' AS score_composer,
+            p.title AS program_title, 
+            p.season AS season, 
+            p.location AS location, 
+            o.name AS orchestra, 
+            GROUP_CONCAT(s.name SEPARATOR ', ') AS soloists, 
+            '' AS document_title, 
+            '' AS document_year,
+            p.filelink AS file_link
+        FROM Program p
+        JOIN Conductor c ON p.conductor = c.id
+        JOIN Orchestra o ON p.orchestra = o.id
+        LEFT JOIN Program_Soloist ps ON p.id = ps.programID
+        LEFT JOIN Soloist s ON ps.soloistID = s.id
+        ${whereClausesProgram.length > 0 ? 'WHERE ' + whereClausesProgram.join(' AND ') : ''}
+        GROUP BY 
+            p.id,
+            p.title,
+            p.season,
+            p.location,
+            c.name,
+            o.name
+
+        UNION ALL
+
+        SELECT 
+            'Document' AS type,
+            '' AS score_title, 
+            '' AS conductor_name, 
+            '' AS score_composer,
+            '' AS program_title, 
+            '' AS season, 
+            '' AS location, 
+            '' AS orchestra, 
+            '' AS soloists, 
+            d.title AS document_title, 
+            d.year AS document_year,
+            d.filelink AS file_link
+        FROM Document d
+        ${whereClausesDocument.length > 0 ? 'WHERE ' + whereClausesDocument.join(' AND ') : ''};
+        `;
+
+        const [results] = await pool.query(baseQuery, queryParameters);
+        console.log('Filter-based search results:', results);
+        return results;
+    } catch (error) {
+        console.error('Error when searching database & filters:', error);
+    }
+    
+}
+
+export async function searchByFilters(filters){
+    
+    try {
+        let whereClausesInterpretation = [];
+        let whereClausesProgram = [];
+        let whereClausesDocument = [];
+        let queryParameters = [];
+
+        if (filters.time.length > 0) {
+            let timeClauses = [];
+            filters.time.forEach(period => {
+                const startYear = period.start;
+
+                whereClausesInterpretation.push(`i.year BETWEEN ? AND ?`);
+                whereClausesDocument.push(`d.year BETWEEN ? AND ?`);
+                queryParameters.push(startYear, startYear + 9, startYear, startYear + 9);
+        
+                // TODO: funkar inte, hitta annan lösning
+                timeClauses.push(`p.season LIKE ?`);
+                queryParameters.push(`%${startYear.toString().substring(0, 3)}%`);
+            });
+            if (timeClauses.length > 0) {
+                whereClausesProgram.push(`(` + timeClauses.join(' OR ') + `)`);
+            }
+        }        
+
+        if (filters.conductors.length > 0) {
+            filters.conductors.forEach(conductor => {
+                whereClausesInterpretation.push(`c.name = ?`);
+                whereClausesProgram.push(`c.name = ?`);
+                queryParameters.push(conductor, conductor);
+            });
+        }
+
+        if (filters.types.length > 0) {
+            if (!filters.types.includes('Interpretation')) {
+                whereClausesInterpretation.push(`1 = 0`); // Exclude interpretations if not selected
+            }
+            if (!filters.types.includes('Program')) {
+                whereClausesProgram.push(`1 = 0`); // Exclude programs if not selected
+            }
+            if (!filters.types.includes('Other Documents')) {
+                whereClausesDocument.push(`1 = 0`); // Exclude documents if not selected
+            }
+        } else {
+            whereClausesInterpretation.push(`1 = 1`);
+            whereClausesProgram.push(`1 = 1`);
+            whereClausesDocument.push(`1 = 1`);
+        }
+
+        const baseQuery = `
+        SELECT 
+            'Interpretation' AS type,
+            s.title AS score_title, 
+            c.name AS conductor_name, 
+            s.composer AS score_composer,
+            '' AS program_title, 
+            '' AS season, 
+            '' AS location, 
+            '' AS orchestra, 
+            '' AS soloists, 
+            '' AS document_title, 
+            '' AS document_year,
+            i.filelink AS file_link
+        FROM Interpretation i
+        JOIN Conductor c ON i.conductor = c.id
+        JOIN Score s ON i.score = s.id
+        ${whereClausesInterpretation.length > 0 ? 'WHERE ' + whereClausesInterpretation.join(' AND ') : ''}
+        
+        UNION ALL
+
+        SELECT 
+            'Program' AS type,
+            '' AS score_title, 
+            c.name AS conductor_name, 
+            '' AS score_composer,
+            p.title AS program_title, 
+            p.season AS season, 
+            p.location AS location, 
+            o.name AS orchestra, 
+            GROUP_CONCAT(s.name SEPARATOR ', ') AS soloists, 
+            '' AS document_title, 
+            '' AS document_year,
+            p.filelink AS file_link
+        FROM Program p
+        JOIN Conductor c ON p.conductor = c.id
+        JOIN Orchestra o ON p.orchestra = o.id
+        LEFT JOIN Program_Soloist ps ON p.id = ps.programID
+        LEFT JOIN Soloist s ON ps.soloistID = s.id
+        ${whereClausesProgram.length > 0 ? 'WHERE ' + whereClausesProgram.join(' AND ') : ''}
+        GROUP BY 
+            p.id,
+            p.title,
+            p.season,
+            p.location,
+            c.name,
+            o.name
+
+        UNION ALL
+
+        SELECT 
+            'Document' AS type,
+            '' AS score_title, 
+            '' AS conductor_name, 
+            '' AS score_composer,
+            '' AS program_title, 
+            '' AS season, 
+            '' AS location, 
+            '' AS orchestra, 
+            '' AS soloists, 
+            d.title AS document_title, 
+            d.year AS document_year,
+            d.filelink AS file_link
+        FROM Document d
+        ${whereClausesDocument.length > 0 ? 'WHERE ' + whereClausesDocument.join(' AND ') : ''};
+        `;
+
+        const [results] = await pool.query(baseQuery, queryParameters);
+        console.log('Filter-based search results:', results);
+        return results;
+    } catch (error) {
+        console.error('Error when searching with filters:', error);
+        throw error;
+    }
+
+}
+
+export async function getConductors() {
+
+    try {
+        const getConductors = `
+        SELECT name FROM Conductor;
+        `;
+        const [results] = await pool.query(getConductors);
+        return results;
+    } catch (error) {
+        console.error('Error when fetching conductors:', error);
+    }
+
+}
 
 testConnection();
