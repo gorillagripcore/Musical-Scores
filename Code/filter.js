@@ -187,21 +187,24 @@ async function randomSuggestionsOnStartup() {
 
 function populateResultContainer(data) {
   const resultContainer = document.querySelector(".result");
-  resultContainer.addEventListener("click", function (event) {
+  
+  resultContainer.innerHTML = "";
+  const newResultContainer = resultContainer.cloneNode(true);
+  resultContainer.parentNode.replaceChild(newResultContainer, resultContainer);
+
+  newResultContainer.addEventListener("click", function (event) {
     navigateToCorrectPage(event);
   });
 
-resultContainer.innerHTML = "";
-
-data.forEach((result) => {
-  if (result.type === "Interpretation") {
-    populateInterpretation(result, resultContainer);
-  } else if (result.type === "Program") {
-    populateProgram(result, resultContainer);
-  } else if (result.type === "Document") {
-    populateDocument(result, resultContainer);
-  }
-});
+  data.forEach((result) => {
+    if (result.type === "Interpretation") {
+      populateInterpretation(result, newResultContainer);
+    } else if (result.type === "Program") {
+      populateProgram(result, newResultContainer);
+    } else if (result.type === "Document") {
+      populateDocument(result, newResultContainer);
+    }
+  });
 }
 
 function populateInterpretation(result, resultContainer) {
@@ -345,21 +348,24 @@ function populateDocument(result, resultContainer) {
 
 function populateResultContainerOnStartup(data) {
   const resultContainer = document.querySelector(".result");
+
   resultContainer.innerHTML = "";
+  const newResultContainer = resultContainer.cloneNode(true);
+  resultContainer.parentNode.replaceChild(newResultContainer, resultContainer);
+
+  newResultContainer.addEventListener("click", function (event) {
+    navigateToCorrectPage(event);
+  });
 
   const randomResults = data.sort(() => 0.5 - Math.random()).slice(0, 3);
-
   randomResults.forEach((result) => {
     if (result.type === "Interpretation") {
-      populateInterpretation(result, resultContainer);
+      populateInterpretation(result, newResultContainer);
     } else if (result.type === "Program") {
-      populateProgram(result, resultContainer);
+      populateProgram(result, newResultContainer);
     } else if (result.type === "Document") {
-      populateDocument(result, resultContainer);
+      populateDocument(result, newResultContainer);
     }
-  });
-  resultContainer.addEventListener("click", function (event) {
-    navigateToCorrectPage(event);
   });
 }
 
