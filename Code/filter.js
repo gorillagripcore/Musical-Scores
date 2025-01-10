@@ -8,6 +8,10 @@ document.getElementById("search-button").addEventListener("click", function () {
   const filterContainer = document.getElementById("selected-filters");
   const selectedFilters = filterContainer.querySelectorAll(".filter-tag");
 
+  if(searchInput.value.includes("drop") || searchInput.value.includes("delete")){
+    return;
+  }
+
   if (selectedFilters.length === 0) {
     const searchQuery = searchInput.value;
     searchDatabase(searchQuery);
