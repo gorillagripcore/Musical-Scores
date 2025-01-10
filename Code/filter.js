@@ -279,17 +279,23 @@ function populateProgram(result, resultContainer) {
   programConductorP.textContent = `Conductor: ${result.conductor_name}`;
   infoDiv.appendChild(programConductorP);
 
-  const programLocationP = document.createElement("p");
-  programLocationP.textContent = `Location: ${result.location}`;
-  infoDiv.appendChild(programLocationP);
+  if(result.location){
+    const programLocationP = document.createElement("p");
+    programLocationP.textContent = `Location: ${result.location}`;
+    infoDiv.appendChild(programLocationP);
+  }
 
-  const programOrchestraP = document.createElement("p");
-  programOrchestraP.textContent = `Orchestra: ${result.orchestra}`;
-  infoDiv.appendChild(programOrchestraP);
+  if(result.orchestra){
+    const programOrchestraP = document.createElement("p");
+    programOrchestraP.textContent = `Orchestra: ${result.orchestra}`;
+    infoDiv.appendChild(programOrchestraP);
+  }
 
-  const programSoloistsP = document.createElement("p");
-  programSoloistsP.textContent = `Soloists: ${result.soloists}`;
-  infoDiv.appendChild(programSoloistsP);
+  if(result.soloists){
+    const programSoloistsP = document.createElement("p");
+    programSoloistsP.textContent = `Soloists: ${result.soloists}`;
+    infoDiv.appendChild(programSoloistsP);
+  }
 
   const programFileLink = document.createElement("p");
   programFileLink.textContent = `File Link: ${result.file_link}`;
@@ -315,33 +321,19 @@ function populateDocument(result, resultContainer) {
   const infoDiv = document.createElement("div");
   infoDiv.classList.add("info");
 
-  const programTypeP = document.createElement("p");
-  programTypeP.textContent = `Type: ${result.type}`;
-  infoDiv.appendChild(programTypeP);
+  const documentTypeP = document.createElement("p");
+  documentTypeP.textContent = `Type: ${result.type}`;
+  infoDiv.appendChild(documentTypeP);
 
-  const programTitleP = document.createElement("p");
-  programTitleP.textContent = `Title: ${result.program_title}`;
-  infoDiv.appendChild(programTitleP);
+  const documentTitleP = document.createElement("p");
+  documentTitleP.textContent = `Title: ${result.document_title}`;
+  infoDiv.appendChild(documentTitleP);
 
-  const programSeasonP = document.createElement("p");
-  programSeasonP.textContent = `Season: ${result.season}`;
-  infoDiv.appendChild(programSeasonP);
-
-  const programConductorP = document.createElement("p");
-  programConductorP.textContent = `Conductor: ${result.conductor_name}`;
-  infoDiv.appendChild(programConductorP);
-
-  const programLocationP = document.createElement("p");
-  programLocationP.textContent = `Location: ${result.location}`;
-  infoDiv.appendChild(programLocationP);
-
-  const programOrchestraP = document.createElement("p");
-  programOrchestraP.textContent = `Orchestra: ${result.orchestra}`;
-  infoDiv.appendChild(programOrchestraP);
-
-  const programSoloistsP = document.createElement("p");
-  programSoloistsP.textContent = `Soloists: ${result.soloists}`;
-  infoDiv.appendChild(programSoloistsP);
+  if(result.year){
+    const documentYearP = document.createElement("p");
+    documentYearP.textContent = `Year: ${result.year}`;
+    infoDiv.appendChild(documentYearP);
+  }
 
   const programFileLink = document.createElement("p");
   programFileLink.textContent = `File Link: ${result.file_link}`;
