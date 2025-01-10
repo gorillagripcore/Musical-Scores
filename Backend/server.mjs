@@ -148,14 +148,10 @@ app.get('/api/fetchRelevantDocumentData', async (req, res) => {
 
 app.get('/api/searchDatabase', async (req, res) => { 
 
-    const myString = req.query.myString;
+    let myString = req.query.myString;
 
-    if (myString === undefined || myString === '') {
-        return res.status(400).json({ error: 'Query string is required' });
-    } else {
-        console.log('Received request with query:', myString)
-    }
-    
+    console.log('Received request with query:', myString)
+        
     try{
         const data = await searchDatabase(myString);
         res.json(data);
@@ -238,7 +234,8 @@ app.get('/api/searchByFilters', async (req, res) => {
 
 app.post('/api/:folder/uploadToS3', upload.single('file'), async (req, res) => {   
 
-        const fileName = req.file.originalname; 
+        let fileName = "";
+        fileName = req.file.originalname; 
         const folder = req.params.folder;
 
         fileName = reformatFileName(fileName);
