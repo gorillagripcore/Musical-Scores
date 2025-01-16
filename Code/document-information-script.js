@@ -31,6 +31,7 @@ function populateProgramData(jsonData) {
     const orchestraData = jsonData.data[2];
     const soloistData = jsonData.data[3];
     if (programData && programData.length > 0) {
+      document.getElementById('program-title').textContent = programData[0].title;
 
       if (programData[0].season === null || programData[0].season === undefined || programData[0].season === 0) {
         document.getElementById('date').textContent = '';
@@ -38,11 +39,29 @@ function populateProgramData(jsonData) {
         document.getElementById('date').textContent = programData[0].season;
       }
 
-      document.getElementById('location').textContent = programData[0].location;
-      document.getElementById('program-title').textContent = programData[0].title;
-      document.getElementById('orchestra').textContent = orchestraData[0].name;
-      document.getElementById('interpreter').textContent = conductorData[0].name;
+      if (programData[0].location === null || programData[0].location === undefined || programData[0].location === '') {
+        document.getElementById('location').textContent = 'No specified location';
+      } else {
+        document.getElementById('location').textContent = programData[0].location;
+      }
+      
+      if (orchestraData[0].name === null || orchestraData[0].name === undefined || orchestraData[0].name === '') {
+        document.getElementById('orchestra').textContent = 'No specified orchestra';
+      } else {
+        document.getElementById('orchestra').textContent = orchestraData[0].name;
+      }
+
+      if (conductorData[0].name === null || conductorData[0].name === undefined || conductorData[0].name === '') {
+        document.getElementById('interpreter').textContent = 'No specified conductor';
+      } else {
+        document.getElementById('interpreter').textContent = conductorData[0].name;
+      }
+
+      if (programData[0].notes === null || programData[0].notes === undefined || programData[0].notes === '') {
+        document.getElementById('additional-info').textContent = 'No additional information available';
+      } else {
       document.getElementById('additional-info').textContent = programData[0].notes;
+      }
       
       if (soloistData[0].name === undefined || soloistData[0].name === null || soloistData[0].name === '') {
         document.getElementById('soloist').textContent = 'No specified soloist';
@@ -66,11 +85,20 @@ function populateScoreData(jsonData) {
         document.getElementById('date').textContent = interpretationData[0].year;
       }
 
-      document.getElementById('publisher').textContent = interpretationData[0].publisher;
+      if (interpretationData[0].publisher === null || interpretationData[0].publisher === undefined || interpretationData[0].publisher === '') {
+        document.getElementById('publisher').textContent = 'No specified publisher';
+      } else {
+        document.getElementById('publisher').textContent = interpretationData[0].publisher;
+      }
       document.getElementById('score-title').textContent = scoreData[0].title;
       document.getElementById('original-composer').textContent = scoreData[0].composer;
       document.getElementById('interpreter').textContent = conductorData[0].name;
-      document.getElementById('additional-info').textContent = (conductorData[0].name + "'s interpretation of " + scoreData[0].title + " by " + scoreData[0].composer).trim();
+
+      if (interpretationData[0].notes === null || interpretationData[0].notes === undefined || interpretationData[0].notes === '') {
+        document.getElementById('additional-info').textContent = 'No additional information';
+      } else {
+        document.getElementById('additional-info').textContent = (conductorData[0].name + "'s interpretation of " + scoreData[0].title + " by " + scoreData[0].composer).trim();
+      }
 
     }
   }
